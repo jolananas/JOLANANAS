@@ -110,6 +110,10 @@ export type EnvironmentConfig = z.infer<typeof envSchema>;
  * Validation des variables d'environnement avec Zod
  */
 function validateEnv(): EnvironmentConfig {
+  // Vérifier si nous sommes en phase de build Next.js
+  // Pendant le build, on peut être plus tolérant si certaines variables manquent
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build' || process.env.CI === 'true';
+
   // Vérifier que process.env est disponible
   if (typeof process === 'undefined' || typeof process.env === 'undefined') {
     throw new Error(
@@ -150,6 +154,23 @@ function validateEnv(): EnvironmentConfig {
 
     return parsed;
   } catch (error) {
+    if (isBuildPhase) {
+      console.warn('⚠️  Validation des variables d\'environnement échouée pendant le build. Utilisation de valeurs de secours.');
+      // Retourner une version partiellement valide pour le build
+      return {
+        SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'build-temp.myshopify.com',
+        SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'build-temp-token',
+        SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2024-04',
+        NODE_ENV: (process.env.NODE_ENV as any) || 'production',
+        DATABASE_URL: process.env.DATABASE_URL || 'file:./build-temp.db',
+        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'build-temp-secret',
+        NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+        SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN || 'build-temp-admin-token',
+        SHOPIFY_WEBHOOK_SECRET: process.env.SHOPIFY_WEBHOOK_SECRET,
+        DOMAIN_URL: process.env.DOMAIN_URL,
+      } as EnvironmentConfig;
+    }
+
     if (error instanceof z.ZodError) {
       const errors = error.errors.map((err) => {
         const path = err.path.join('.');
