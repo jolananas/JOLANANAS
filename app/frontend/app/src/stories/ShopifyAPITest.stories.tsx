@@ -191,7 +191,7 @@ type Story = StoryObj<typeof meta>;
 // Test de l'API Produits
 export const TestAPIProduits: Story = {
   args: {
-    endpoint: '/src/api/products',
+    endpoint: '/api/products',
     title: '🛍️ API Produits Shopify',
     description: 'Test de récupération des produits depuis votre API Shopify réelle',
     params: { first: 10 }
@@ -201,7 +201,7 @@ export const TestAPIProduits: Story = {
 // Test avec pagination
 export const TestAPIProduitsPagination: Story = {
   args: {
-    endpoint: '/src/api/products',
+    endpoint: '/api/products',
     title: '🛍️ API Produits avec Pagination',
     description: 'Test de la pagination des produits (premiers 5 produits)',
     params: { first: 5 }
@@ -243,7 +243,7 @@ export const TestCompletAPI: Story = {
       
       <div className="grid gap-6">
         <APITestComponent
-          endpoint="/src/api/products"
+          endpoint="/api/products"
           title="🛍️ Produits"
           description="Récupération des produits Shopify"
           params={{ first: 12 }}
@@ -257,7 +257,7 @@ export const TestCompletAPI: Story = {
         />
         
         <APITestComponent
-          endpoint="/src/api/products"
+          endpoint="/api/products"
           title="🔢 Limite et Performance"
           description="Test avec 20 produits pour voir les performances"
           params={{ first: 20 }}

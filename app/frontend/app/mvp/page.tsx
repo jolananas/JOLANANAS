@@ -74,7 +74,7 @@ export default function MVPPage() {
       
       // Parallélisation des appels API
       const [productsResponse, collectionsResponse] = await Promise.all([
-        fetch('/src/api/products?first=12'),
+        fetch('/api/products?first=12'),
         fetch('/api/collections?first=6')
       ]);
 

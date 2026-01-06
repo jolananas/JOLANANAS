@@ -29,7 +29,11 @@ logs/
 
 # Editeurs & Système
 .vscode/
+.vercel/
 .idea/
+.cursor/
+.generated/
+.cursorrules
 .DS_Store
 *.swp
 Thumbs.db
@@ -37,11 +41,11 @@ Thumbs.db
 # Fichiers temporaires TypeScript
 *.tsbuildinfo
 
-# Vercel
-.vercel
-
 # Backups
 _backup/
 
 # Large Files
 Fond perso – Jolananas.gif
+
+# Legacy
+v1/

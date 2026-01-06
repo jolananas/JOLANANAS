@@ -10,7 +10,6 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   try {
     // Test simple de connexion à la base de données
-    // On fait une requête légère pour vérifier que la connexion fonctionne
     await db.$queryRaw`SELECT 1`
     
     return NextResponse.json(
@@ -35,4 +34,3 @@ export async function GET() {
     )
   }
 }
-

@@ -1,13 +1,14 @@
 /**
- * 🍍 JOLANANAS - API Création Utilisateur
- * ======================================
- * Endpoint pour créer un nouveau compte utilisateur
+ * 🍍 JOLANANAS - API Création Utilisateur (Consolidé)
+ * ==================================================
+ * Endpoint pour créer un nouveau compte utilisateur dans Shopify et localement.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/app/src/lib/db';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { createCustomer, checkEmailExists } from '@/app/src/lib/shopify/auth';
 
 const SignupSchema = z.object({
   email: z.string().email('Email invalide'),
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
-    // Validation des données
+    // 1. Validation des données
     const validation = SignupSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
@@ -77,12 +78,11 @@ export async function POST(request: NextRequest) {
     }
 
     const { email, password, name } = validation.data;
+    const emailLower = email.toLowerCase();
+    const nameTrimmed = name.trim();
 
-    // 🔒 PROTECTION: Bloquer les utilisateurs de test en production
+    // 2. 🔒 PROTECTION: Bloquer les utilisateurs de test en production
     if (process.env.NODE_ENV === 'production') {
-      const emailLower = email.toLowerCase();
-      const nameTrimmed = name.trim();
-
       if (isTestEmail(emailLower) || isTestName(nameTrimmed)) {
         return NextResponse.json(
           { 
@@ -94,12 +94,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Vérifier si l'utilisateur existe déjà
-    const existingUser = await db.user.findUnique({
-      where: { email: email.toLowerCase() },
+    // 3. Vérifier si l'utilisateur existe déjà (Shopify & Local)
+    const emailExistsInShopify = await checkEmailExists(emailLower);
+    const existingLocalUser = await db.user.findUnique({
+      where: { email: emailLower },
     });
 
-    if (existingUser) {
+    if (emailExistsInShopify || existingLocalUser) {
       return NextResponse.json(
         { 
           success: false, 
@@ -109,30 +110,56 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hasher le mot de passe
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // 4. Création dans Shopify (Customer Account API)
+    const nameParts = nameTrimmed.split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || '.'; // LastName requis par Shopify
 
-    // Créer l'utilisateur
-    const user = await db.user.create({
+    const createResult = await createCustomer(
+      emailLower,
+      password,
+      firstName,
+      lastName
+    );
+
+    if (!createResult.success || !createResult.customer) {
+      return NextResponse.json(
+        { 
+          success: false,
+          error: createResult.errors?.[0]?.message || 'Erreur lors de la création du compte Shopify'
+        },
+        { status: 500 }
+      );
+    }
+
+    // 5. Création locale (Synchronisation DB)
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const localUser = await db.user.create({
       data: {
-        email: email.toLowerCase(),
+        email: emailLower,
         password: hashedPassword,
-        name: name.trim(),
+        name: nameTrimmed,
+        shopifyCustomerId: createResult.customer.id.toString(),
         role: 'CUSTOMER',
       },
     });
 
-    // Retourner les informations de l'utilisateur (sans mot de passe)
-    const { password: _, ...userWithoutPassword } = user;
-
+    // 6. Réponse finale
     return NextResponse.json({
       success: true,
       message: 'Compte créé avec succès',
-      user: userWithoutPassword,
+      user: {
+        id: localUser.id,
+        shopifyId: createResult.customer.id,
+        email: localUser.email,
+        name: localUser.name,
+        role: localUser.role,
+      },
+      accessToken: createResult.accessToken,
     });
 
   } catch (error: unknown) {
-    console.error('❌ Erreur création utilisateur:', error);
+    console.error('❌ Erreur API Signup:', error);
     
     return NextResponse.json(
       { 
@@ -143,4 +170,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
