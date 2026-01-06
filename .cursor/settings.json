@@ -1,0 +1,9 @@
+{
+  "cursor.ai.modelSelection": "manual",
+  "cursor.ai.autoModelSelection": false,
+  "cursor.chat.model": "claude-sonnet-3.5",
+  "cursor.composer.model": "claude-sonnet-3.5",
+  "cursor.cmdK.model": "claude-sonnet-3.5",
+  "cursor.terminalCmdK.model": "claude-sonnet-3.5"
+}
+

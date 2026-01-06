@@ -1,0 +1,128 @@
+{
+  "name": "jolananas-storefront",
+  "version": "1.0.0",
+  "description": "JOLANANAS - Shopify Headless Storefront Professionnel",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && next dev --turbopack -p 3000",
+    "build": "cd frontend && next build",
+    "start": "cd frontend && next start -p 3000",
+    "lint": "cd frontend && next lint",
+    "lint:fix": "cd frontend && next lint --fix",
+    "type-check": "cd frontend && tsc --noEmit",
+    "test": "cd frontend && jest",
+    "test:watch": "cd frontend && jest --watch",
+    "test:coverage": "cd frontend && jest --coverage",
+    "test:e2e": "cd frontend && playwright test",
+    "test:e2e:ui": "cd frontend && playwright test --ui",
+    "test:shopify": "cd frontend && npm run test -- --testPathPattern=shopify",
+    "clean": "cd frontend && rm -rf .next out dist",
+    "build:analyze": "cd frontend && ANALYZE=true next build",
+    "deploy:vercel": "cd frontend && vercel --prod",
+    "deploy:netlify": "cd frontend && netlify deploy --prod --dir=out",
+    "dev:tools": "node tools/react-dev-tools.js",
+    "setup": "node tools/setup.js",
+    "docker:build": "docker build -t jolananas-storefront .",
+    "docker:run": "docker run -p 3000:3000 jolananas-storefront"
+  },
+  "dependencies": {
+    "@next/bundle-analyzer": "^14.2.33",
+    "@radix-ui/react-slot": "^1.0.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cookie": "^1.0.2",
+    "framer-motion": "^11.18.2",
+    "graphql": "^16.8.1",
+    "graphql-request": "^7.2.0",
+    "graphql-tag": "^2.12.6",
+    "lucide-react": "^0.400.0",
+    "next": "^14.2.33",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.48.2",
+    "react-hot-toast": "^2.4.1",
+    "react-intersection-observer": "^9.5.3",
+    "sharp": "^0.33.0",
+    "swr": "^2.3.6",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.22.4",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.19",
+    "@testing-library/jest-dom": "^6.1.6",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/node": "^20.19.19",
+    "@types/react": "^18.3.25",
+    "@types/react-dom": "^18.3.7",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.55.0",
+    "eslint-config-next": "^14.2.33",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss": "^8.4.32",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [
+    "jolananas",
+    "react",
+    "nextjs",
+    "shopify",
+    "ecommerce",
+    "storefront",
+    "typescript",
+    "luxury",
+    "professional",
+    "headless"
+  ],
+ "author": {
+    "name": "AÏSSA BELKOUSSA",
+    "email": "contact@jolananas.com",
+    "url": "https://jolananas.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jolananas/serveur.git"
+  },
+  "homepage": "https://jolananas.com",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,mdx,css,scss}": [
+      "prettier --write"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.ts"],
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/app/frontend/src/$1"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.{js,jsx,ts,tsx}",
+      "**/*.{test,spec}.{js,jsx,ts,tsx}"
+    ]
+  }
+}

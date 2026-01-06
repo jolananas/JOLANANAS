@@ -1,0 +1,290 @@
+/* Import des polices Google Fonts depuis le web - DOIT être en premier */
+/* Note: Inter, Poppins et Montserrat sont chargées via next/font/google dans layout.tsx */
+/* Les variables CSS --font-inter, --font-serif et --font-montserrat sont définies par next/font/google */
+/* Les fallbacks sont définis dans :root ci-dessous pour éviter Times Roman */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import de la police Weather Sunday depuis les fichiers locaux */
+@font-face {
+  font-family: 'weather sunday - personal use';
+  src: url('/assets/fonts/weather-sunday-personal-use.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Variables CSS personnalisées */
+:root {
+  /* Variables de fonts avec fallback - définies par next/font/google mais fallback pour sécurité */
+  --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-montserrat: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  /* JOLANANAS brand colors - peach, pink, rose, coral palette (harmonisées) */
+  --background: oklch(0.98 0.005 67.7); /* jolananas.white-soft (#FEF7F0) */
+  --foreground: oklch(0.19 0.004 294.6); /* jolananas.black-ink (#141318) */
+  --card: oklch(1.0 0.0 89.9); /* commerce.white-pure (#FFFFFF) */
+  --card-foreground: oklch(0.19 0.004 294.6); /* jolananas.black-ink (#141318) */
+  --popover: oklch(1.0 0.0 89.9); /* commerce.white-pure (#FFFFFF) */
+  --popover-foreground: oklch(0.19 0.004 294.6); /* jolananas.black-ink (#141318) */
+
+  /* Primary: JOLANANAS Pink */
+  --primary: oklch(0.72 0.15 10);
+  --primary-foreground: oklch(1 0 0);
+
+  /* Secondary: JOLANANAS Peach */
+  --secondary: oklch(0.85 0.08 40);
+  --secondary-foreground: oklch(0.19 0.004 294.6); /* jolananas.black-ink */
+
+  /* Accent: JOLANANAS Pink Medium */
+  --accent: oklch(0.76 0.049 7.5); /* jolananas.pink-medium (#F38FA3) */
+  --accent-foreground: oklch(0.19 0.004 294.6); /* jolananas.black-ink - excellent contraste 8.29:1 */
+
+  /* Muted backgrounds */
+  --muted: oklch(0.985 0.001 247.8); /* commerce.gray-light (#F9FAFB) */
+  --muted-foreground: oklch(0.551 0.009 264.4); /* commerce.gray-dark (#6B7280) */
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+
+  --border: oklch(0.967 0.001 264.5); /* commerce.gray-medium (#F3F4F6) */
+  --input: oklch(0.967 0.001 264.5); /* commerce.gray-medium (#F3F4F6) */
+  --ring: oklch(0.76 0.049 7.5); /* jolananas.pink-medium (#F38FA3) - pour le focus */
+
+  /* Chart colors using brand palette */
+  --chart-1: oklch(0.72 0.15 10);
+  --chart-2: oklch(0.85 0.08 40);
+  --chart-3: oklch(0.68 0.18 15);
+  --chart-4: oklch(0.78 0.12 20);
+  --chart-5: oklch(0.82 0.1 35);
+
+  --radius: 0.75rem;
+
+  /* Glassmorphism variables */
+  --glass-bg: rgba(244, 192, 172, 0.7);
+  --glass-border: rgba(243, 143, 163, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(243, 143, 163, 0.37);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  /* Mode sombre harmonisé avec palette Jolananas */
+  --background: oklch(0.19 0.004 294.6); /* jolananas.black-ink (#141318) */
+  --foreground: oklch(0.98 0.005 67.7); /* jolananas.white-soft (#FEF7F0) */
+  --card: oklch(0.22 0.004 294.6); /* black-ink légèrement plus clair pour les cartes */
+  --card-foreground: oklch(0.98 0.005 67.7); /* jolananas.white-soft */
+  --popover: oklch(0.22 0.004 294.6); /* black-ink légèrement plus clair */
+  --popover-foreground: oklch(0.98 0.005 67.7); /* jolananas.white-soft */
+  --primary: oklch(0.72 0.15 10);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.25 0.01 40);
+  --secondary-foreground: oklch(0.98 0.005 67.7); /* jolananas.white-soft */
+  --muted: oklch(0.25 0.004 294.6); /* tons sombres compatibles avec black-ink */
+  --muted-foreground: oklch(0.65 0.009 264.4); /* commerce.gray-dark adapté pour mode sombre */
+  --accent: oklch(0.76 0.049 7.5); /* jolananas.pink-medium (#F38FA3) - reste identique */
+  --accent-foreground: oklch(0.98 0.005 67.7); /* jolananas.white-soft - meilleur contraste */
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.30 0.004 294.6); /* bordure légèrement plus claire que le fond */
+  --input: oklch(0.30 0.004 294.6); /* input légèrement plus clair que le fond */
+  --ring: oklch(0.76 0.049 7.5); /* jolananas.pink-medium (#F38FA3) - reste identique pour le focus */
+  --chart-1: oklch(0.72 0.15 10);
+  --chart-2: oklch(0.85 0.08 40);
+  --chart-3: oklch(0.68 0.18 15);
+  --chart-4: oklch(0.78 0.12 20);
+  --chart-5: oklch(0.82 0.1 35);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Heading styles use Poppins */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif;
+    font-family: var(--font-serif), Poppins, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  /* Force sans-serif for all text elements to prevent Times fallback */
+  p, span, div, a, li, td, th, label, input, textarea, select, button {
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Container centrage garanti */
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Glassmorphism utilities */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 0.75rem;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Optimisation tactile pour mobile */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Tips container - Glassmorphism sans effet hover */
+  .tips-container {
+    background: linear-gradient(135deg, rgba(255,255,255) 0%, 
+                                        rgba(255,255,255,0.75) 20%, 
+                                        rgba(255,255,255) 45%, 
+                                        rgba(255,255,255,0.70) 70%, 
+                                        rgba(255,255,255) 100%); /* Fond en Glassmorphism */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0px 15px rgba(0, 0, 0, 0.05); /* Ombres combinées */
+    border-radius: 12px; /* Contours arrondis */
+    border: 1px solid rgba(255, 255, 255, 0.13); /* Bordure */
+    padding: 20px;
+    width: fit-content;
+    max-width: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, "Montserrat", 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 75% !important;
+    text-align: center;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .tips-container h2 {
+    color: black;
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: bold;
+    font-size: 135% !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tips-container p {
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tips-container SPAN {
+    font-family: "weather sunday - personal use", cursive, system-ui, sans-serif;
+    font-weight: bold;
+    font-size: 175% !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tips-container h2 p SPAN {
+    mix-blend-mode: exclusion;
+  }
+
+  /* Style pour la transcription phonétique */
+  .tips-container p .phonétique {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Montserrat', 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Override Typography plugin to prevent Times fallback */
+@layer components {
+  .prose {
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  
+  .prose p,
+  .prose span,
+  .prose div,
+  .prose li,
+  .prose td,
+  .prose th {
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    font-family: var(--font-serif), Poppins, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  }
+
+  /* Enhanced Card Effects */
+  .spotlight-card {
+    position: relative;
+  }
+
+  .spotlight-card .blob {
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .spotlight-card .fake-blob {
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* Optimisation pour les cartes 3D */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Désactiver les effets sur mobile/touch */
+  @media (hover: none) and (pointer: coarse) {
+    .spotlight-card .blob {
+      opacity: 0 !important;
+    }
+  }
+}

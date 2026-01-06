@@ -1,0 +1,61 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "SHOPIFY_STORE_DOMAIN",
+    "SHOPIFY_STOREFRONT_TOKEN", 
+    "SHOPIFY_ADMIN_API_TOKEN",
+    "SHOPIFY_WEBHOOK_SECRET",
+    "SHOPIFY_API_VERSION",
+    "DOMAIN_URL",
+    "NODE_ENV"
+  ],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "lint:fix": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["lint"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"],
+      "outputs": ["coverage/**"]
+    },
+    "test:coverage": {
+      "dependsOn": ["test"],
+      "outputs": ["coverage/**"]
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "outputs": ["test-results/**", "playwright-report/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "build:analyze": {
+      "dependsOn": ["build"],
+      "outputs": [".next/analyze/**"]
+    },
+    "deploy:vercel": {
+      "dependsOn": ["build", "test"],
+      "cache": false
+    },
+    "deploy:netlify": {
+      "dependsOn": ["build", "test"],
+      "cache": false
+    }
+  },
+  "ui": "tui"
+}

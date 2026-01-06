@@ -1,0 +1,932 @@
+{
+  "name": "JOLANANAS Official Storefront",
+  "description": "Storefront e-commerce moderne avec intégration Shopify et fonctionnalités AI avancées pour JOLANANAS - créations artisanales girly et utiles",
+  "type": "e-commerce-storefront",
+  "version": "1.0.0",
+  "platform-compatibility": {
+    "lovable": {
+      "supported": true,
+      "features": ["react-components", "supabase-integration", "tailwind-css", "real-time-collaboration", "instant-deployment"],
+      "limitations": ["no-nextjs-app-router", "supabase-only-backend", "no-custom-server"],
+      "backend": "supabase",
+      "auth": "supabase-auth",
+      "database": "supabase-postgresql",
+      "state-management": "react-context-zustand"
+    },
+    "emergent": {
+      "supported": true,
+      "features": ["nextjs-14", "react-server-components", "api-routes", "streaming", "edge-runtime"],
+      "limitations": [],
+      "backend": "nextjs-api-routes",
+      "auth": "next-auth",
+      "database": "prisma-postgresql",
+      "state-management": "react-server-state"
+    },
+    "v0": {
+      "supported": true,
+      "features": ["shadcn-ui", "nextjs", "tailwind-css", "component-generation", "design-system"],
+      "limitations": ["component-focused", "no-backend-logic", "no-api-routes"],
+      "backend": "external-api",
+      "auth": "external-auth",
+      "database": "external-database",
+      "state-management": "react-hooks"
+    },
+    "bolt": {
+      "supported": true,
+      "features": ["full-stack", "multiple-frameworks", "deployment", "browser-ide", "npm-integration"],
+      "limitations": [],
+      "backend": "nodejs-express",
+      "auth": "custom-auth",
+      "database": "multiple-options",
+      "state-management": "flexible"
+    },
+    "replit": {
+      "supported": true,
+      "features": ["collaborative-coding", "instant-deployment", "multiple-languages", "checkpoints", "import-projects"],
+      "limitations": [],
+      "backend": "nodejs-python",
+      "auth": "custom-auth",
+      "database": "replit-database",
+      "state-management": "framework-specific"
+    }
+  },
+  "technologies": {
+    "frontend": {
+      "react": "18+",
+      "nextjs": "14+",
+      "typescript": "strict",
+      "tailwind": "v4",
+      "framer-motion": "latest",
+      "shadcn-ui": "latest",
+      "lucide-react": "latest"
+    },
+    "integrations": {
+      "shopify": {
+        "storefront-api": "GraphQL",
+        "domain": "u6ydbb-sx.myshopify.com",
+        "token": "[STOREFRONT_TOKEN_COMPROMISED]",
+        "api-version": "2024-04"
+      },
+      "ai": {
+        "vercel-ai-sdk": "latest",
+        "ai-gateway": "configurable",
+        "nano-banana": "micro-interactions",
+        "streaming": "enabled"
+      }
+    }
+  },
+  "brand": {
+    "name": "JOLANANAS",
+    "description": "Créations artisanales girly et utiles",
+    "target-audience": "Femmes modernes aimant les accessoires uniques et pratiques",
+    "tone": "Élégant, moderne, accessible, authentique"
+  },
+  "design-system": {
+    "colors": {
+      "primary": {
+        "jolananas-peach": "#F4C0AC",
+        "jolananas-pink": "#F38FA3",
+        "jolananas-rose": "#EC7B9C",
+        "jolananas-coral": "#FCA4A4"
+      },
+      "mesh-gradient": {
+        "peach-1": "#F4C0AC",
+        "pink-1": "#F38FA3",
+        "rose-1": "#EC7B9C",
+        "coral-1": "#FCA4A4",
+        "peach-2": "#F4B4AB"
+      },
+      "neutrals": {
+        "white": "#FFFFFF",
+        "gray-50": "#F9FAFB",
+        "gray-100": "#F3F4F6",
+        "gray-900": "#141318"
+      },
+        "glassmorphism": {
+          "background": "rgba(244, 192, 172, 0.7)",
+          "border": "rgba(243, 143, 163, 0.2)",
+          "blur": "blur(20px)"
+        }
+    },
+    "typography": {
+      "headings": "Poppins",
+      "body": "Inter",
+      "logo": "Weather Sunday"
+    },
+    "spacing": {
+      "xs": "0.5rem",
+      "sm": "1rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "3rem",
+      "2xl": "4rem"
+    },
+    "border-radius": {
+      "sm": "0.5rem",
+      "md": "0.75rem",
+      "lg": "1rem",
+      "xl": "1.5rem"
+    },
+    "shadows": {
+      "soft": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "medium": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+        "glow": "0 0 20px rgba(243, 143, 163, 0.3)",
+        "glass": "0 8px 32px 0 rgba(243, 143, 163, 0.37)"
+    },
+    "animations": {
+      "duration": "0.3s",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "hover-lift": "translateY(-4px)",
+      "scale-hover": "scale(1.05)"
+    }
+  },
+  "real-data": {
+    "shopify-products": [
+      {
+        "id": "gid://shopify/Product/10259918717255",
+        "title": "Petite pince fleur verte",
+        "description": "🌸 Petite pince fleur verte (lot de 2) - L'accessoire de l'été qui sublime vos cheveux 🌞 Ajoutez une touche de douceur et d'exotisme à votre coiffure. Pratique et tendance, elle s'adapte à toutes vos chevelures et toutes les occasions. 🎁 A offrir ou à s'offrir :un petit accessoire qui fait toujours plaisir !",
+        "handle": "petite-pince-fleur-verte",
+        "vendor": "Jolananas",
+        "productType": "Accessoires cheveux",
+        "price": "1.60",
+        "currency": "EUR",
+        "image": "https://cdn.shopify.com/s/files/1/0908/5508/0263/files/IMG_4433.jpg?v=1753020213",
+        "available": true
+      },
+      {
+        "id": "gid://shopify/Product/10259919012167",
+        "title": "Trio de pinces fleurs blanche/violet",
+        "description": "🌸 Trio de pinces fleurs blanche/violet- L'accessoire de l'été qui sublime vos cheveux 🌞 Ajoutez une touche de douceur et d'exotisme à votre coiffure. Pratique et tendance, elle s'adapte à toutes vos chevelures et toutes les occasions. 🎁 A offrir ou à s'offrir :un petit accessoire qui fait toujours plaisir ! 1 grosse 2moyenne",
+        "handle": "trio-de-pinces-fleurs-blanche-violet",
+        "vendor": "Jolananas",
+        "productType": "Accessoires cheveux",
+        "price": "5.00",
+        "currency": "EUR",
+        "image": "https://cdn.shopify.com/s/files/1/0908/5508/0263/files/IMG_4423.jpg?v=1753020153",
+        "available": true
+      }
+    ],
+    "collections": [
+      {
+        "id": "gid://shopify/Collection/651829936455",
+        "title": "Nos créations",
+        "handle": "frontpage",
+        "description": ""
+      },
+      {
+        "id": "gid://shopify/Collection/651832557895",
+        "title": "Accessoires",
+        "handle": "accessoires",
+        "description": "Découvrez notre collection d'accessoires uniques pour sublimer votre style au quotidien. Des pièces tendances, sélectionnées avec soin pour ajouter une touche de caractère à chacune de vos tenues. 🎯 Idéal pour : compléter un look, offrir un cadeau ou se faire plaisir. 🌍 Livraison rapide | 📦 Retours faciles | 🔒 Paiement sécurisé Explorez notre sélection maintenant — chaque détail compte."
+      }
+    ]
+  },
+  "architecture": {
+    "pages": {
+      "home": {
+        "path": "/",
+        "components": ["Hero", "FeaturedCollections", "ProductGrid", "Newsletter"],
+        "layout": "default"
+      },
+      "products": {
+        "path": "/products",
+        "components": ["ProductGrid", "FilterSidebar", "SearchBar", "SortDropdown"],
+        "layout": "with-sidebar"
+      },
+      "product-detail": {
+        "path": "/products/[handle]",
+        "components": ["ProductGallery", "ProductInfo", "QuickAdd", "Recommendations"],
+        "layout": "product-detail"
+      },
+      "collections": {
+        "path": "/collections/[handle]",
+        "components": ["CollectionHeader", "ProductGrid", "FilterSidebar"],
+        "layout": "with-sidebar"
+      },
+      "cart": {
+        "path": "/cart",
+        "components": ["CartItems", "CartSummary", "CheckoutButton"],
+        "layout": "cart"
+      }
+    },
+    "components": {
+      "product": {
+        "ProductCard": {
+          "props": {
+            "product": "Product",
+            "variant": "ProductVariant",
+            "showQuickAdd": "boolean",
+            "layout": "'grid' | 'list'"
+          },
+          "features": ["hover-effects", "quick-add", "wishlist", "badge-promo"]
+        },
+        "ProductGrid": {
+          "props": {
+            "products": "Product[]",
+            "columns": "number",
+            "loading": "boolean",
+            "infiniteScroll": "boolean"
+          },
+          "features": ["responsive-grid", "lazy-loading", "masonry-layout"]
+        },
+        "ProductDetail": {
+          "props": {
+            "product": "Product",
+            "variants": "ProductVariant[]",
+            "images": "ProductImage[]"
+          },
+          "features": ["image-gallery", "variant-selector", "quantity-selector", "add-to-cart"]
+        }
+      },
+      "cart": {
+        "CartDrawer": {
+          "props": {
+            "isOpen": "boolean",
+            "onClose": "() => void",
+            "items": "CartItem[]"
+          },
+          "features": ["slide-animation", "item-management", "checkout-redirect"]
+        },
+        "CartItem": {
+          "props": {
+            "item": "CartItem",
+            "onUpdate": "(id: string, quantity: number) => void",
+            "onRemove": "(id: string) => void"
+          },
+          "features": ["quantity-controls", "remove-button", "price-calculation"]
+        }
+      },
+      "search": {
+        "SearchBar": {
+          "props": {
+            "placeholder": "string",
+            "onSearch": "(query: string) => void",
+            "suggestions": "string[]"
+          },
+          "features": ["ai-suggestions", "recent-searches", "voice-search"]
+        },
+        "SmartFilters": {
+          "props": {
+            "filters": "Filter[]",
+            "onFilterChange": "(filters: Filter[]) => void"
+          },
+          "features": ["price-range", "color-filter", "category-filter", "ai-suggestions"]
+        }
+      },
+      "ai": {
+        "Chatbot": {
+          "props": {
+            "isOpen": "boolean",
+            "onClose": "() => void",
+            "messages": "ChatMessage[]"
+          },
+          "features": ["streaming-responses", "product-recommendations", "support-chat"]
+        },
+        "RecommendationSlider": {
+          "props": {
+            "title": "string",
+            "products": "Product[]",
+            "algorithm": "'similar' | 'trending' | 'personalized'"
+          },
+          "features": ["ai-recommendations", "horizontal-scroll", "product-cards"]
+        }
+      },
+      "ui": {
+        "Button": {
+          "variants": ["primary", "secondary", "ghost", "outline"],
+          "sizes": ["sm", "md", "lg"],
+          "features": ["loading-state", "icon-support", "accessibility"]
+        },
+        "Card": {
+          "variants": ["default", "glass", "elevated"],
+          "features": ["hover-effects", "glassmorphism", "responsive"]
+        },
+        "Input": {
+          "variants": ["default", "search", "email"],
+          "features": ["validation", "error-states", "accessibility"]
+        }
+      }
+    }
+  },
+  "platform-specific-instructions": {
+    "lovable": {
+      "architecture": {
+        "frontend": "React avec Vite, pas Next.js App Router",
+        "backend": "Supabase uniquement - utiliser Supabase Functions pour la logique serveur",
+        "database": "Supabase PostgreSQL avec Row Level Security",
+        "auth": "Supabase Auth avec providers sociaux",
+        "state": "React Context ou Zustand pour l'état global",
+        "styling": "Tailwind CSS avec classes utilitaires"
+      },
+      "shopify-integration": {
+        "method": "Client-side avec Shopify Storefront API",
+        "authentication": "Token public Shopify dans les variables d'environnement",
+        "cart": "LocalStorage + Supabase pour persistance",
+        "recommendations": "Supabase Edge Functions pour logique IA"
+      },
+      "ai-features": {
+        "search": "Supabase Edge Functions avec intégration OpenAI/Anthropic",
+        "chatbot": "Supabase Realtime pour streaming",
+        "recommendations": "Supabase PostgreSQL avec extensions vectorielles"
+      },
+      "deployment": {
+        "platform": "Supabase Hosting",
+        "domain": "Configuration via Supabase Dashboard",
+        "environment": "Variables dans Supabase Project Settings"
+      }
+    },
+    "emergent": {
+      "architecture": {
+        "frontend": "Next.js 14 avec App Router et React Server Components",
+        "backend": "API Routes Next.js avec streaming natif",
+        "database": "Prisma ORM avec PostgreSQL",
+        "auth": "NextAuth.js avec providers multiples",
+        "state": "React Server State + Zustand pour client",
+        "styling": "Tailwind CSS avec CSS Modules optionnels"
+      },
+      "shopify-integration": {
+        "method": "Server-side avec Shopify Admin API",
+        "authentication": "OAuth Shopify dans API Routes",
+        "cart": "Server Actions Next.js + base de données",
+        "recommendations": "API Routes avec streaming IA"
+      },
+      "ai-features": {
+        "search": "API Routes avec Vercel AI SDK",
+        "chatbot": "Server Actions avec streaming natif",
+        "recommendations": "Edge Runtime avec cache intelligent"
+      },
+      "deployment": {
+        "platform": "Vercel",
+        "domain": "Configuration via Vercel Dashboard",
+        "environment": "Variables dans Vercel Project Settings"
+      }
+    },
+    "v0": {
+      "architecture": {
+        "frontend": "Next.js avec composants Shadcn UI",
+        "backend": "Pas de backend intégré - utiliser APIs externes",
+        "database": "Pas de base de données - APIs externes uniquement",
+        "auth": "Pas d'auth intégrée - solutions externes",
+        "state": "React Hooks uniquement",
+        "styling": "Tailwind CSS + Shadcn UI components"
+      },
+      "shopify-integration": {
+        "method": "Client-side uniquement avec Shopify Storefront API",
+        "authentication": "Token public dans variables d'environnement",
+        "cart": "LocalStorage uniquement",
+        "recommendations": "APIs externes ou services tiers"
+      },
+      "ai-features": {
+        "search": "Intégration APIs externes (OpenAI, Anthropic)",
+        "chatbot": "Widget externe ou intégration API",
+        "recommendations": "Services tiers ou APIs externes"
+      },
+      "deployment": {
+        "platform": "Vercel (recommandé)",
+        "domain": "Configuration manuelle",
+        "environment": "Variables d'environnement locales"
+      }
+    },
+    "bolt": {
+      "architecture": {
+        "frontend": "React/Vue/Svelte selon préférence",
+        "backend": "Node.js avec Express/Fastify",
+        "database": "PostgreSQL/MongoDB/SQLite selon choix",
+        "auth": "Custom auth ou Passport.js",
+        "state": "Redux/Zustand/Pinia selon framework",
+        "styling": "Tailwind CSS ou CSS-in-JS"
+      },
+      "shopify-integration": {
+        "method": "Full-stack avec Shopify Admin API",
+        "authentication": "OAuth Shopify avec refresh tokens",
+        "cart": "Base de données avec sessions utilisateur",
+        "recommendations": "Backend avec intégration IA"
+      },
+      "ai-features": {
+        "search": "Backend avec APIs IA et cache Redis",
+        "chatbot": "WebSocket ou Server-Sent Events",
+        "recommendations": "Algorithme backend avec ML"
+      },
+      "deployment": {
+        "platform": "Railway/Render/DigitalOcean",
+        "domain": "Configuration DNS manuelle",
+        "environment": "Variables d'environnement serveur"
+      }
+    },
+    "replit": {
+      "architecture": {
+        "frontend": "React/Next.js/Vue selon projet",
+        "backend": "Node.js/Python/Go selon langage",
+        "database": "Replit Database ou PostgreSQL",
+        "auth": "Custom auth ou OAuth providers",
+        "state": "Framework-specific state management",
+        "styling": "Tailwind CSS ou CSS frameworks"
+      },
+      "shopify-integration": {
+        "method": "Full-stack avec APIs Shopify",
+        "authentication": "OAuth avec gestion tokens",
+        "cart": "Replit Database ou PostgreSQL",
+        "recommendations": "Backend avec IA intégrée"
+      },
+      "ai-features": {
+        "search": "Backend avec APIs IA et cache",
+        "chatbot": "Realtime avec Replit Database",
+        "recommendations": "Algorithme backend avec données"
+      },
+      "deployment": {
+        "platform": "Replit Hosting",
+        "domain": "Configuration via Replit Dashboard",
+        "environment": "Secrets dans Replit Project"
+      }
+    }
+  },
+  "ai-features": {
+    "semantic-search": {
+      "description": "Recherche intelligente qui comprend l'intention utilisateur",
+      "examples": [
+        "pinces roses pour été",
+        "accessoires pour cheveux longs",
+        "cadeau moins de 10 euros",
+        "trio de pinces colorées"
+      ],
+      "implementation": {
+        "api": "/api/ai/search",
+        "streaming": true,
+        "suggestions": true,
+        "correction": true
+      }
+    },
+    "product-recommendations": {
+      "description": "Recommandations personnalisées basées sur l'IA",
+      "types": [
+        "similar-products",
+        "cross-sell",
+        "trending",
+        "personalized"
+      ],
+      "implementation": {
+        "api": "/api/ai/recommendations",
+        "real-time": true,
+        "context-aware": true
+      }
+    },
+    "chatbot-support": {
+      "description": "Assistant client avec accès au catalogue",
+      "capabilities": [
+        "product-information",
+        "availability-check",
+        "size-guide",
+        "shipping-info",
+        "return-policy"
+      ],
+      "implementation": {
+        "api": "/api/ai/chat",
+        "streaming": true,
+        "context": "shopify-catalog",
+        "personality": "helpful-friendly"
+      }
+    },
+    "smart-filters": {
+      "description": "Filtres intelligents avec suggestions IA",
+      "features": [
+        "natural-language-filters",
+        "price-range-suggestions",
+        "color-matching",
+        "occasion-based"
+      ],
+      "implementation": {
+        "api": "/api/ai/filters",
+        "dynamic": true,
+        "learning": true
+      }
+    }
+  },
+  "shopify-integration": {
+    "queries": {
+      "products": {
+        "query": "query GetProducts($first: Int!, $after: String) { products(first: $first, after: $after) { pageInfo { hasNextPage endCursor } edges { node { id title handle description vendor productType availableForSale priceRange { minVariantPrice { amount currencyCode } } images(first: 5) { edges { node { url altText } } } variants(first: 10) { edges { node { id title price { amount currencyCode } availableForSale } } } } } } }",
+        "variables": ["first", "after"]
+      },
+      "collections": {
+        "query": "query GetCollections { collections(first: 10) { edges { node { id title handle description image { url altText } } } } }",
+        "variables": []
+      },
+      "cart": {
+        "create": "mutation CreateCart($lines: [CartLineInput!]) { cartCreate(input: { lines: $lines }) { cart { id checkoutUrl totalQuantity cost { totalAmount { amount currencyCode } } } userErrors { field message } } }",
+        "add": "mutation AddToCart($cartId: ID!, $lines: [CartLineInput!]!) { cartLinesAdd(cartId: $cartId, lines: $lines) { cart { id checkoutUrl totalQuantity } userErrors { field message } } }"
+      }
+    },
+    "configuration": {
+      "domain": "u6ydbb-sx.myshopify.com",
+      "token": "[STOREFRONT_TOKEN_COMPROMISED]",
+      "apiVersion": "2024-04",
+      "currency": "EUR",
+      "locale": "fr-FR"
+    }
+  },
+  "responsive-design": {
+    "breakpoints": {
+      "mobile": "375px-640px",
+      "tablet": "640px-1024px",
+      "desktop": "1024px-1919px",
+      "large": "1920px+"
+    },
+    "adaptations": {
+      "mobile": {
+        "navigation": "burger-menu",
+        "product-grid": "1-column",
+        "chatbot": "bottom-sheet",
+        "search": "full-screen-overlay",
+        "cart": "full-screen-drawer"
+      },
+      "tablet": {
+        "navigation": "top-bar",
+        "product-grid": "2-columns",
+        "chatbot": "sidebar",
+        "search": "dropdown",
+        "cart": "slide-drawer"
+      },
+      "desktop": {
+        "navigation": "full-top-bar",
+        "product-grid": "4-columns",
+        "chatbot": "fixed-sidebar",
+        "search": "inline",
+        "cart": "slide-drawer"
+      },
+      "large": {
+        "navigation": "full-top-bar",
+        "product-grid": "6-columns",
+        "chatbot": "fixed-sidebar",
+        "search": "inline",
+        "cart": "slide-drawer",
+        "max-width": "1600px"
+      }
+    }
+  },
+  "performance": {
+    "optimizations": [
+      "next-image-with-shopify-cdn",
+      "lazy-loading-routes",
+      "isr-product-pages",
+      "bundle-splitting",
+      "prefetch-links",
+      "web-vitals-optimization"
+    ],
+    "targets": {
+      "lcp": "< 2.5s",
+      "fid": "< 100ms",
+      "cls": "< 0.1",
+      "ttfb": "< 600ms"
+    }
+  },
+  "accessibility": {
+    "requirements": [
+      "aria-labels-all-interactive",
+      "keyboard-navigation-complete",
+      "focus-visible-logical",
+      "alt-text-all-images",
+      "wcag-aaa-contrast"
+    ],
+    "testing": [
+      "screen-reader-compatible",
+      "keyboard-only-navigation",
+      "color-blind-friendly",
+      "motion-reduced-support"
+    ]
+  },
+  "code-examples": {
+    "product-card": {
+      "universal": {
+        "typescript": "interface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  return (\n    <motion.div\n      className=\"group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <Image\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          fill\n          className=\"object-cover transition-transform duration-300 group-hover:scale-105\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+      },
+      "lovable": {
+        "typescript": "// Lovable: Utilise React avec Vite, pas Next.js Image\nimport { motion } from 'framer-motion';\nimport { useState } from 'react';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleAddToCart = async () => {\n    setIsLoading(true);\n    // Utiliser Supabase pour ajouter au panier\n    try {\n      const { data, error } = await supabase\n        .from('cart_items')\n        .insert({ product_id: product.id, quantity: 1 });\n      if (error) throw error;\n    } catch (error) {\n      console.error('Error adding to cart:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <motion.div\n      className=\"group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <img\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          className=\"w-full h-full object-cover transition-transform duration-300 group-hover:scale-105\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center justify-between mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n          {showQuickAdd && (\n            <button\n              onClick={handleAddToCart}\n              disabled={isLoading}\n              className=\"px-3 py-1 bg-jolananas-pink text-white rounded-lg text-sm hover:bg-jolananas-rose transition-colors disabled:opacity-50\"\n            >\n              {isLoading ? '...' : 'Ajouter'}\n            </button>\n          )}\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+      },
+      "emergent": {
+        "typescript": "// Emergent: Utilise Next.js 14 avec Server Components\nimport { motion } from 'framer-motion';\nimport Image from 'next/image';\nimport { addToCart } from '@/lib/actions';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  return (\n    <motion.div\n      className=\"group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <Image\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          fill\n          className=\"object-cover transition-transform duration-300 group-hover:scale-105\"\n          sizes=\"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center justify-between mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n          {showQuickAdd && (\n            <form action={addToCart}>\n              <input type=\"hidden\" name=\"productId\" value={product.id} />\n              <button\n                type=\"submit\"\n                className=\"px-3 py-1 bg-jolananas-pink text-white rounded-lg text-sm hover:bg-jolananas-rose transition-colors\"\n              >\n                Ajouter\n              </button>\n            </form>\n          )}\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+      },
+      "v0": {
+        "typescript": "// v0: Utilise Shadcn UI components\nimport { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';\nimport { Button } from '@/components/ui/button';\nimport { Badge } from '@/components/ui/badge';\nimport Image from 'next/image';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  const handleAddToCart = () => {\n    // Logique d'ajout au panier avec localStorage ou API externe\n    const cart = JSON.parse(localStorage.getItem('cart') || '[]');\n    cart.push({ productId: product.id, quantity: 1 });\n    localStorage.setItem('cart', JSON.stringify(cart));\n  };\n\n  return (\n    <Card className=\"group hover:shadow-lg transition-shadow duration-300\">\n      <CardHeader className=\"p-0\">\n        <div className=\"relative w-full aspect-square overflow-hidden rounded-t-lg\">\n          <Image\n            src={product.images.edges[0]?.node.url}\n            alt={product.images.edges[0]?.node.altText || product.title}\n            fill\n            className=\"object-cover transition-transform duration-300 group-hover:scale-105\"\n          />\n        </div>\n      </CardHeader>\n      <CardContent className=\"p-4\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n      </CardContent>\n      <CardFooter className=\"flex items-center justify-between p-4 pt-0\">\n        <Badge variant=\"secondary\" className=\"text-lg font-bold text-jolananas-pink\">\n          {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n        </Badge>\n        {showQuickAdd && (\n          <Button onClick={handleAddToCart} size=\"sm\" className=\"bg-jolananas-pink hover:bg-jolananas-rose\">\n            Ajouter\n          </Button>\n        )}\n      </CardFooter>\n    </Card>\n  );\n}"
+      },
+      "bolt": {
+        "typescript": "// Bolt: Full-stack avec gestion d'état flexible\nimport { useState } from 'react';\nimport { motion } from 'framer-motion';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleAddToCart = async () => {\n    setIsLoading(true);\n    try {\n      const response = await fetch('/api/cart/add', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ productId: product.id, quantity: 1 })\n      });\n      \n      if (!response.ok) throw new Error('Failed to add to cart');\n      \n      // Mettre à jour l'état global du panier\n      // dispatch(updateCartCount());\n    } catch (error) {\n      console.error('Error adding to cart:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <motion.div\n      className=\"group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <img\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          className=\"w-full h-full object-cover transition-transform duration-300 group-hover:scale-105\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center justify-between mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n          {showQuickAdd && (\n            <button\n              onClick={handleAddToCart}\n              disabled={isLoading}\n              className=\"px-3 py-1 bg-jolananas-pink text-white rounded-lg text-sm hover:bg-jolananas-rose transition-colors disabled:opacity-50\"\n            >\n              {isLoading ? '...' : 'Ajouter'}\n            </button>\n          )}\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+      },
+      "replit": {
+        "typescript": "// Replit: Multi-langage avec Replit Database\nimport { useState } from 'react';\nimport { motion } from 'framer-motion';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleAddToCart = async () => {\n    setIsLoading(true);\n    try {\n      // Utiliser Replit Database\n      const cartItem = {\n        productId: product.id,\n        quantity: 1,\n        timestamp: Date.now()\n      };\n      \n      // Ajouter à la base de données Replit\n      await fetch('/api/cart', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify(cartItem)\n      });\n    } catch (error) {\n      console.error('Error adding to cart:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <motion.div\n      className=\"group bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <img\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          className=\"w-full h-full object-cover transition-transform duration-300 group-hover:scale-105\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center justify-between mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n          {showQuickAdd && (\n            <button\n              onClick={handleAddToCart}\n              disabled={isLoading}\n              className=\"px-3 py-1 bg-jolananas-pink text-white rounded-lg text-sm hover:bg-jolananas-rose transition-colors disabled:opacity-50\"\n            >\n              {isLoading ? '...' : 'Ajouter'}\n            </button>\n          )}\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+      }
+    },
+    "ai-chatbot": {
+      "typescript": "interface ChatbotProps {\n  isOpen: boolean;\n  onClose: () => void;\n  messages: ChatMessage[];\n}\n\nexport function Chatbot({ isOpen, onClose, messages }: ChatbotProps) {\n  const [input, setInput] = useState('');\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleSendMessage = async () => {\n    if (!input.trim()) return;\n    \n    setIsLoading(true);\n    \n    try {\n      const response = await fetch('/api/ai/chat', {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ message: input })\n      });\n      \n      const reader = response.body?.getReader();\n      if (reader) {\n        while (true) {\n          const { done, value } = await reader.read();\n          if (done) break;\n          \n          const chunk = new TextDecoder().decode(value);\n          // Handle streaming response\n        }\n      }\n    } catch (error) {\n      console.error('Chat error:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <div className={`fixed inset-0 z-50 ${isOpen ? 'block' : 'hidden'}`}>\n      <div className=\"absolute inset-0 bg-black/50\" onClick={onClose} />\n      <div className=\"relative bg-white rounded-t-xl h-96 bottom-0 left-0 right-0\">\n        <div className=\"p-4 border-b\">\n          <h3 className=\"text-lg font-semibold\">Assistant JOLANANAS</h3>\n        </div>\n        <div className=\"flex-1 p-4 overflow-y-auto\">\n          {messages.map((message, index) => (\n            <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>\n              <div className={`inline-block p-3 rounded-lg ${\n                message.role === 'user' \n                  ? 'bg-jolananas-pink text-white' \n                  : 'bg-gray-100 text-gray-900'\n              }`}>\n                {message.content}\n              </div>\n            </div>\n          ))}\n        </div>\n        <div className=\"p-4 border-t\">\n          <div className=\"flex gap-2\">\n            <input\n              type=\"text\"\n              value={input}\n              onChange={(e) => setInput(e.target.value)}\n              placeholder=\"Posez votre question...\"\n              className=\"flex-1 p-2 border rounded-lg\"\n              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}\n            />\n            <Button onClick={handleSendMessage} disabled={isLoading}>\n              {isLoading ? '...' : 'Envoyer'}\n            </Button>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
+    },
+    "search-bar": {
+      "typescript": "interface SearchBarProps {\n  placeholder?: string;\n  onSearch: (query: string) => void;\n  suggestions?: string[];\n}\n\nexport function SearchBar({ placeholder = 'Rechercher...', onSearch, suggestions = [] }: SearchBarProps) {\n  const [query, setQuery] = useState('');\n  const [showSuggestions, setShowSuggestions] = useState(false);\n  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);\n\n  const handleInputChange = async (value: string) => {\n    setQuery(value);\n    \n    if (value.length > 2) {\n      try {\n        const response = await fetch('/api/ai/search', {\n          method: 'POST',\n          headers: { 'Content-Type': 'application/json' },\n          body: JSON.stringify({ query: value, type: 'suggestions' })\n        });\n        \n        const data = await response.json();\n        setAiSuggestions(data.suggestions || []);\n        setShowSuggestions(true);\n      } catch (error) {\n        console.error('Search suggestions error:', error);\n      }\n    } else {\n      setShowSuggestions(false);\n    }\n  };\n\n  return (\n    <div className=\"relative w-full max-w-md\">\n      <div className=\"relative\">\n        <Search className=\"absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400\" />\n        <input\n          type=\"text\"\n          value={query}\n          onChange={(e) => handleInputChange(e.target.value)}\n          placeholder={placeholder}\n          className=\"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-jolananas-pink focus:border-transparent\"\n          onFocus={() => setShowSuggestions(true)}\n          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}\n        />\n      </div>\n      \n      {showSuggestions && (suggestions.length > 0 || aiSuggestions.length > 0) && (\n        <div className=\"absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50\">\n          {aiSuggestions.map((suggestion, index) => (\n            <button\n              key={index}\n              className=\"w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2\"\n              onClick={() => {\n                setQuery(suggestion);\n                onSearch(suggestion);\n                setShowSuggestions(false);\n              }}\n            >\n              <Sparkles className=\"h-4 w-4 text-jolananas-pink\" />\n              {suggestion}\n            </button>\n          ))}\n          {suggestions.map((suggestion, index) => (\n            <button\n              key={index}\n              className=\"w-full text-left px-4 py-2 hover:bg-gray-50\"\n              onClick={() => {\n                setQuery(suggestion);\n                onSearch(suggestion);\n                setShowSuggestions(false);\n              }}\n            >\n              {suggestion}\n            </button>\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}"
+    }
+  },
+  "environment-setup": {
+    "variables": {
+      "shopify": {
+        "SHOPIFY_STORE_DOMAIN": "u6ydbb-sx.myshopify.com",
+        "SHOPIFY_STOREFRONT_TOKEN": "[STOREFRONT_TOKEN_COMPROMISED]",
+        "SHOPIFY_API_VERSION": "2024-04"
+      },
+      "ai": {
+        "AI_PROVIDER": "openai",
+        "OPENAI_API_KEY": "sk-...",
+        "ANTHROPIC_API_KEY": "sk-ant-..."
+      },
+      "app": {
+        "APP_URL": "https://jolananas.com",
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "quality-requirements": {
+    "code": [
+      "typescript-strict-mode",
+      "eslint-config-next",
+      "prettier-formatting",
+      "husky-pre-commit-hooks"
+    ],
+    "testing": [
+      "jest-unit-tests",
+      "react-testing-library",
+      "cypress-e2e-tests",
+      "accessibility-testing"
+    ],
+    "performance": [
+      "lighthouse-score-90+",
+      "core-web-vitals-pass",
+      "bundle-size-optimization",
+      "image-optimization"
+    ],
+    "accessibility": [
+      "wcag-aaa-compliance",
+      "keyboard-navigation",
+      "screen-reader-support",
+      "color-contrast-validation"
+    ]
+  },
+  "deployment": {
+    "universal": {
+      "requirements": [
+        "environment-variables-setup",
+        "domain-configuration",
+        "ssl-certificate",
+        "cdn-optimization"
+      ],
+      "monitoring": [
+        "error-tracking",
+        "performance-monitoring",
+        "user-analytics",
+        "conversion-tracking"
+      ]
+    },
+    "lovable": {
+      "platform": "supabase-hosting",
+      "configuration": {
+        "build_command": "npm run build",
+        "output_directory": "dist",
+        "environment_variables": [
+          "SUPABASE_URL",
+          "SUPABASE_ANON_KEY",
+          "SHOPIFY_STORE_DOMAIN",
+          "SHOPIFY_STOREFRONT_TOKEN",
+          "OPENAI_API_KEY"
+        ]
+      },
+      "steps": [
+        "1. Connecter le projet GitHub à Supabase",
+        "2. Configurer les variables d'environnement dans Supabase Dashboard",
+        "3. Activer Supabase Hosting",
+        "4. Configurer le domaine personnalisé",
+        "5. Activer SSL automatique"
+      ],
+      "monitoring": [
+        "Supabase Analytics",
+        "Supabase Logs",
+        "Error Tracking via Supabase",
+        "Performance Monitoring"
+      ]
+    },
+    "emergent": {
+      "platform": "vercel",
+      "configuration": {
+        "build_command": "npm run build",
+        "output_directory": ".next",
+        "environment_variables": [
+          "DATABASE_URL",
+          "NEXTAUTH_SECRET",
+          "NEXTAUTH_URL",
+          "SHOPIFY_STORE_DOMAIN",
+          "SHOPIFY_ADMIN_TOKEN",
+          "OPENAI_API_KEY"
+        ]
+      },
+      "steps": [
+        "1. Connecter le repository GitHub à Vercel",
+        "2. Configurer les variables d'environnement dans Vercel Dashboard",
+        "3. Configurer la base de données PostgreSQL",
+        "4. Déployer automatiquement à chaque push",
+        "5. Configurer le domaine personnalisé"
+      ],
+      "monitoring": [
+        "Vercel Analytics",
+        "Vercel Speed Insights",
+        "Error Tracking via Vercel",
+        "Performance Monitoring"
+      ]
+    },
+    "v0": {
+      "platform": "vercel",
+      "configuration": {
+        "build_command": "npm run build",
+        "output_directory": ".next",
+        "environment_variables": [
+          "SHOPIFY_STORE_DOMAIN",
+          "SHOPIFY_STOREFRONT_TOKEN",
+          "OPENAI_API_KEY"
+        ]
+      },
+      "steps": [
+        "1. Exporter le code depuis v0",
+        "2. Créer un repository GitHub",
+        "3. Connecter à Vercel",
+        "4. Configurer les variables d'environnement",
+        "5. Déployer automatiquement"
+      ],
+      "monitoring": [
+        "Vercel Analytics",
+        "Custom Analytics Integration",
+        "Error Tracking via Sentry",
+        "Performance Monitoring"
+      ]
+    },
+    "bolt": {
+      "platform": "railway-render-digitalocean",
+      "configuration": {
+        "build_command": "npm run build",
+        "start_command": "npm start",
+        "environment_variables": [
+          "DATABASE_URL",
+          "JWT_SECRET",
+          "SHOPIFY_STORE_DOMAIN",
+          "SHOPIFY_ADMIN_TOKEN",
+          "OPENAI_API_KEY",
+          "REDIS_URL"
+        ]
+      },
+      "steps": [
+        "1. Exporter le projet depuis Bolt.new",
+        "2. Choisir la plateforme de déploiement",
+        "3. Configurer la base de données",
+        "4. Configurer les variables d'environnement",
+        "5. Déployer et configurer le domaine"
+      ],
+      "monitoring": [
+        "Platform-specific Analytics",
+        "Custom Error Tracking",
+        "Database Monitoring",
+        "Performance Monitoring"
+      ]
+    },
+    "replit": {
+      "platform": "replit-hosting",
+      "configuration": {
+        "build_command": "npm run build",
+        "start_command": "npm start",
+        "environment_variables": [
+          "REPLIT_DB_URL",
+          "JWT_SECRET",
+          "SHOPIFY_STORE_DOMAIN",
+          "SHOPIFY_ADMIN_TOKEN",
+          "OPENAI_API_KEY"
+        ]
+      },
+      "steps": [
+        "1. Utiliser Replit Deployments",
+        "2. Configurer les Secrets dans Replit",
+        "3. Activer le déploiement automatique",
+        "4. Configurer le domaine personnalisé",
+        "5. Activer SSL automatique"
+      ],
+      "monitoring": [
+        "Replit Analytics",
+        "Replit Logs",
+        "Custom Error Tracking",
+        "Performance Monitoring"
+      ]
+    }
+  },
+  "instructions": {
+    "universal": {
+      "priority": [
+        "1. Create responsive layout with glassmorphism design",
+        "2. Implement Shopify integration with real data",
+        "3. Add AI-powered search and recommendations",
+        "4. Create chatbot with streaming responses",
+        "5. Ensure mobile-first responsive design",
+        "6. Add accessibility features and testing",
+        "7. Optimize for performance and Core Web Vitals"
+      ],
+      "constraints": [
+        "Use only real Shopify data - no mock data",
+        "All AI features must be functional",
+        "Design must be production-ready",
+        "Code must be TypeScript strict",
+        "Must pass accessibility tests",
+        "Performance targets must be met"
+      ],
+      "deliverables": [
+        "Complete storefront application",
+        "AI integration working",
+        "Responsive design implemented",
+        "Accessibility compliant",
+        "Performance optimized",
+        "Production deployment ready"
+      ]
+    },
+    "platform-specific": {
+      "lovable": {
+        "priority": [
+          "1. Set up Supabase project with PostgreSQL database",
+          "2. Configure Supabase Auth with social providers",
+          "3. Create React components with Tailwind CSS",
+          "4. Implement Shopify Storefront API integration",
+          "5. Add Supabase Edge Functions for AI features",
+          "6. Deploy to Supabase Hosting"
+        ],
+        "constraints": [
+          "Must use Supabase for backend services",
+          "No Next.js App Router - use React with Vite",
+          "All database operations through Supabase",
+          "Authentication via Supabase Auth only"
+        ]
+      },
+      "emergent": {
+        "priority": [
+          "1. Set up Next.js 14 with App Router",
+          "2. Configure Prisma with PostgreSQL database",
+          "3. Implement React Server Components",
+          "4. Create API routes for Shopify integration",
+          "5. Add streaming AI features with Vercel AI SDK",
+          "6. Deploy to Vercel with automatic deployments"
+        ],
+        "constraints": [
+          "Must use Next.js 14 App Router",
+          "Server-side rendering for all pages",
+          "API routes for backend logic",
+          "Edge runtime for AI features"
+        ]
+      },
+      "v0": {
+        "priority": [
+          "1. Generate Shadcn UI components",
+          "2. Create responsive layouts with Tailwind CSS",
+          "3. Implement client-side Shopify integration",
+          "4. Add external AI API integrations",
+          "5. Focus on component reusability",
+          "6. Export and deploy to Vercel"
+        ],
+        "constraints": [
+          "Component-focused development only",
+          "No backend logic - use external APIs",
+          "Client-side state management only",
+          "Shadcn UI components required"
+        ]
+      },
+      "bolt": {
+        "priority": [
+          "1. Set up full-stack application structure",
+          "2. Configure database (PostgreSQL/MongoDB)",
+          "3. Implement backend API with Express/Fastify",
+          "4. Create frontend with chosen framework",
+          "5. Add comprehensive AI integration",
+          "6. Deploy to chosen platform (Railway/Render)"
+        ],
+        "constraints": [
+          "Full-stack application required",
+          "Backend API must be implemented",
+          "Database integration mandatory",
+          "Flexible framework choice"
+        ]
+      },
+      "replit": {
+        "priority": [
+          "1. Set up collaborative development environment",
+          "2. Configure Replit Database or external database",
+          "3. Implement multi-language support if needed",
+          "4. Create real-time features with Replit capabilities",
+          "5. Add AI integration with external services",
+          "6. Deploy using Replit Hosting"
+        ],
+        "constraints": [
+          "Collaborative development features",
+          "Replit-specific integrations",
+          "Multi-language support available",
+          "Real-time capabilities preferred"
+        ]
+      }
+    }
+  }
+}

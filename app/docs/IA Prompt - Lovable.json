@@ -1,0 +1,376 @@
+{
+  "name": "JOLANANAS Storefront - Lovable",
+  "description": "Storefront e-commerce moderne avec Supabase et React pour JOLANANAS - créations artisanales girly et utiles",
+  "type": "e-commerce-storefront-lovable",
+  "version": "1.0.0",
+  "platform": "lovable",
+  "technologies": {
+    "frontend": {
+      "react": "18+",
+      "vite": "latest",
+      "typescript": "strict",
+      "tailwind": "v4",
+      "framer-motion": "latest"
+    },
+    "backend": {
+      "supabase": "latest",
+      "postgresql": "via-supabase",
+      "auth": "supabase-auth",
+      "realtime": "supabase-realtime"
+    },
+    "integrations": {
+      "shopify": {
+        "storefront-api": "GraphQL",
+        "domain": "u6ydbb-sx.myshopify.com",
+        "token": "[STOREFRONT_TOKEN_COMPROMISED]",
+        "api-version": "2024-04"
+      },
+      "ai": {
+        "openai": "latest",
+        "anthropic": "latest",
+        "supabase-edge-functions": "ai-integration"
+      }
+    }
+  },
+  "brand": {
+    "name": "JOLANANAS",
+    "description": "Créations artisanales girly et utiles",
+    "target-audience": "Femmes modernes aimant les accessoires uniques et pratiques",
+    "tone": "Élégant, moderne, accessible, authentique"
+  },
+  "design-system": {
+    "colors": {
+      "primary": {
+        "jolananas-peach": "#F4C0AC",
+        "jolananas-pink": "#F38FA3",
+        "jolananas-rose": "#EC7B9C",
+        "jolananas-coral": "#FCA4A4"
+      },
+      "mesh-gradient": {
+        "peach-1": "#F4C0AC",
+        "pink-1": "#F38FA3",
+        "rose-1": "#EC7B9C",
+        "coral-1": "#FCA4A4",
+        "peach-2": "#F4B4AB"
+      },
+      "neutrals": {
+        "white": "#FFFFFF",
+        "gray-50": "#F9FAFB",
+        "gray-100": "#F3F4F6",
+        "gray-900": "#141318"
+      },
+      "glassmorphism": {
+        "background": "rgba(244, 192, 172, 0.7)",
+        "border": "rgba(243, 143, 163, 0.2)",
+        "blur": "blur(20px)"
+      }
+    },
+    "typography": {
+      "headings": "Poppins",
+      "body": "Inter",
+      "logo": "Weather Sunday"
+    },
+    "spacing": {
+      "xs": "0.5rem",
+      "sm": "1rem",
+      "md": "1.5rem",
+      "lg": "2rem",
+      "xl": "3rem",
+      "2xl": "4rem"
+    },
+    "border-radius": {
+      "sm": "0.5rem",
+      "md": "0.75rem",
+      "lg": "1rem",
+      "xl": "1.5rem"
+    },
+    "shadows": {
+      "soft": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "medium": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "glow": "0 0 20px rgba(243, 143, 163, 0.3)",
+      "glass": "0 8px 32px 0 rgba(243, 143, 163, 0.37)"
+    },
+    "animations": {
+      "duration": "0.3s",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "hover-lift": "translateY(-4px)",
+      "scale-hover": "scale(1.05)"
+    }
+  },
+  "real-data": {
+    "shopify-products": [
+      {
+        "id": "gid://shopify/Product/10259918717255",
+        "title": "Petite pince fleur verte",
+        "description": "🌸 Petite pince fleur verte (lot de 2) - L'accessoire de l'été qui sublime vos cheveux 🌞 Ajoutez une touche de douceur et d'exotisme à votre coiffure. Pratique et tendance, elle s'adapte à toutes vos chevelures et toutes les occasions. 🎁 A offrir ou à s'offrir :un petit accessoire qui fait toujours plaisir !",
+        "handle": "petite-pince-fleur-verte",
+        "vendor": "Jolananas",
+        "productType": "Accessoires cheveux",
+        "price": "1.60",
+        "currency": "EUR",
+        "image": "https://cdn.shopify.com/s/files/1/0908/5508/0263/files/IMG_4433.jpg?v=1753020213",
+        "available": true
+      },
+      {
+        "id": "gid://shopify/Product/10259919012167",
+        "title": "Trio de pinces fleurs blanche/violet",
+        "description": "🌸 Trio de pinces fleurs blanche/violet- L'accessoire de l'été qui sublime vos cheveux 🌞 Ajoutez une touche de douceur et d'exotisme à votre coiffure. Pratique et tendance, elle s'adapte à toutes vos chevelures et toutes les occasions. 🎁 A offrir ou à s'offrir :un petit accessoire qui fait toujours plaisir ! 1 grosse 2moyenne",
+        "handle": "trio-de-pinces-fleurs-blanche-violet",
+        "vendor": "Jolananas",
+        "productType": "Accessoires cheveux",
+        "price": "5.00",
+        "currency": "EUR",
+        "image": "https://cdn.shopify.com/s/files/1/0908/5508/0263/files/IMG_4423.jpg?v=1753020153",
+        "available": true
+      }
+    ],
+    "collections": [
+      {
+        "id": "gid://shopify/Collection/651829936455",
+        "title": "Nos créations",
+        "handle": "frontpage",
+        "description": ""
+      },
+      {
+        "id": "gid://shopify/Collection/651832557895",
+        "title": "Accessoires",
+        "handle": "accessoires",
+        "description": "Découvrez notre collection d'accessoires uniques pour sublimer votre style au quotidien. Des pièces tendances, sélectionnées avec soin pour ajouter une touche de caractère à chacune de vos tenues. 🎯 Idéal pour : compléter un look, offrir un cadeau ou se faire plaisir. 🌍 Livraison rapide | 📦 Retours faciles | 🔒 Paiement sécurisé Explorez notre sélection maintenant — chaque détail compte."
+      }
+    ]
+  },
+  "architecture": {
+    "frontend": {
+      "framework": "React 18+ avec Vite",
+      "routing": "React Router DOM",
+      "state-management": "React Context + Zustand",
+      "styling": "Tailwind CSS",
+      "animations": "Framer Motion",
+      "components": "Custom components avec TypeScript"
+    },
+    "backend": {
+      "platform": "Supabase",
+      "database": "PostgreSQL via Supabase",
+      "auth": "Supabase Auth",
+      "functions": "Supabase Edge Functions",
+      "realtime": "Supabase Realtime",
+      "storage": "Supabase Storage"
+    },
+    "pages": {
+      "home": {
+        "path": "/",
+        "components": ["Hero", "FeaturedCollections", "ProductGrid", "Newsletter"],
+        "layout": "default"
+      },
+      "products": {
+        "path": "/products",
+        "components": ["ProductGrid", "FilterSidebar", "SearchBar", "SortDropdown"],
+        "layout": "with-sidebar"
+      },
+      "product-detail": {
+        "path": "/products/[handle]",
+        "components": ["ProductGallery", "ProductInfo", "QuickAdd", "Recommendations"],
+        "layout": "product-detail"
+      },
+      "collections": {
+        "path": "/collections/[handle]",
+        "components": ["CollectionHeader", "ProductGrid", "FilterSidebar"],
+        "layout": "with-sidebar"
+      },
+      "cart": {
+        "path": "/cart",
+        "components": ["CartItems", "CartSummary", "CheckoutButton"],
+        "layout": "cart"
+      }
+    }
+  },
+  "supabase-setup": {
+    "database-schema": {
+      "products": {
+        "id": "uuid primary key",
+        "shopify_id": "text unique",
+        "title": "text",
+        "handle": "text unique",
+        "description": "text",
+        "price": "decimal",
+        "currency": "text",
+        "image_url": "text",
+        "available": "boolean",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+      },
+      "cart_items": {
+        "id": "uuid primary key",
+        "user_id": "uuid references auth.users(id)",
+        "product_id": "uuid references products(id)",
+        "quantity": "integer",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+      },
+      "collections": {
+        "id": "uuid primary key",
+        "shopify_id": "text unique",
+        "title": "text",
+        "handle": "text unique",
+        "description": "text",
+        "image_url": "text",
+        "created_at": "timestamp"
+      },
+      "ai_sessions": {
+        "id": "uuid primary key",
+        "user_id": "uuid references auth.users(id)",
+        "messages": "jsonb",
+        "created_at": "timestamp",
+        "updated_at": "timestamp"
+      }
+    },
+    "row-level-security": {
+      "products": "public read access",
+      "cart_items": "user can only access own items",
+      "collections": "public read access",
+      "ai_sessions": "user can only access own sessions"
+    },
+    "edge-functions": {
+      "shopify-sync": "Sync products from Shopify",
+      "ai-search": "AI-powered search functionality",
+      "ai-chat": "AI chatbot with streaming",
+      "recommendations": "AI product recommendations"
+    }
+  },
+  "shopify-integration": {
+    "method": "Client-side avec Shopify Storefront API",
+    "authentication": "Token public Shopify",
+    "queries": {
+      "products": "query GetProducts($first: Int!, $after: String) { products(first: $first, after: $after) { pageInfo { hasNextPage endCursor } edges { node { id title handle description vendor productType availableForSale priceRange { minVariantPrice { amount currencyCode } } images(first: 5) { edges { node { url altText } } } variants(first: 10) { edges { node { id title price { amount currencyCode } availableForSale } } } } } } }",
+      "collections": "query GetCollections { collections(first: 10) { edges { node { id title handle description image { url altText } } } } }",
+      "cart": "mutation CreateCart($lines: [CartLineInput!]) { cartCreate(input: { lines: $lines }) { cart { id checkoutUrl totalQuantity cost { totalAmount { amount currencyCode } } } userErrors { field message } } }"
+    },
+    "configuration": {
+      "domain": "u6ydbb-sx.myshopify.com",
+      "token": "[STOREFRONT_TOKEN_COMPROMISED]",
+      "apiVersion": "2024-04",
+      "currency": "EUR",
+      "locale": "fr-FR"
+    }
+  },
+  "ai-features": {
+    "semantic-search": {
+      "description": "Recherche intelligente qui comprend l'intention utilisateur",
+      "implementation": "Supabase Edge Function avec OpenAI/Anthropic",
+      "examples": [
+        "pinces roses pour été",
+        "accessoires pour cheveux longs",
+        "cadeau moins de 10 euros",
+        "trio de pinces colorées"
+      ]
+    },
+    "product-recommendations": {
+      "description": "Recommandations personnalisées basées sur l'IA",
+      "implementation": "Supabase Edge Function avec analyse des préférences",
+      "types": ["similar-products", "cross-sell", "trending", "personalized"]
+    },
+    "chatbot-support": {
+      "description": "Assistant client avec accès au catalogue",
+      "implementation": "Supabase Realtime pour streaming",
+      "capabilities": [
+        "product-information",
+        "availability-check",
+        "shipping-info",
+        "return-policy"
+      ]
+    }
+  },
+  "components": {
+    "ProductCard": {
+      "props": {
+        "product": "Product",
+        "variant": "'grid' | 'list'",
+        "showQuickAdd": "boolean"
+      },
+      "features": ["hover-effects", "quick-add", "wishlist", "glassmorphism"],
+      "code": "import { motion } from 'framer-motion';\nimport { useState } from 'react';\nimport { supabase } from '@/lib/supabase';\n\ninterface ProductCardProps {\n  product: {\n    id: string;\n    title: string;\n    handle: string;\n    priceRange: {\n      minVariantPrice: {\n        amount: string;\n        currencyCode: string;\n      };\n    };\n    images: {\n      edges: Array<{\n        node: {\n          url: string;\n          altText?: string;\n        };\n      }>;\n    };\n  };\n  variant?: 'grid' | 'list';\n  showQuickAdd?: boolean;\n}\n\nexport function ProductCard({ product, variant = 'grid', showQuickAdd = true }: ProductCardProps) {\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleAddToCart = async () => {\n    setIsLoading(true);\n    try {\n      const { data, error } = await supabase\n        .from('cart_items')\n        .insert({ product_id: product.id, quantity: 1 });\n      if (error) throw error;\n    } catch (error) {\n      console.error('Error adding to cart:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <motion.div\n      className=\"group bg-white/70 backdrop-blur-md rounded-xl shadow-lg overflow-hidden flex flex-col h-full border border-jolananas-pink/20\"\n      whileHover={{ y: -5 }}\n      transition={{ duration: 0.2 }}\n    >\n      <div className=\"relative w-full aspect-square overflow-hidden\">\n        <img\n          src={product.images.edges[0]?.node.url}\n          alt={product.images.edges[0]?.node.altText || product.title}\n          className=\"w-full h-full object-cover transition-transform duration-300 group-hover:scale-105\"\n        />\n      </div>\n      <div className=\"p-4 flex flex-col flex-grow\">\n        <h3 className=\"text-lg font-semibold text-gray-900 mb-2\">\n          {product.title}\n        </h3>\n        <div className=\"flex items-center justify-between mt-auto\">\n          <p className=\"text-xl font-bold text-jolananas-pink\">\n            {parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)} {product.priceRange.minVariantPrice.currencyCode}\n          </p>\n          {showQuickAdd && (\n            <button\n              onClick={handleAddToCart}\n              disabled={isLoading}\n              className=\"px-3 py-1 bg-jolananas-pink text-white rounded-lg text-sm hover:bg-jolananas-rose transition-colors disabled:opacity-50\"\n            >\n              {isLoading ? '...' : 'Ajouter'}\n            </button>\n          )}\n        </div>\n      </div>\n    </motion.div>\n  );\n}"
+    },
+    "SearchBar": {
+      "props": {
+        "placeholder": "string",
+        "onSearch": "(query: string) => void",
+        "suggestions": "string[]"
+      },
+      "features": ["ai-suggestions", "recent-searches", "glassmorphism"],
+      "code": "import { useState } from 'react';\nimport { Search, Sparkles } from 'lucide-react';\n\ninterface SearchBarProps {\n  placeholder?: string;\n  onSearch: (query: string) => void;\n  suggestions?: string[];\n}\n\nexport function SearchBar({ placeholder = 'Rechercher...', onSearch, suggestions = [] }: SearchBarProps) {\n  const [query, setQuery] = useState('');\n  const [showSuggestions, setShowSuggestions] = useState(false);\n  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);\n\n  const handleInputChange = async (value: string) => {\n    setQuery(value);\n    \n    if (value.length > 2) {\n      try {\n        const { data } = await supabase.functions.invoke('ai-search', {\n          body: { query: value, type: 'suggestions' }\n        });\n        setAiSuggestions(data.suggestions || []);\n        setShowSuggestions(true);\n      } catch (error) {\n        console.error('Search suggestions error:', error);\n      }\n    } else {\n      setShowSuggestions(false);\n    }\n  };\n\n  return (\n    <div className=\"relative w-full max-w-md\">\n      <div className=\"relative\">\n        <Search className=\"absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400\" />\n        <input\n          type=\"text\"\n          value={query}\n          onChange={(e) => handleInputChange(e.target.value)}\n          placeholder={placeholder}\n          className=\"w-full pl-10 pr-4 py-2 bg-white/70 backdrop-blur-md border border-jolananas-pink/20 rounded-lg focus:ring-2 focus:ring-jolananas-pink focus:border-transparent\"\n          onFocus={() => setShowSuggestions(true)}\n          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}\n        />\n      </div>\n      \n      {showSuggestions && (suggestions.length > 0 || aiSuggestions.length > 0) && (\n        <div className=\"absolute top-full left-0 right-0 mt-1 bg-white/90 backdrop-blur-md border border-jolananas-pink/20 rounded-lg shadow-lg z-50\">\n          {aiSuggestions.map((suggestion, index) => (\n            <button\n              key={index}\n              className=\"w-full text-left px-4 py-2 hover:bg-jolananas-pink/10 flex items-center gap-2\"\n              onClick={() => {\n                setQuery(suggestion);\n                onSearch(suggestion);\n                setShowSuggestions(false);\n              }}\n            >\n              <Sparkles className=\"h-4 w-4 text-jolananas-pink\" />\n              {suggestion}\n            </button>\n          ))}\n        </div>\n      )}\n    </div>\n  );\n}"
+    },
+    "Chatbot": {
+      "props": {
+        "isOpen": "boolean",
+        "onClose": "() => void",
+        "messages": "ChatMessage[]"
+      },
+      "features": ["streaming-responses", "product-recommendations", "glassmorphism"],
+      "code": "import { useState } from 'react';\nimport { supabase } from '@/lib/supabase';\n\ninterface ChatbotProps {\n  isOpen: boolean;\n  onClose: () => void;\n  messages: ChatMessage[];\n}\n\nexport function Chatbot({ isOpen, onClose, messages }: ChatbotProps) {\n  const [input, setInput] = useState('');\n  const [isLoading, setIsLoading] = useState(false);\n\n  const handleSendMessage = async () => {\n    if (!input.trim()) return;\n    \n    setIsLoading(true);\n    \n    try {\n      const { data } = await supabase.functions.invoke('ai-chat', {\n        body: { message: input }\n      });\n      \n      // Handle streaming response via Supabase Realtime\n      const channel = supabase.channel('chat-stream');\n      channel.on('broadcast', { event: 'message' }, (payload) => {\n        // Handle streaming message\n      });\n      channel.subscribe();\n    } catch (error) {\n      console.error('Chat error:', error);\n    } finally {\n      setIsLoading(false);\n    }\n  };\n\n  return (\n    <div className={`fixed inset-0 z-50 ${isOpen ? 'block' : 'hidden'}`}>\n      <div className=\"absolute inset-0 bg-black/50\" onClick={onClose} />\n      <div className=\"relative bg-white/90 backdrop-blur-md rounded-t-xl h-96 bottom-0 left-0 right-0 border border-jolananas-pink/20\">\n        <div className=\"p-4 border-b border-jolananas-pink/20\">\n          <h3 className=\"text-lg font-semibold\">Assistant JOLANANAS</h3>\n        </div>\n        <div className=\"flex-1 p-4 overflow-y-auto\">\n          {messages.map((message, index) => (\n            <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>\n              <div className={`inline-block p-3 rounded-lg ${\n                message.role === 'user' \n                  ? 'bg-jolananas-pink text-white' \n                  : 'bg-gray-100 text-gray-900'\n              }`}>\n                {message.content}\n              </div>\n            </div>\n          ))}\n        </div>\n        <div className=\"p-4 border-t border-jolananas-pink/20\">\n          <div className=\"flex gap-2\">\n            <input\n              type=\"text\"\n              value={input}\n              onChange={(e) => setInput(e.target.value)}\n              placeholder=\"Posez votre question...\"\n              className=\"flex-1 p-2 bg-white/70 backdrop-blur-md border border-jolananas-pink/20 rounded-lg\"\n              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}\n            />\n            <button\n              onClick={handleSendMessage}\n              disabled={isLoading}\n              className=\"px-4 py-2 bg-jolananas-pink text-white rounded-lg hover:bg-jolananas-rose transition-colors disabled:opacity-50\"\n            >\n              {isLoading ? '...' : 'Envoyer'}\n            </button>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}"
+    }
+  },
+  "environment-setup": {
+    "variables": {
+      "supabase": {
+        "SUPABASE_URL": "your-supabase-url",
+        "SUPABASE_ANON_KEY": "your-supabase-anon-key"
+      },
+      "shopify": {
+        "SHOPIFY_STORE_DOMAIN": "u6ydbb-sx.myshopify.com",
+        "SHOPIFY_STOREFRONT_TOKEN": "[STOREFRONT_TOKEN_COMPROMISED]",
+        "SHOPIFY_API_VERSION": "2024-04"
+      },
+      "ai": {
+        "OPENAI_API_KEY": "sk-...",
+        "ANTHROPIC_API_KEY": "sk-ant-..."
+      }
+    }
+  },
+  "deployment": {
+    "platform": "supabase-hosting",
+    "steps": [
+      "1. Créer un projet Supabase",
+      "2. Configurer la base de données avec le schéma fourni",
+      "3. Activer Row Level Security",
+      "4. Créer les Edge Functions pour l'IA",
+      "5. Connecter le projet GitHub à Supabase",
+      "6. Configurer les variables d'environnement",
+      "7. Activer Supabase Hosting",
+      "8. Configurer le domaine personnalisé"
+    ],
+    "monitoring": [
+      "Supabase Analytics",
+      "Supabase Logs",
+      "Error Tracking via Supabase",
+      "Performance Monitoring"
+    ]
+  },
+  "instructions": {
+    "priority": [
+      "1. Set up Supabase project with PostgreSQL database",
+      "2. Configure Supabase Auth with social providers",
+      "3. Create React components with Tailwind CSS",
+      "4. Implement Shopify Storefront API integration",
+      "5. Add Supabase Edge Functions for AI features",
+      "6. Deploy to Supabase Hosting"
+    ],
+    "constraints": [
+      "Must use Supabase for backend services",
+      "No Next.js App Router - use React with Vite",
+      "All database operations through Supabase",
+      "Authentication via Supabase Auth only",
+      "Use only real Shopify data - no mock data",
+      "All AI features must be functional",
+      "Design must be production-ready with glassmorphism",
+      "Code must be TypeScript strict"
+    ],
+    "deliverables": [
+      "Complete React storefront with Supabase",
+      "AI integration working via Edge Functions",
+      "Responsive design with glassmorphism",
+      "Accessibility compliant",
+      "Performance optimized",
+      "Production deployment ready on Supabase"
+    ]
+  }
+}

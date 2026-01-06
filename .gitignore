@@ -1,0 +1,47 @@
+# Dépendances
+node_modules
+.pnp
+.pnp.js
+
+# Next.js & Build
+.next/
+out/
+build/
+dist/
+
+# Environnement & Secrets (CRITIQUE)
+.env
+.env*.local
+.env.production
+.env.development
+.env.test
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Prisma
+/prisma/*.db
+/prisma/*.db-journal
+
+# Editeurs & Système
+.vscode/
+.idea/
+.DS_Store
+*.swp
+Thumbs.db
+
+# Fichiers temporaires TypeScript
+*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Backups
+_backup/
+
+# Large Files
+Fond perso – Jolananas.gif

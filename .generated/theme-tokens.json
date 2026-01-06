@@ -1,0 +1,29 @@
+{
+  "colors": {
+    "primary": "#F4C0AC",
+    "secondary": "#F38FA3",
+    "tertiary": "#EC7B9C",
+    "quaternary": "#F4B4AB",
+    "quinary": "#FCA4A4",
+    "background": "#FEF7F0",
+    "backgroundSecondary": "#F3E8FF",
+    "text": "#141318"
+  },
+  "fonts": {
+    "heading": "Poppins, system-ui, sans-serif",
+    "body": "Inter, system-ui, sans-serif",
+    "display": "Montserrat, system-ui, sans-serif"
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem"
+  },
+  "meta": {
+    "generatedAt": "2025-08-31T01:55:04.570Z",
+    "source": "fallback",
+    "version": "1.0.0"
+  }
+}

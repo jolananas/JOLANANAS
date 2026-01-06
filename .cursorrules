@@ -1,0 +1,255 @@
+# Règles de Nommage — JOLANANAS
+
+> **Contexte** : Ce fichier définit les règles de nommage strictes pour les **documents uniquement** du projet JOLANANAS. Ces règles garantissent la cohérence, la traçabilité et la maintenabilité de la documentation.
+
+---
+
+## 📋 Format Obligatoire
+
+### Format Standard
+Tous les documents doivent suivre le format :
+```
+[Nom] — JOLANANAS.ext
+```
+
+**Caractéristiques** :
+- **Séparateur** : Tiret cadratin Unicode (—) U+2014 (pas de tiret simple `-`)
+- **Nom** : PascalCase ou kebab-case selon le contexte
+- **Suffixe** : `JOLANANAS` en majuscules
+- **Extension** : Conservée telle quelle
+
+---
+
+## 📄 Types de Fichiers Concernés (Documents Uniquement)
+
+### 1. Documents Markdown (`.md`)
+**Format** : `[Titre] — JOLANANAS.md`
+
+**Exemples** :
+- ✅ `CGU — JOLANANAS.md`
+- ✅ `Politique de Cookies — JOLANANAS.md`
+- ✅ `Architecture API — JOLANANAS.md`
+- ✅ `Guide MVP — JOLANANAS.md`
+- ❌ `cgu.md`
+- ❌ `cookies.md`
+- ❌ `API_ARCHITECTURE.md`
+
+**Emplacements** :
+- Fichiers dans `docs/` et sous-dossiers
+- Fichiers dans `app/docs/` et sous-dossiers
+- Tous les fichiers markdown de documentation
+
+### 2. Documents PDF (`.pdf`)
+**Format** : `[Titre] — JOLANANAS.pdf`
+
+**Exemples** :
+- ✅ `Catalogue Produits — JOLANANAS.pdf`
+- ✅ `Manuel Utilisateur — JOLANANAS.pdf`
+- ❌ `catalogue.pdf`
+- ❌ `manual.pdf`
+
+### 3. Documents Word (`.docx`, `.doc`)
+**Format** : `[Titre] — JOLANANAS.docx` ou `[Titre] — JOLANANAS.doc`
+
+**Exemples** :
+- ✅ `Contrat Client — JOLANANAS.docx`
+- ✅ `Devis Commercial — JOLANANAS.doc`
+- ❌ `contrat-client.docx`
+- ❌ `devis.doc`
+
+### 4. Autres Formats de Documents
+**Formats concernés** : `.txt`, `.rtf`, `.odt`, `.pages`, etc.
+
+**Format** : `[Titre] — JOLANANAS.ext`
+
+**Exemples** :
+- ✅ `Rapport Annuel — JOLANANAS.txt`
+- ✅ `Documentation Technique — JOLANANAS.odt`
+- ❌ `rapport-annuel.txt`
+- ❌ `documentation-technique.odt`
+
+---
+
+## 🚫 Exceptions (Pas de Suffixe JOLANANAS)
+
+Les fichiers suivants **NE DOIVENT PAS** suivre le format `[Nom] — JOLANANAS.ext` :
+
+### 1. Fichiers de Configuration
+- Tous les fichiers de configuration système (`package.json`, `tsconfig.json`, `next.config.js`, etc.)
+- Tous les fichiers de configuration d'environnement (`.env`, `.env.local`, etc.)
+- Tous les fichiers de configuration d'outils (`tailwind.config.js`, `postcss.config.js`, etc.)
+
+### 2. Composants et Code Source
+- Tous les composants React/TypeScript (`.tsx`, `.ts`, `.jsx`, `.js`)
+- Tous les fichiers de code source dans `src/`, `app/`, `components/`, etc.
+- Tous les fichiers utilitaires, helpers, stores, etc.
+
+### 3. Images et Assets
+- Tous les fichiers images (`.png`, `.jpg`, `.svg`, etc.)
+- Tous les assets dans `public/`, `assets/`, etc.
+
+### 4. Dossiers Système et Dépendances
+- Tous les fichiers dans `node_modules/`
+- Tous les fichiers dans `.next/`, `.git/`, `.turbo/`
+- Tous les fichiers dans `dist/`, `build/`, `out/`
+- Tous les fichiers de cache
+
+### 5. Fichiers de Build et Cache
+- Fichiers générés automatiquement
+- Fichiers de compilation
+- Fichiers de cache (`.cache/`, `cache/`)
+- Fichiers de logs (`*.log`)
+
+### 6. Fichiers de Test
+- `*.test.ts`, `*.test.tsx`
+- `*.spec.ts`, `*.spec.tsx`
+- Fichiers dans `__tests__/`, `tests/`, `test/`
+
+### 7. Fichiers de Backup
+- Tous les fichiers dans `_backup/` et sous-dossiers
+- Fichiers avec extension `.backup`, `.bak`, `.old`
+
+### 8. Fichiers de Scripts
+- Scripts shell (`.sh`)
+- Scripts Node.js utilitaires (`.js` dans `scripts/`, `tools/`)
+- Scripts de build et déploiement
+
+### 9. Fichiers de Documentation Technique Système
+- `README.md` (peut rester `README.md`)
+- `CHANGELOG.md`
+- `LICENSE`
+- Fichiers de configuration de documentation (`.json` dans `docs/`)
+
+---
+
+## ✅ Règles Supplémentaires
+
+### Caractères et Formatage
+- **Pas d'espaces multiples** : Un seul espace entre les mots
+- **Pas de caractères spéciaux** : Uniquement lettres, chiffres, espaces et le tiret cadratin (—)
+- **Respect de la casse** : PascalCase ou kebab-case pour documents selon le contexte
+- **Pas de caractères accentués dans le nom** (sauf si nécessaire pour la clarté) : Préférer `CGU` plutôt que `C.G.U.`
+
+### Validation Automatique
+L'IA doit :
+1. **Vérifier le format** avant de créer un nouveau document
+2. **Suggérer le bon nommage** si un document ne respecte pas les règles
+3. **Appliquer automatiquement** le format lors de la création de documents dans `docs/`, `app/docs/`
+4. **Respecter les exceptions** : ne jamais renommer les composants, fichiers de configuration, images, ou fichiers système
+
+### Renommage des Fichiers Existants
+Lors de la modification ou du déplacement de documents existants :
+- Si un document existant ne respecte pas le format, le renommer selon les règles
+- Vérifier que le renommage n'affecte pas les références (liens, imports, etc.)
+- Mettre à jour toutes les références au document renommé
+
+---
+
+## 📝 Exemples Concrets
+
+### Documents Markdown
+```
+✅ Bon format :
+- `CGU — JOLANANAS.md`
+- `Politique de Confidentialité — JOLANANAS.md`
+- `Guide d'Installation — JOLANANAS.md`
+- `Architecture API — JOLANANAS.md`
+
+❌ Format incorrect :
+- `cgu.md`
+- `confidentialite.md`
+- `installation-guide.md`
+- `API_ARCHITECTURE.md`
+```
+
+### Documents PDF
+```
+✅ Bon format :
+- `Catalogue Produits — JOLANANAS.pdf`
+- `Manuel Utilisateur — JOLANANAS.pdf`
+- `Rapport Annuel — JOLANANAS.pdf`
+
+❌ Format incorrect :
+- `catalogue.pdf`
+- `manual.pdf`
+- `rapport-annuel.pdf`
+```
+
+### Documents Word
+```
+✅ Bon format :
+- `Contrat Client — JOLANANAS.docx`
+- `Devis Commercial — JOLANANAS.doc`
+
+❌ Format incorrect :
+- `contrat-client.docx`
+- `devis.doc`
+```
+
+### Exceptions Correctes
+```
+✅ Fichiers qui NE doivent PAS avoir le suffixe :
+- `package.json` (configuration système)
+- `tsconfig.json` (configuration système)
+- `Header.tsx` (composant React)
+- `ProductCard.tsx` (composant React)
+- `logo.png` (image)
+- `utils/logger.ts` (fichier utilitaire)
+- `components/Button.test.tsx` (fichier de test)
+- `_backup/old-file.md` (fichier de backup)
+- `README.md` (documentation technique système)
+```
+
+---
+
+## 🤖 Instructions pour l'IA
+
+### Application Automatique
+1. **Lors de la création d'un document** (`.md`, `.pdf`, `.docx`, etc.) dans `docs/`, `app/docs/` :
+   - Vérifier automatiquement si le format `[Nom] — JOLANANAS.ext` est respecté
+   - Si non, suggérer ou appliquer le format correct
+
+2. **Lors de la modification d'un document existant** :
+   - Vérifier si le document devrait suivre le format mais ne le fait pas
+   - Proposer le renommage si approprié
+   - Mettre à jour toutes les références (liens, imports, etc.)
+
+3. **Respecter les exceptions** :
+   - Ne jamais renommer les composants (`.tsx`, `.ts`, `.jsx`, `.js`)
+   - Ne jamais renommer les fichiers de configuration
+   - Ne jamais renommer les images et assets
+   - Ne jamais renommer les fichiers dans `node_modules/`, `.next/`, etc.
+   - Ne jamais renommer les fichiers de test, utilitaires, ou backups
+
+### Détection de Contexte
+- **Documents concernés** : 
+  - Tous les fichiers `.md` dans `docs/` et `app/docs/` (sauf `README.md`)
+  - Tous les fichiers `.pdf` dans `docs/` et sous-dossiers
+  - Tous les fichiers `.docx`, `.doc` dans `docs/` et sous-dossiers
+  - Tous les autres formats de documents (`.txt`, `.rtf`, `.odt`, etc.)
+- **Fichiers NON concernés** :
+  - Tous les composants (`.tsx`, `.ts`, `.jsx`, `.js`)
+  - Tous les fichiers de configuration
+  - Toutes les images et assets
+  - Tous les fichiers système et de build
+
+### Vérification
+Avant de finaliser la création ou le renommage d'un fichier :
+1. Vérifier que le format respecte `[Nom] — JOLANANAS.ext`
+2. Vérifier que le tiret cadratin (—) est utilisé (pas `-`)
+3. Vérifier que `JOLANANAS` est en majuscules
+4. Vérifier que le fichier n'est pas dans la liste des exceptions
+5. Vérifier que toutes les références sont mises à jour si renommage
+
+---
+
+## 📚 Références
+
+- Format Unicode tiret cadratin : U+2014 (—)
+- Projet : JOLANANAS
+- Dernière mise à jour : Janvier 2025
+
+---
+
+**Note** : Ces règles s'appliquent **uniquement aux documents** (Markdown, PDF, DOCX, etc.). Les composants, fichiers de configuration, images et autres fichiers de code ne sont **PAS concernés** par ces règles de nommage.
+
