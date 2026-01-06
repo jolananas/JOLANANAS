@@ -42,7 +42,7 @@ export function HeroSection() {
     >
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/images/background/Fond perso rapide – Jolananas.gif"
+          src="/assets/images/background/bg-jolananas-fast.gif"
           alt="Background JOLANANAS"
           fill
           className="object-cover"
@@ -80,7 +80,7 @@ export function HeroSection() {
             transition={{ delay: 0.5 }}
           >
             <Image
-              src="/assets/images/logo/Logo – Jolananas (uniquement) argent.png"
+              src="/assets/images/logo/logo-jolananas-argent.png"
               alt="JOLANANAS Logo"
               width={600}
               height={200}

@@ -126,7 +126,7 @@ export function Navigation() {
               tabIndex={0}
             >
               <Image
-                src="/assets/images/logo/Logo – Jolananas (Ananas gradient personnalisé uniquement).png"
+                src="/assets/images/logo/logo-jolananas-gradient.png"
                 alt="JOLANANAS Logo"
                 fill
                 sizes="(max-width: 640px) 32px, (max-width: 768px) 40px, 48px"

@@ -154,18 +154,24 @@ function validateEnv(): EnvironmentConfig {
 
     return parsed;
   } catch (error) {
-    if (isBuildPhase) {
-      console.warn('⚠️  Validation des variables d\'environnement échouée pendant le build. Utilisation de valeurs de secours.');
-      // Retourner une version partiellement valide pour le build
+    if (isBuildPhase || process.env.NODE_ENV === 'production') {
+      const missingVars = error instanceof z.ZodError 
+        ? error.errors.map(err => err.path.join('.')).join(', ')
+        : 'inconnues';
+        
+      console.error(`❌ CRITICAL: Variables d'environnement manquantes ou invalides: ${missingVars}`);
+      console.warn('⚠️  Utilisation de valeurs de secours pour éviter un crash total.');
+      
+      // Retourner une version de secours pour éviter que l'import de ENV ne crash tout le serveur
       return {
-        SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'build-temp.myshopify.com',
-        SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'build-temp-token',
+        SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'jolananas.myshopify.com',
+        SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'fallback-token',
         SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2024-04',
         NODE_ENV: (process.env.NODE_ENV as any) || 'production',
-        DATABASE_URL: process.env.DATABASE_URL || 'file:./build-temp.db',
-        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'build-temp-secret',
+        DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
+        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret',
         NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-        SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN || 'build-temp-admin-token',
+        SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN || 'fallback-admin-token',
         SHOPIFY_WEBHOOK_SECRET: process.env.SHOPIFY_WEBHOOK_SECRET,
         DOMAIN_URL: process.env.DOMAIN_URL,
       } as EnvironmentConfig;

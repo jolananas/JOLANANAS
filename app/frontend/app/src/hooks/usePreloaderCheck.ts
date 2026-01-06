@@ -211,7 +211,7 @@ export function usePreloaderCheck() {
   // Vérification des assets
   const checkAssets = useCallback(async () => {
     const criticalAssets = [
-      '/assets/images/logo/Logo – Jolananas (Ananas gradient personnalisé uniquement).png',
+      '/assets/images/logo/logo-jolananas-gradient.png',
     ]
 
     try {

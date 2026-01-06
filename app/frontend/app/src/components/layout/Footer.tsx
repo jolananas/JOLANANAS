@@ -56,7 +56,7 @@ export function Footer() {
       {/* Background GIF comme dans HeroSection */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/assets/images/background/Fond perso rapide – Jolananas.gif"
+          src="/assets/images/background/bg-jolananas-fast.gif"
           alt="Background JOLANANAS"
           fill
           className="object-cover"
@@ -86,7 +86,7 @@ export function Footer() {
             <div className="flex items-center mb-4">
               <div className="relative w-10 h-10 md:w-12 md:h-12">
                 <Image
-                  src="/assets/images/logo/Logo – Jolananas (Ananas gradient personnalisé uniquement).png"
+                  src="/assets/images/logo/logo-jolananas-gradient.png"
                   alt="JOLANANAS Logo"
                   fill
                   sizes="(max-width: 768px) 40px, 48px"
@@ -412,7 +412,7 @@ export function Footer() {
         {/* Logo en bas avec espacement généreux */}
         <div className="mt-24 md:mt-32 lg:mt-40">
           <Image
-            src="/assets/images/logo/Logo – Jolananas (uniquement) argent.png"
+            src="/assets/images/logo/logo-jolananas-argent.png"
             alt="JOLANANAS Logo"
             width={1200}
             height={300}

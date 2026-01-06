@@ -126,7 +126,7 @@ export function Preloader() {
         className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
       >
         <img
-          src="/assets/images/logo/Logo – Jolananas (Ananas gradient personnalisé uniquement).png"
+          src="/assets/images/logo/logo-jolananas-gradient.png"
           alt="JOLANANAS - Chargement"
           width={75}
           height="auto"

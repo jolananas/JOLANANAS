@@ -70,7 +70,7 @@ export function MegaFooter({ className }: MegaFooterProps) {
             <div className="flex items-center mb-4">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/assets/images/logo/Logo – Jolananas (Ananas gradient personnalisé uniquement).png"
+                  src="/assets/images/logo/logo-jolananas-gradient.png"
                   alt="JOLANANAS Logo"
                   fill
                   sizes="48px"
