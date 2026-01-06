@@ -7,20 +7,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL || process.env.NEWSLETTER_TO_EMAIL || 'contact@jolananas.com';
 const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'noreply@jolananas.com';
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-}
-
 export async function POST(request: NextRequest) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY || 're_fake_key');
     const body: ContactFormData = await request.json();
 
     // Validation des champs requis
