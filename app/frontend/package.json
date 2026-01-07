@@ -25,7 +25,6 @@
     "deploy:netlify": "netlify deploy --prod --dir=out",
     "docker:build": "docker build -t jolananas-frontend .",
     "docker:run": "docker run -p 3000:3000 jolananas-frontend",
-    // Scripts Prisma supprimés - Plus de base de données locale
     "db:create-test-user": "tsx scripts/create-test-user.ts",
     "db:cleanup-test-users": "tsx scripts/cleanup-test-users.ts",
     "db:cleanup-test-users:dry-run": "tsx scripts/cleanup-test-users.ts --dry-run",
