@@ -1,10 +1,11 @@
 {
-  "buildCommand": "next build",
-  "outputDirectory": ".next",
+  "buildCommand": "cd app/frontend && next build",
+  "outputDirectory": "app/frontend/.next",
   "framework": "nextjs",
   "rootDirectory": "app/frontend",
+  "installCommand": "cd app/frontend && pnpm install",
   "functions": {
-    "app/api/**/*.ts": {
+    "app/frontend/app/api/**/*.ts": {
       "runtime": "nodejs20.x",
       "maxDuration": 30
     }
