@@ -87,6 +87,9 @@ export function HeroSection() {
               className="w-[280px] h-auto md:w-[400px] lg:w-[500px] xl:w-[600px] object-contain"
               sizes="(max-width: 768px) 280px, (max-width: 1024px) 400px, (max-width: 1280px) 500px, 600px"
               priority
+              fetchPriority="high"
+              // Note: Le warning de preload peut apparaître car l'image est dans une animation avec délai
+              // C'est un faux positif - l'image est bien utilisée, juste avec un délai d'animation de 0.5s
             />
           </motion.h1>
 

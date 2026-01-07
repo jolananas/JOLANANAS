@@ -841,6 +841,7 @@ function AccountPageContent() {
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       disabled={isPasswordLoading}
                       required
+                      autoComplete="current-password"
                     />
                   </div>
                   <div className="space-y-2">
@@ -854,6 +855,7 @@ function AccountPageContent() {
                       disabled={isPasswordLoading}
                       required
                       minLength={6}
+                      autoComplete="new-password"
                     />
                   </div>
                   <div className="space-y-2">
@@ -867,6 +869,7 @@ function AccountPageContent() {
                       disabled={isPasswordLoading}
                       required
                       minLength={6}
+                      autoComplete="new-password"
                     />
                   </div>
                   <Button type="submit" disabled={isPasswordLoading}>

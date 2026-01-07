@@ -20,17 +20,33 @@ export async function GET(
   try {
     const { handle } = await params;
     
-    console.log(`🔄 Récupération du produit "${handle}" depuis Shopify...`);
+    // Décoder explicitement le handle pour gérer les emojis et caractères spéciaux
+    // Next.js décode déjà les paramètres, mais on s'assure que c'est bien décodé
+    const decodedHandle = decodeURIComponent(handle);
     
-    // Récupérer le produit depuis Shopify
-    const product = await getProductByHandle(handle);
+    console.log(`🔄 Récupération du produit "${decodedHandle}" depuis Shopify...`);
+    console.log(`📝 Handle original (encodé): "${handle}"`);
+    console.log(`📝 Handle décodé: "${decodedHandle}"`);
+    
+    // Récupérer le produit depuis Shopify avec le handle décodé
+    let product = await getProductByHandle(decodedHandle);
+    
+    // Si le produit n'est pas trouvé avec le handle décodé, essayer avec le handle encodé
+    // (au cas où Shopify le stocke différemment)
+    if (!product && handle !== decodedHandle) {
+      console.log(`🔄 Tentative avec le handle encodé: "${handle}"`);
+      product = await getProductByHandle(handle);
+      if (product) {
+        console.log(`✅ Produit trouvé avec le handle encodé`);
+      }
+    }
     
     if (!product) {
-      console.warn(`⚠️ Produit "${handle}" non trouvé dans Shopify`);
+      console.warn(`⚠️ Produit "${decodedHandle}" non trouvé dans Shopify`);
       return NextResponse.json(
         { 
           error: 'Produit non trouvé',
-          message: `Le produit avec le handle "${handle}" n'existe pas.`
+          message: `Le produit avec le handle "${decodedHandle}" n'existe pas.`
         },
         { status: 404 }
       );
