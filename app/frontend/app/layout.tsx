@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Poppins, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { AnalyticsDebugFilter } from './src/components/analytics/AnalyticsDebugFilter'
 import { SessionProviderWrapper } from './src/components/providers/SessionProviderWrapper'
 import { CartProvider } from "@/app/src/lib/CartContext"
@@ -206,6 +207,8 @@ export default function RootLayout({
         {/* Analytics : actif en production et développement */}
         {/* Les logs de débogage sont filtrés en dev par AnalyticsDebugFilter */}
         <Analytics />
+        {/* Speed Insights : métriques de performance en temps réel */}
+        <SpeedInsights />
       </body>
     </html>
   )
