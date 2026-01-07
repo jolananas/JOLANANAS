@@ -27,11 +27,17 @@ function getShopifyConfig(): { endpoint: string; token: string } | null {
  * Évite l'erreur "Cannot convert argument to a ByteString" avec les caractères Unicode
  */
 export async function shopifyFetch<T>({
+  cache = 'force-cache',
+  headers,
   query,
+  tags,
   variables,
 }: {
-  query: string
-  variables?: Record<string, unknown>
+  cache?: RequestCache;
+  headers?: HeadersInit;
+  query: string;
+  tags?: string[];
+  variables?: Record<string, unknown>;
 }): Promise<{ data: T; errors?: Array<{ message: string }> }> {
   const config = getShopifyConfig()
 
@@ -183,11 +189,34 @@ export async function shopifyFetch<T>({
       });
     }
     
+    // Construire l'objet next avec cache et tags pour Next.js ISR
+    // Pour force-cache, on utilise les tags pour la revalidation à la demande (On-Demand Revalidation)
+    const nextOptions: { revalidate?: number | false; tags?: string[] } = {};
+    
+    if (cache === 'force-cache') {
+      // Pour force-cache, on utilise les tags pour la revalidation à la demande
+      // Pas de revalidate (cache indéfini) sauf si on veut un fallback
+      if (tags && tags.length > 0) {
+        nextOptions.tags = tags;
+      }
+      // Pas de revalidate = cache indéfini jusqu'à revalidation manuelle via revalidateTag
+    } else if (cache === 'no-store') {
+      // Pour no-store, pas de cache - ne pas configurer next
+      // Laisser nextOptions vide
+    } else {
+      // Pour les autres cas (default, reload, etc.), on peut garder un revalidate avec tags
+      nextOptions.revalidate = 60; // Fallback de 60 secondes
+      if (tags && tags.length > 0) {
+        nextOptions.tags = tags;
+      }
+    }
+
     const result = await fetch(normalizedEndpoint, {
       method: "POST",
       headers: headers,
       body: body,
-      next: { revalidate: 60 }, // Cache for 60 seconds
+      // Next.js utilise 'next' pour le cache, pas l'option 'cache' de fetch
+      next: Object.keys(nextOptions).length > 0 ? nextOptions : undefined,
     })
 
     if (!result.ok) {

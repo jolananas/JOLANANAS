@@ -166,7 +166,7 @@ function validateEnv(): EnvironmentConfig {
       return {
         SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'jolananas.myshopify.com',
         SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'fallback-token',
-        SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2024-04',
+        SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2026-04',
         NODE_ENV: (process.env.NODE_ENV as any) || 'production',
         DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret',

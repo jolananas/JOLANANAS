@@ -75,7 +75,7 @@ class JolananasSetup {
 # =============================================================================
 SHOPIFY_STORE_DOMAIN=u6ydbb-sx.myshopify.com
 SHOPIFY_STOREFRONT_TOKEN=[STOREFRONT_TOKEN_COMPROMISED]
-SHOPIFY_API_VERSION=2025-01
+SHOPIFY_API_VERSION=2026-04
 
 # Token Admin Shopify (optionnel - pour webhooks)
 SHOPIFY_ADMIN_API_TOKEN=

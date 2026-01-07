@@ -4,6 +4,7 @@
 import 'server-only';
 
 import { shopifyFetch } from "./client"
+import { TAGS } from "@/app/src/lib/constants"
 import {
   GET_ALL_PRODUCTS_QUERY,
   GET_PRODUCT_BY_HANDLE_QUERY,
@@ -140,6 +141,7 @@ export async function getAllProducts(limit: number = 250): Promise<Product[]> {
           first: Math.min(250, limit - allProducts.length),
           after: cursor,
         },
+        tags: [TAGS.products],
       })
 
       const data: ProductsResponse | undefined = response.data
@@ -174,6 +176,7 @@ export async function getProductByHandle(handle: string): Promise<Product | null
     const { data } = await shopifyFetch<{ productByHandle: ShopifyProduct }>({
       query: GET_PRODUCT_BY_HANDLE_QUERY,
       variables: { handle },
+      tags: [TAGS.products],
     })
 
     if (!data.productByHandle) {
@@ -193,6 +196,7 @@ export async function getCollectionByHandle(handle: string) {
     const { data } = await shopifyFetch<{ collectionByHandle: ShopifyCollection }>({
       query: GET_COLLECTION_BY_HANDLE_QUERY,
       variables: { handle, first: 20 },
+      tags: [TAGS.collections],
     })
 
     return data.collectionByHandle
@@ -210,6 +214,7 @@ export async function getAllCollections() {
     }>({
       query: GET_ALL_COLLECTIONS_QUERY,
       variables: { first: 10 },
+      tags: [TAGS.collections],
     })
 
     return data.collections?.edges.map((edge) => edge.node) || []
@@ -236,6 +241,7 @@ export async function getShopInfo(): Promise<ShopInfo | null> {
       }
     }>({
       query: GET_SHOP_INFO_QUERY,
+      tags: [], // Shop info n'a pas besoin de tag spécifique
     })
 
     const { data, errors } = response;
@@ -314,6 +320,7 @@ export async function getShippingInfo(): Promise<ShippingInfoResult> {
       };
     }>({
       query: GET_SHIPPING_INFO_QUERY,
+      tags: [], // Shipping info n'a pas besoin de tag spécifique
     });
 
     const { data, errors } = response;
@@ -496,6 +503,7 @@ export async function createCart(variantId: string, quantity = 1) {
       variables: {
         lineItems: [{ merchandiseId: variantId, quantity }],
       },
+      cache: 'no-store', // Les opérations de panier ne doivent pas être mises en cache
     })
 
     // Vérifier les erreurs GraphQL
@@ -531,6 +539,7 @@ export async function addToCart(cartId: string, variantId: string, quantity = 1)
         cartId,
         lines: [{ merchandiseId: variantId, quantity }],
       },
+      cache: 'no-store', // Les opérations de panier ne doivent pas être mises en cache
     })
 
     // Vérifier les erreurs GraphQL
@@ -565,6 +574,7 @@ export async function updateCartLine(cartId: string, lineId: string, quantity: n
         cartId,
         lines: [{ id: lineId, quantity }],
       },
+      cache: 'no-store', // Les opérations de panier ne doivent pas être mises en cache
     })
 
     // Vérifier les erreurs GraphQL
@@ -599,6 +609,7 @@ export async function removeFromCart(cartId: string, lineId: string) {
         cartId,
         lineIds: [lineId],
       },
+      cache: 'no-store', // Les opérations de panier ne doivent pas être mises en cache
     })
 
     // Vérifier les erreurs GraphQL
@@ -628,6 +639,7 @@ export async function getCart(cartId: string) {
     const { data } = await shopifyFetch<{ cart: ShopifyCart }>({
       query: GET_CART_QUERY,
       variables: { cartId },
+      tags: [TAGS.cart],
     })
 
     return data.cart
