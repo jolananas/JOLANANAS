@@ -22,12 +22,13 @@
    - Aller sur https://vercel.com
    - Sélectionner votre projet **JOLANANAS**
 
-2. **Configurer le Root Directory**
+2. **Configurer le Root Directory et Node.js Version**
    - Aller dans **Settings** → **General**
-   - Chercher la section **"Root Directory"**
-   - Cliquer sur `Edit`
-   - Entrer : `app/frontend`
+   - **Root Directory** : Cliquer sur `Edit` et entrer : `app/frontend`
+   - **Node.js Version** : Cliquer sur `Edit` et sélectionner : `20.x` (IMPORTANT)
    - Cliquer sur `Save`
+   
+   **⚠️ CRITIQUE** : Si vous ne configurez pas Node.js 20.x dans le dashboard, Vercel utilisera Node.js 24.x par défaut, ce qui causera des erreurs de compatibilité avec pnpm 10.
 
 3. **Redéployer**
    - Aller dans **Deployments**
@@ -134,6 +135,25 @@ Vérifier que toutes ces variables sont configurées dans **Vercel Dashboard** �
 ---
 
 ## 🚨 Dépannage
+
+### Problème : Erreur "pnpm install" avec version incompatible
+
+**Symptômes** :
+- `WARN Ignoring not compatible lockfile at /vercel/path0/app/frontend/pnpm-lock.yaml`
+- `ERR_PNPM_META_FETCH_FAIL` ou `ERR_INVALID_THIS`
+- `Command "cd app/frontend && pnpm install" exited with 1`
+
+**Solutions** :
+1. ✅ Vérifier que `package.json` contient `"packageManager": "pnpm@10.24.0"`
+2. ✅ Vérifier que `.nvmrc` existe avec `20` (Node.js 20)
+3. ✅ Vérifier que `vercel.json` utilise `corepack` pour activer pnpm 10
+4. ✅ Configurer le **Root Directory** à `app/frontend` dans Vercel Dashboard
+5. ✅ Redéployer sans cache
+
+**Configuration requise** :
+- `package.json` : `"packageManager": "pnpm@10.24.0"` + `"engines": { "node": "20.x", "pnpm": ">=10.0.0" }`
+- `.nvmrc` : `20`
+- `vercel.json` : Commandes avec `corepack enable && corepack prepare pnpm@10.24.0 --activate`
 
 ### Problème : Build échoue toujours avec "No Next.js version detected"
 
