@@ -2,7 +2,6 @@
   "buildCommand": "next build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "rootDirectory": "app/frontend",
   "installCommand": "pnpm install",
   "functions": {
     "app/api/**/*.ts": {
