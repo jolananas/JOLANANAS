@@ -237,7 +237,7 @@ export async function apiGet<T = unknown>(
     }
     
     // Vérifier le Content-Type
-    const contentType = response.headers.get('content-type') || '';
+    const contentType = response.headers.get('content-type');
     if (!contentType.includes('application/json')) {
       // Si ce n'est pas du JSON et que ce n'est pas du HTML (déjà vérifié), considérer comme 404
       throw createApiError(

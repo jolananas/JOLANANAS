@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
       
       if (error.type === 'CONFIGURATION' && error.details) {
         responseBody.details = error.details;
-        responseBody.message = 'Configuration Shopify manquante. Veuillez configurer SHOPIFY_STORE_DOMAIN et SHOPIFY_STOREFRONT_TOKEN dans votre fichier .env.local';
+        responseBody.message = 'Configuration Shopify manquante. Veuillez configurer SHOPIFY_STORE_DOMAIN et SHOPIFY_STOREFRONT_TOKEN (ou SHOPIFY_STOREFRONT_ACCESS_TOKEN) dans votre fichier .env.local';
       }
       
       if (error.type === 'GRAPHQL' && error.details) {

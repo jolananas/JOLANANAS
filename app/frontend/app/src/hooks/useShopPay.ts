@@ -337,7 +337,7 @@ function createShopPayButtonInstance(
           const response = await fetch('/api/config/shopify');
           if (response.ok) {
             const data = await response.json();
-            storeDomain = data.storeDomain || '';
+            storeDomain = data.storeDomain;
           }
         } catch (error) {
           console.error('❌ Erreur récupération store domain:', error);

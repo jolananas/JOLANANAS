@@ -2,20 +2,21 @@
  * 🍍 JOLANANAS - API Dashboard Utilisateur
  * =========================================
  * Endpoint pour récupérer les statistiques et données du dashboard utilisateur
+ * Utilise uniquement Shopify APIs - plus de base de données locale
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/src/lib/auth';
 import { getCustomerFromToken, getCustomerAddresses, getCustomerOrders } from '@/app/src/lib/shopify/customer-accounts';
-import { getShopifyAdminClient } from '@/app/src/lib/ShopifyAdminClient';
-import { db } from '@/app/src/lib/db';
+import { getCartIdFromRequest } from '@/app/src/lib/utils/cart-storage';
+import { getCart as getShopifyCart } from '@/app/src/lib/shopify/index';
 
 export const runtime = 'nodejs';
 
 /**
  * GET /api/user/dashboard
- * Récupère toutes les statistiques du dashboard utilisateur
+ * Récupère toutes les statistiques du dashboard utilisateur depuis Shopify
  */
 export async function GET(request: NextRequest) {
   try {
@@ -37,8 +38,7 @@ export async function GET(request: NextRequest) {
       customerResult,
       addressesResult,
       ordersResult,
-      activeCart,
-      recentActivity,
+      cartId,
     ] = await Promise.all([
       // Informations client depuis Shopify
       getCustomerFromToken(shopifyAccessToken),
@@ -49,36 +49,15 @@ export async function GET(request: NextRequest) {
       // Commandes depuis Shopify
       getCustomerOrders(shopifyCustomerId),
 
-      // Panier actif (local, lié à shopifyCustomerId une fois le schéma migré)
-      db.cart.findFirst({
-        where: {
-          // Note: Utiliser shopifyCustomerId une fois le schéma migré
-          // Pour l'instant, on ne peut pas récupérer le panier
-          status: 'ACTIVE',
-        },
-        include: {
-          items: true,
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      }).catch(() => null), // Ignorer l'erreur si le schéma n'est pas encore migré
-
-      // Activité récente (optionnel - depuis DB locale si UserPreferences/ActivityLog existe)
-      db.activityLog.findMany({
-        where: {
-          // Note: Utiliser shopifyCustomerId une fois le schéma migré
-          createdAt: {
-            gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-          },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-        take: 10,
-      }).catch(() => []), // Retourner tableau vide si ActivityLog n'existe plus
-
+      // Récupérer le cartId depuis les cookies
+      getCartIdFromRequest(request),
     ]);
+
+    // Récupérer le panier Shopify si un cartId existe
+    let activeCart = null;
+    if (cartId) {
+      activeCart = await getShopifyCart(cartId);
+    }
 
     // Vérifier les erreurs
     if (customerResult.errors.length > 0 || !customerResult.customer) {
@@ -97,14 +76,21 @@ export async function GET(request: NextRequest) {
 
     // Calculer les statistiques
     const totalOrders = orders.length;
-    const totalSpent = orders.reduce((sum: number, order: any) => sum + (order.total || 0), 0);
+    const totalSpent = orders.reduce((sum: number, order: any) => {
+      const orderTotal = typeof order.total === 'string' ? parseFloat(order.total) : (order.total || 0);
+      return sum + orderTotal;
+    }, 0);
     const averageOrderValue = totalOrders > 0 ? totalSpent / totalOrders : 0;
-    const cartItemsCount = activeCart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
-    const cartTotal = activeCart?.items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0) || 0;
+    
+    // Calculer les stats du panier depuis Shopify
+    const cartItemsCount = activeCart?.totalQuantity || 0;
+    const cartTotal = activeCart?.cost?.totalAmount?.amount 
+      ? parseFloat(activeCart.cost.totalAmount.amount) 
+      : 0;
 
     // Statistiques par statut de commande
     const ordersByStatus = orders.reduce((acc: Record<string, number>, order: any) => {
-      const status = order.status || 'PENDING';
+      const status = order.financialStatus || order.fulfillmentStatus || 'PENDING';
       acc[status] = (acc[status] || 0) + 1;
       return acc;
     }, {});
@@ -115,47 +101,53 @@ export async function GET(request: NextRequest) {
     
     const ordersByMonth = orders
       .filter((order: any) => {
-        const orderDate = new Date(order.createdAt);
+        const orderDate = new Date(order.createdAt || order.processedAt);
         return orderDate >= sixMonthsAgo;
       })
       .reduce((acc: Record<string, { count: number; total: number }>, order: any) => {
-        const orderDate = new Date(order.createdAt);
+        const orderDate = new Date(order.createdAt || order.processedAt);
         const monthKey = `${orderDate.getFullYear()}-${String(orderDate.getMonth() + 1).padStart(2, '0')}`;
         if (!acc[monthKey]) {
           acc[monthKey] = { count: 0, total: 0 };
         }
         acc[monthKey].count += 1;
-        acc[monthKey].total += order.total || 0;
+        const orderTotal = typeof order.total === 'string' ? parseFloat(order.total) : (order.total || 0);
+        acc[monthKey].total += orderTotal;
         return acc;
       }, {});
 
     // Commandes récentes (5 dernières)
     const recentOrders = orders.slice(0, 5).map((order: any) => ({
       id: order.id,
-      shopifyOrderId: order.shopifyOrderId,
-      status: order.status,
-      total: order.total || 0,
-      currency: order.currency || 'EUR',
-      createdAt: order.createdAt,
-      itemsCount: order.items?.length || 0,
+      shopifyOrderId: order.id,
+      orderNumber: order.orderNumber || order.name,
+      status: order.financialStatus || order.fulfillmentStatus || 'PENDING',
+      total: typeof order.total === 'string' ? parseFloat(order.total) : (order.total || 0),
+      currency: order.currencyCode || order.currency || 'EUR',
+      createdAt: order.createdAt || order.processedAt || new Date().toISOString(),
+      itemsCount: order.lineItems?.length || 0,
     }));
 
-    // Produits les plus commandés
+    // Produits les plus commandés (depuis les commandes Shopify)
     const topProducts = orders
-      .flatMap((order: any) => order.items || [])
+      .flatMap((order: any) => order.lineItems || [])
       .reduce((acc: Record<string, any>, item: any) => {
-        const key = item.productId;
+        const key = item.variant?.product?.id || item.productId;
+        if (!key) return acc;
+        
         if (!acc[key]) {
           acc[key] = {
-            productId: item.productId,
-            title: item.title,
+            productId: key,
+            title: item.title || item.name,
             quantity: 0,
             totalSpent: 0,
-            imageUrl: item.imageUrl,
+            imageUrl: item.image?.url || item.variant?.image?.url || null,
           };
         }
-        acc[key].quantity += item.quantity || 0;
-        acc[key].totalSpent += (item.price || 0) * (item.quantity || 0);
+        const quantity = item.quantity || 0;
+        const price = typeof item.price === 'string' ? parseFloat(item.price) : (item.price || 0);
+        acc[key].quantity += quantity;
+        acc[key].totalSpent += price * quantity;
         return acc;
       }, {});
 
@@ -186,7 +178,7 @@ export async function GET(request: NextRequest) {
           ordersByStatus,
         },
         charts: {
-          ordersByMonth: Object.entries(ordersByMonth).map(([month, data]) => ({
+          ordersByMonth: Object.entries(ordersByMonth).map(([month, data]: [string, any]) => ({
             month,
             count: data.count,
             total: data.total,
@@ -194,13 +186,8 @@ export async function GET(request: NextRequest) {
         },
         recentOrders,
         topProducts: topProductsArray,
-        recentActivity: (recentActivity || []).map((activity: any) => ({
-          id: activity.id,
-          action: activity.action,
-          createdAt: activity.createdAt.toISOString(),
-          metadata: activity.metadata ? JSON.parse(activity.metadata) : null,
-        })),
-        hasActiveCart: !!activeCart,
+        recentActivity: [], // Plus de ActivityLog - utiliser Vercel Analytics pour les logs
+        hasActiveCart: !!activeCart && (activeCart.totalQuantity || 0) > 0,
       },
     });
 

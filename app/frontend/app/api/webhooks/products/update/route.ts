@@ -1,18 +1,22 @@
 /**
- * 🍍 JOLANANAS - Webhook Produits Shopify (Consolidé)
+ * 🍍 JOLANANAS - Webhook Produits Shopify
  * ==================================================
  * Traitement des mises à jour produits Shopify
+ * Utilise uniquement Next.js ISR pour le cache - plus de base de données locale
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
 import { ENV } from '@/app/src/lib/env';
 import { validateWebhookHMAC } from '@/app/src/lib/utils/formatters.server';
 import { normalizeDataForAPI } from '@/app/src/lib/utils/formatters';
+import { revalidateTag } from 'next/cache';
 
 /**
  * POST /api/webhooks/products/update
  * Traite les mises à jour produits Shopify
+ * 
+ * Note: Les produits sont déjà dans Shopify.
+ * Ce webhook sert uniquement à invalider le cache Next.js ISR.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -28,109 +32,66 @@ export async function POST(request: NextRequest) {
 
     const body = normalizeDataForAPI(bodyRaw);
     const productData = normalizeDataForAPI(JSON.parse(body));
-    console.log('📦 Produit mis à jour Shopify:', productData.id);
-
-    await db.webhookEvent.create({
-      data: {
-        topic: 'products/update',
-        shopifyId: productData.id.toString(),
-        payload: productData,
-        status: 'PROCESSING',
-      },
+    
+    const productId = productData.id;
+    const productHandle = productData.handle;
+    const productTitle = productData.title;
+    
+    console.log('📦 Produit mis à jour Shopify:', {
+      id: productId,
+      handle: productHandle,
+      title: productTitle,
     });
 
-    await updateProductCache(productData);
+    // Invalider le cache Next.js ISR pour ce produit et la liste des produits
+    try {
+      // Invalider le tag 'products' pour la liste des produits
+      revalidateTag('products');
+      
+      // Invalider le tag spécifique du produit si disponible
+      if (productHandle) {
+        revalidateTag(`product-${productHandle}`);
+      }
+      
+      // Invalider aussi par ID si nécessaire
+      if (productId) {
+        revalidateTag(`product-${productId}`);
+      }
+      
+      console.log('✅ Cache ISR invalidé pour le produit:', productHandle || productId);
+    } catch (revalidateError) {
+      console.warn('⚠️ Erreur lors de la revalidation ISR (non bloquant):', revalidateError);
+      // Ne pas bloquer le webhook si la revalidation échoue
+    }
 
-    await db.webhookEvent.updateMany({
-      where: {
-        shopifyId: productData.id.toString(),
-        topic: 'products/update',
-      },
-      data: {
-        status: 'PROCESSED',
-        processedAt: new Date(),
-      },
+    // Logger l'événement pour analytics
+    console.log('📊 Produit mis à jour:', {
+      shopifyId: productId?.toString(),
+      handle: productHandle,
+      title: productTitle,
+      updatedAt: productData.updated_at || new Date().toISOString(),
     });
 
-    console.log('✅ Produit mis à jour:', productData.id);
-    return NextResponse.json({ success: true });
+    // TODO: Actions optionnelles à implémenter selon les besoins :
+    // - Envoyer une notification si le produit est en rupture de stock
+    // - Mettre à jour des métriques analytics
+    // - Synchroniser avec des systèmes externes (inventaire, marketing, etc.)
+
+    console.log('✅ Produit traité:', productId);
+    return NextResponse.json({ 
+      success: true,
+      message: 'Webhook traité avec succès',
+      productId: productId?.toString(),
+    });
 
   } catch (error: unknown) {
     console.error('❌ Erreur webhook products/update:', error);
-    return NextResponse.json({ error: 'Erreur traitement produit' }, { status: 500 });
-  }
-}
-
-async function updateProductCache(productData: any) {
-  try {
-    const {
-      id: shopifyId,
-      handle,
-      title,
-      body_html: description,
-      vendor,
-      product_type: productType,
-      tags,
-      images,
-      variants,
-      created_at: createdAt,
-      updated_at: updatedAt,
-    } = productData;
-
-    const imageUrls = images?.map((img: any) => ({
-      id: img.id?.toString(),
-      url: img.src,
-      alt: img.alt || title,
-      width: img.width,
-      height: img.height,
-    })) || [];
-
-    const variantsData = variants?.map((variant: any) => ({
-      id: variant.id?.toString(),
-      title: variant.title,
-      price: variant.price,
-      compareAtPrice: variant.compare_at_price,
-      inventoryQuantity: variant.inventory_quantity,
-      available: variant.inventory_quantity > 0,
-      selectedOptions: variant.selected_options || [],
-    })) || [];
-
-    const prices = variantsData.map((v: any) => parseFloat(v.price || '0'));
-    const priceMin = prices.length > 0 ? Math.min(...prices) : 0;
-    const priceMax = prices.length > 0 ? Math.max(...prices) : 0;
-
-    await db.productCache.upsert({
-      where: { shopifyId: shopifyId.toString() },
-      create: {
-        shopifyId: shopifyId.toString(),
-        handle,
-        title,
-        description: description,
-        vendor: vendor,
-        productType: productType,
-        tags: tags,
-        images: imageUrls,
-        variants: variantsData,
-        priceRange: { min: priceMin, max: priceMax },
-        createdAt: new Date(createdAt),
+    return NextResponse.json(
+      { 
+        error: 'Erreur traitement produit',
+        message: error instanceof Error ? error.message : 'Erreur inconnue',
       },
-      update: {
-        handle,
-        title,
-        description: description,
-        vendor: vendor,
-        productType: productType,
-        tags: tags,
-        images: imageUrls,
-        variants: variantsData,
-        priceRange: { min: priceMin, max: priceMax },
-        updatedAt: new Date(updatedAt),
-      },
-    });
-
-    console.log(`✅ Cache produit mis à jour: ${title} (${shopifyId})`);
-  } catch (error: unknown) {
-    console.error('❌ Erreur mise à jour cache produit:', error);
-    throw error;
+      { status: 500 }
+    );
   }
 }

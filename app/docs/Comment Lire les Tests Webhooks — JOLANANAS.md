@@ -25,7 +25,7 @@ Shopify enverra alors un webhook de test à votre URL configurée.
 
 **C'est la méthode principale pour voir les résultats en production.**
 
-#### Étapes :
+#### Étapes
 
 1. **Allez sur** [Vercel Dashboard](https://vercel.com/dashboard)
 2. **Sélectionnez votre projet** "jolananas"
@@ -35,7 +35,7 @@ Shopify enverra alors un webhook de test à votre URL configurée.
 6. **Trouvez** `/api/webhooks/revalidate`
 7. **Cliquez dessus** pour voir les logs
 
-#### Ce que vous verrez :
+#### Ce que vous verrez
 
 ```
 ⚡ Webhook reçu: products/update (ID: 123456). Revalidation en cours...
@@ -44,7 +44,7 @@ Shopify enverra alors un webhook de test à votre URL configurée.
 ✅ Webhook traité avec succès en 45ms
 ```
 
-#### Logs d'erreur possibles :
+#### Logs d'erreur possibles
 
 ```
 ❌ Webhook revalidate: Signature invalide
@@ -58,14 +58,14 @@ Shopify enverra alors un webhook de test à votre URL configurée.
 
 **Tous les webhooks sont maintenant enregistrés dans la base de données.**
 
-#### Via Prisma Studio :
+#### Via Prisma Studio
 
 ```bash
 cd app/frontend
 npm run db:studio
 ```
 
-1. **Ouvrez Prisma Studio** (généralement sur http://localhost:5555)
+1. **Ouvrez Prisma Studio** (généralement sur <http://localhost:5555>)
 2. **Sélectionnez le modèle** `WebhookEvent`
 3. **Vous verrez tous les webhooks** reçus avec :
    - `topic` : Le topic du webhook (ex: `products/update`)
@@ -75,7 +75,7 @@ npm run db:studio
    - `createdAt` : Date de réception
    - `processedAt` : Date de traitement
 
-#### Via SQL Direct :
+#### Via SQL Direct
 
 ```sql
 -- Voir les 10 derniers webhooks
@@ -102,15 +102,17 @@ GROUP BY topic;
 
 **Si vous testez en local avec un tunnel (ngrok, cloudflared) :**
 
-#### Étapes :
+#### Étapes
 
 1. **Démarrez le serveur de développement :**
+
    ```bash
    cd app/frontend
    npm run dev
    ```
 
 2. **Les logs apparaîtront directement dans le terminal :**
+
    ```
    ⚡ Webhook reçu: products/update (ID: 123456). Revalidation en cours...
    📝 Webhook enregistré dans la DB: clx1234567890 (products/update)
@@ -154,6 +156,7 @@ curl -X POST https://jolananas.vercel.app/api/webhooks/revalidate \
 ### ✅ Succès
 
 **Indicateurs de succès :**
+
 - Status `200` dans la réponse
 - `revalidated: true` dans la réponse
 - Logs montrent `✅ Tag "products" revalidé`
@@ -163,6 +166,7 @@ curl -X POST https://jolananas.vercel.app/api/webhooks/revalidate \
 ### ❌ Échec
 
 **Indicateurs d'échec :**
+
 - Status `401` : Signature HMAC invalide
 - Status `500` : Erreur lors du traitement
 - `status: 'FAILED'` dans la base de données
@@ -175,10 +179,12 @@ curl -X POST https://jolananas.vercel.app/api/webhooks/revalidate \
 ### Problème : "Signature invalide" (401)
 
 **Causes possibles :**
+
 1. `SHOPIFY_WEBHOOK_SECRET` ne correspond pas au secret dans Shopify
 2. Le secret n'est pas configuré dans Vercel (pour la production)
 
 **Solution :**
+
 1. Vérifiez le secret dans Shopify Admin → Settings → Notifications → Webhooks
 2. Vérifiez que le même secret est dans Vercel → Settings → Environment Variables
 3. Le secret doit être : `8c4598b6e47d26aeb3be09e2dbad7bdd4f0e9c8bf386d5f90ddce0450bc13744`
@@ -188,6 +194,7 @@ curl -X POST https://jolananas.vercel.app/api/webhooks/revalidate \
 **Cause :** Le topic n'est pas dans la liste des topics gérés.
 
 **Topics gérés actuellement :**
+
 - `products/create`, `products/update`, `products/delete`
 - `collections/create`, `collections/update`, `collections/delete`
 
@@ -198,6 +205,7 @@ curl -X POST https://jolananas.vercel.app/api/webhooks/revalidate \
 **Cause :** Problème de connexion à la base de données.
 
 **Solution :**
+
 1. Vérifiez que la base de données est accessible
 2. Vérifiez les logs Vercel pour les erreurs de connexion DB
 3. Le webhook fonctionnera quand même (revalidation), mais ne sera pas enregistré
@@ -243,6 +251,7 @@ Après avoir envoyé un test depuis Shopify :
 ### Filtrer les Logs Vercel
 
 Dans Vercel Dashboard → Functions → Logs, vous pouvez :
+
 - Filtrer par fonction : `/api/webhooks/revalidate`
 - Filtrer par niveau : `error`, `warn`, `info`
 - Rechercher des termes : `webhook`, `revalidate`, `products`
@@ -259,4 +268,3 @@ vercel logs --follow
 ---
 
 **🍍 Guide complet pour lire et interpréter les tests webhooks !**
-

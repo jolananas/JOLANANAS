@@ -1,12 +1,11 @@
 /**
- * 🍍 JOLANANAS - API Création Utilisateur (Consolidé)
+ * 🍍 JOLANANAS - API Création Utilisateur
  * ==================================================
- * Endpoint pour créer un nouveau compte utilisateur dans Shopify et localement.
+ * Endpoint pour créer un nouveau compte utilisateur dans Shopify uniquement
+ * Plus de base de données locale - tout est géré par Shopify Customer Account API
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
-import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { createCustomer, checkEmailExists } from '@/app/src/lib/shopify/auth';
 
@@ -94,13 +93,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 3. Vérifier si l'utilisateur existe déjà (Shopify & Local)
+    // 3. Vérifier si l'utilisateur existe déjà dans Shopify
     const emailExistsInShopify = await checkEmailExists(emailLower);
-    const existingLocalUser = await db.user.findUnique({
-      where: { email: emailLower },
-    });
 
-    if (emailExistsInShopify || existingLocalUser) {
+    if (emailExistsInShopify) {
       return NextResponse.json(
         { 
           success: false, 
@@ -110,7 +106,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4. Création dans Shopify (Customer Account API)
+    // 4. Création dans Shopify (Customer Account API uniquement)
     const nameParts = nameTrimmed.split(' ');
     const firstName = nameParts[0];
     const lastName = nameParts.slice(1).join(' ') || '.'; // LastName requis par Shopify
@@ -132,30 +128,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Création locale (Synchronisation DB)
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const localUser = await db.user.create({
-      data: {
-        email: emailLower,
-        password: hashedPassword,
-        name: nameTrimmed,
-        shopifyCustomerId: createResult.customer.id.toString(),
-        role: 'CUSTOMER',
-      },
-    });
-
-    // 6. Réponse finale
+    // 5. Réponse finale (plus de création locale)
     return NextResponse.json({
       success: true,
-      message: 'Compte créé avec succès',
+      message: 'Compte créé avec succès dans Shopify',
       user: {
-        id: localUser.id,
         shopifyId: createResult.customer.id,
-        email: localUser.email,
-        name: localUser.name,
-        role: localUser.role,
+        email: createResult.customer.email,
+        name: createResult.customer.firstName && createResult.customer.lastName
+          ? `${createResult.customer.firstName} ${createResult.customer.lastName}`
+          : createResult.customer.firstName || createResult.customer.lastName || nameTrimmed,
       },
       accessToken: createResult.accessToken,
+      note: 'Le compte est maintenant géré entièrement par Shopify Customer Account API',
     });
 
   } catch (error: unknown) {

@@ -27,9 +27,9 @@ interface ShopifyProviderProps {
 
 export function ShopifyProvider({ children, config }: ShopifyProviderProps) {
   const defaultConfig = {
-    domain: process.env.SHOPIFY_STORE_DOMAIN ?? '',
-    storefrontToken: process.env.SHOPIFY_STOREFRONT_TOKEN ?? '',
-    apiVersion: process.env.SHOPIFY_API_VERSION ?? '2025-10',
+    domain: process.env.SHOPIFY_STORE_DOMAIN,
+    storefrontToken: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+    apiVersion: process.env.SHOPIFY_API_VERSION ?? '2026-04',
   };
   
   const shopifyConfig = config || defaultConfig;

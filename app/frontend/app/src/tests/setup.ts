@@ -14,5 +14,5 @@ import '@testing-library/jest-dom'
 // Ces valeurs permettent de configurer l'environnement de test sans données mock
 process.env.SHOPIFY_STORE_DOMAIN = 'test-store.myshopify.com'
 process.env.SHOPIFY_STOREFRONT_TOKEN = 'test-token-for-testing-only'
-process.env.SHOPIFY_API_VERSION = '2025-10'
+process.env.SHOPIFY_API_VERSION = '2026-04'
 process.env.NODE_ENV = 'test'

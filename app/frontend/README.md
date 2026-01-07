@@ -5,12 +5,14 @@ A beautiful, modern e-commerce storefront for JOLANANAS - French artisanal brand
 ## Features
 
 ### 🎨 Design System
+
 - **Brand Colors**: Peach (#F4C0AC), Pink (#F38FA3), Rose (#EC7B9C), Coral (#FCA4A4)
 - **Typography**: Poppins for headings, Inter for body text
 - **Glassmorphism Effects**: Modern glass-style UI elements
 - **Fully Responsive**: Mobile-first design with smooth animations
 
 ### 🛍️ E-Commerce Features
+
 - **Product Catalog**: Browse all products with beautiful grid layout
 - **Product Detail Pages**: Image galleries, pricing, descriptions, and related products
 - **Shopping Cart**: Persistent cart with localStorage, quantity controls, and real-time totals
@@ -18,10 +20,12 @@ A beautiful, modern e-commerce storefront for JOLANANAS - French artisanal brand
 - **Checkout Flow**: Complete checkout page ready for integration
 
 ### 🔍 Search Features
+
 - **Smart Search**: Enhanced product search with instant filtering
 - **Product Recommendations**: Intelligent product suggestions
 
 ### 🔌 Shopify Integration
+
 - **Storefront API**: Full integration with Shopify Storefront GraphQL API
 - **Real-time Data**: Fetch products, collections, and manage cart operations
 - **Production-Ready**: Uses only real Shopify data - no mock data
@@ -64,7 +68,8 @@ A beautiful, modern e-commerce storefront for JOLANANAS - French artisanal brand
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - A Shopify store with Storefront API access
 
 ### Environment Variables
@@ -74,7 +79,7 @@ To connect to your Shopify store, add these environment variables:
 \`\`\`env
 SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
 SHOPIFY_STOREFRONT_TOKEN=your_storefront_access_token
-SHOPIFY_API_VERSION=2025-10
+SHOPIFY_API_VERSION=2026-04
 \`\`\`
 
 **Note**: These environment variables are required for the application to function. The app uses only real Shopify data - no mock or fake data is used.
@@ -84,19 +89,26 @@ SHOPIFY_API_VERSION=2025-10
 The project uses the shadcn CLI for easy setup:
 
 \`\`\`bash
+
 # Install and setup the project
+
 npx shadcn@latest init
 
 # Or download the ZIP and extract
+
 \`\`\`
 
 ### Development
 
 \`\`\`bash
 npm run dev
+
 # or
+
 yarn dev
+
 # or
+
 pnpm dev
 \`\`\`
 
@@ -115,26 +127,31 @@ Open [http://localhost:3000](http://localhost:3000) to view the storefront.
 ## Pages
 
 ### Homepage (`/`)
+
 - Hero section with brand messaging
 - Featured products grid
 
 ### Product Detail (`/products/[handle]`)
+
 - Image gallery with zoom
 - Product information and pricing
 - Add to cart functionality
 - Related products section
 
 ### Collections (`/collections/[handle]`)
+
 - Filtered product views
 - Sort by price, name, newest
 - Tag-based filtering
 
 ### Checkout (`/checkout`)
+
 - Order summary
 - Customer information form
 - Payment integration ready
 
 ### About (`/about`)
+
 - Brand story
 - Mission and values
 - Contact information
@@ -152,6 +169,7 @@ The cart uses React Context for state management and persists to localStorage:
 ## Search Features
 
 ### Search
+
 - Instant product filtering
 - Smart suggestions
 - Search by name, description, or tags
@@ -159,22 +177,26 @@ The cart uses React Context for state management and persists to localStorage:
 ## Customization
 
 ### Colors
+
 Edit `app/globals.css` to customize the brand colors:
 
 \`\`\`css
 :root {
-  --primary: oklch(0.72 0.15 10);      /* JOLANANAS Pink */
+  --primary: oklch(0.72 0.15 10);      /*JOLANANAS Pink */
   --secondary: oklch(0.85 0.08 40);    /* JOLANANAS Peach */
-  --accent: oklch(0.68 0.18 15);       /* JOLANANAS Rose */
+  --accent: oklch(0.68 0.18 15);       /* JOLANANAS Rose*/
 }
 \`\`\`
 
 ### Fonts
+
 Fonts are configured in `app/layout.tsx`:
+
 - Poppins for headings
 - Inter for body text
 
 ### Products
+
 All products are fetched directly from your Shopify store via the Storefront API. Ensure your environment variables are properly configured to connect to your store.
 
 ## Deployment
@@ -187,6 +209,7 @@ All products are fetched directly from your Shopify store via the Storefront API
 4. Deploy!
 
 The app is optimized for Vercel's Edge Network with:
+
 - Automatic image optimization
 - Edge caching
 - Analytics integration
@@ -194,6 +217,7 @@ The app is optimized for Vercel's Edge Network with:
 ## Support
 
 For issues or questions:
+
 - Check the [Next.js documentation](https://nextjs.org/docs)
 - Review [Shopify Storefront API docs](https://shopify.dev/docs/api/storefront)
 - Visit [shadcn/ui documentation](https://ui.shadcn.com)

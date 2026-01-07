@@ -3,7 +3,8 @@
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
     "SHOPIFY_STORE_DOMAIN",
-    "SHOPIFY_STOREFRONT_TOKEN", 
+    "SHOPIFY_STOREFRONT_TOKEN",
+    "SHOPIFY_STOREFRONT_ACCESS_TOKEN",
     "SHOPIFY_ADMIN_API_TOKEN",
     "SHOPIFY_WEBHOOK_SECRET",
     "SHOPIFY_API_VERSION",

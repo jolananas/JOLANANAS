@@ -2,19 +2,21 @@
  * 🍍 JOLANANAS - API Export Données Utilisateur (RGPD)
  * ====================================================
  * Endpoint pour exporter toutes les données d'un utilisateur au format JSON
+ * Utilise uniquement Shopify APIs - plus de base de données locale
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/src/lib/auth';
 import { getCustomerFromToken, getCustomerAddresses, getCustomerOrders } from '@/app/src/lib/shopify/customer-accounts';
-import { db } from '@/app/src/lib/db';
+import { getCartIdFromRequest, getCart } from '@/app/src/lib/utils/cart-storage';
+import { getCart as getShopifyCart } from '@/app/src/lib/shopify/index';
 
 export const runtime = 'nodejs';
 
 /**
  * GET /api/user/export-data
- * Exporte toutes les données de l'utilisateur connecté
+ * Exporte toutes les données de l'utilisateur connecté depuis Shopify
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
@@ -29,10 +31,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     // Récupérer toutes les données depuis Shopify
-    const [customerResult, addressesResult, ordersResult] = await Promise.all([
+    const [customerResult, addressesResult, ordersResult, cartId] = await Promise.all([
       getCustomerFromToken(session.user.shopifyAccessToken),
       getCustomerAddresses(session.user.shopifyCustomerId),
       getCustomerOrders(session.user.shopifyCustomerId),
+      getCartIdFromRequest(request),
     ]);
 
     if (customerResult.errors.length > 0 || !customerResult.customer) {
@@ -49,98 +52,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const addresses = addressesResult.addresses;
     const orders = ordersResult.orders || [];
 
-    // Récupérer les paniers locaux (si shopifyCustomerId existe dans le schéma)
-    interface CartItem {
-      id: string;
-      productId: string;
-      variantId: string;
-      quantity: number;
-      price: number | string;
-      title: string;
-      variantTitle: string | null;
-      imageUrl: string | null;
+    // Récupérer le panier Shopify si un cartId existe
+    let activeCart = null;
+    if (cartId) {
+      activeCart = await getShopifyCart(cartId);
     }
 
-    interface Cart {
-      id: string;
-      status: string;
-      shopifyCartId: string | null;
-      createdAt: Date;
-      updatedAt: Date;
-      items: CartItem[];
-    }
-
-    let carts: Cart[] = [];
-    try {
-      // Note: Utiliser shopifyCustomerId une fois le schéma migré
-      carts = await db.cart.findMany({
-        where: {
-          // shopifyCustomerId: session.user.shopifyCustomerId,
-        },
-        include: {
-          items: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      }) as Cart[];
-    } catch (error) {
-      // Ignorer si le schéma n'est pas encore migré
-    }
-
-    // Récupérer les préférences locales (optionnel)
-    let preferences: Record<string, unknown> | null = null;
-    try {
-      // Note: Utiliser shopifyCustomerId une fois le schéma migré
-      preferences = null; // UserPreferences sera supprimé ou migré vers Metafields
-    } catch (error) {
-      // Ignorer
-    }
-
-    // Récupérer les logs d'activité (optionnel)
-    interface ActivityLog {
-      id: string;
-      action: string;
-      ipAddress: string | null;
-      userAgent: string | null;
-      metadata: Record<string, unknown> | null;
-      createdAt: Date;
-    }
-
-    let activityLogs: ActivityLog[] = [];
-    try {
-      // Note: Utiliser shopifyCustomerId une fois le schéma migré
-      activityLogs = [];
-    } catch (error) {
-      // Ignorer
-    }
-
-    // Formater les données pour l'export (sans mot de passe)
-    interface OrderItem {
-      id: string;
-      productId: string;
-      variantId: string;
-      quantity: number;
-      price: number;
-      title: string;
-      variantTitle: string | null;
-      imageUrl: string | null;
-    }
-
-    interface Order {
-      id: string;
-      shopifyOrderId: string;
-      status: string;
-      total: number;
-      currency: string;
-      shippingCost: number;
-      taxAmount: number;
-      createdAt: string;
-      updatedAt: string;
-      items: OrderItem[];
-      shippingAddress: Record<string, unknown> | null;
-    }
-
+    // Formater les données pour l'export
     const exportData = {
       user: {
         id: customer.id,
@@ -154,27 +72,23 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         createdAt: customer.createdAt,
         updatedAt: customer.updatedAt,
       },
-      orders: orders.map((order: Order) => ({
+      orders: orders.map((order: any) => ({
         id: order.id,
         shopifyOrderId: order.id,
-        status: order.status,
-        total: order.total || 0,
-        currency: order.currency || 'EUR',
-        shippingCost: order.shippingCost || 0,
-        taxAmount: order.taxAmount || 0,
-        createdAt: order.createdAt,
-        updatedAt: order.updatedAt,
-        items: (order.items || []).map((item: OrderItem) => ({
-          id: item.id,
-          productId: item.productId,
-          variantId: item.variantId,
-          quantity: item.quantity,
-          price: item.price || 0,
-          title: item.title,
-          variantTitle: item.variantTitle,
-          imageUrl: item.imageUrl,
+        orderNumber: order.orderNumber || order.name,
+        status: order.financialStatus || order.fulfillmentStatus || 'PENDING',
+        total: typeof order.total === 'string' ? parseFloat(order.total) : (order.total || 0),
+        currency: order.currencyCode || order.currency || 'EUR',
+        createdAt: order.createdAt || order.processedAt || new Date().toISOString(),
+        items: (order.lineItems || []).map((item: any) => ({
+          productId: item.variant?.product?.id || item.productId,
+          variantId: item.variant?.id || item.variantId,
+          quantity: item.quantity || 0,
+          price: typeof item.price === 'string' ? parseFloat(item.price) : (item.price || 0),
+          title: item.title || item.name,
+          variantTitle: item.variant?.title || null,
+          imageUrl: item.image?.url || item.variant?.image?.url || null,
         })),
-        shippingAddress: order.shippingAddress || null,
       })),
       addresses: addresses.map(addr => ({
         id: addr.id,
@@ -190,33 +104,30 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         phone: addr.phone,
         isDefault: addr.isDefault,
       })),
-      carts: carts.map(cart => ({
-        id: cart.id,
-        status: cart.status,
-        shopifyCartId: cart.shopifyCartId,
-        createdAt: cart.createdAt,
-        updatedAt: cart.updatedAt,
-        items: cart.items.map((item: CartItem) => ({
-          id: item.id,
-          productId: item.productId,
-          variantId: item.variantId,
-          quantity: item.quantity,
-          price: Number(item.price),
-          title: item.title,
-          variantTitle: item.variantTitle,
-          imageUrl: item.imageUrl,
-        })),
-      })),
-      preferences: preferences,
-      activityLogs: activityLogs.map((log: ActivityLog) => ({
-        id: log.id,
-        action: log.action,
-        ipAddress: log.ipAddress,
-        userAgent: log.userAgent,
-        metadata: log.metadata ? JSON.parse(JSON.stringify(log.metadata)) : null,
-        createdAt: log.createdAt,
-      })),
+      cart: activeCart ? {
+        id: activeCart.id,
+        totalQuantity: activeCart.totalQuantity,
+        total: activeCart.cost?.totalAmount?.amount 
+          ? parseFloat(activeCart.cost.totalAmount.amount) 
+          : 0,
+        currency: activeCart.cost?.totalAmount?.currencyCode || 'EUR',
+        items: activeCart.lines?.edges?.map((edge: any) => ({
+          id: edge.node.id,
+          quantity: edge.node.quantity,
+          merchandise: {
+            id: edge.node.merchandise?.id,
+            title: edge.node.merchandise?.title,
+            product: {
+              id: edge.node.merchandise?.product?.id,
+              title: edge.node.merchandise?.product?.title,
+            },
+          },
+        })) || [],
+      } : null,
+      preferences: null, // Les préférences sont stockées dans Shopify Metafields
+      activityLogs: [], // Plus de ActivityLog - utiliser Vercel Analytics pour les logs
       exportDate: new Date().toISOString(),
+      note: 'Toutes les données proviennent de Shopify. Plus de base de données locale.',
     };
 
     // Retourner les données en JSON
@@ -250,4 +161,3 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     );
   }
 }
-

@@ -15,7 +15,7 @@ import { normalizeHeaderValue } from './utils/formatters';
 // Configuration Storefront API (publique)
 const STOREFRONT_CONFIG = {
   domain: ENV.SHOPIFY_STORE_DOMAIN,
-  storefrontToken: ENV.SHOPIFY_STOREFRONT_TOKEN,
+  storefrontToken: ENV.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
   apiVersion: ENV.SHOPIFY_API_VERSION,
 };
 

@@ -5,20 +5,20 @@
  * aux clients Shopify en masse
  * 
  * PROTECTION: Nécessite une authentification admin (session NextAuth avec rôle admin)
+ * Plus de base de données locale - utilise uniquement Shopify Admin API
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/src/lib/auth';
 import { getShopifyAdminClient } from '@/app/src/lib/ShopifyAdminClient';
-import { db } from '@/app/src/lib/db';
 import { z } from 'zod';
 
 export const runtime = 'nodejs';
 
 const SendInvitationsSchema = z.object({
   customerIds: z.array(z.string()).optional(), // IDs Shopify spécifiques (optionnel)
-  sendToAll: z.boolean().optional().default(false), // Envoyer à tous les clients avec shopifyCustomerId
+  sendToAll: z.boolean().optional().default(false), // Envoyer à tous les clients Shopify (via Admin API)
   limit: z.number().min(1).max(100).optional().default(50), // Limite pour sendToAll
 });
 
@@ -109,51 +109,65 @@ export async function POST(request: NextRequest) {
         }
       }
     } else if (sendToAll) {
-      // Envoyer à tous les clients avec shopifyCustomerId
-      const users = await db.user.findMany({
-        where: {
-          shopifyCustomerId: {
-            not: null,
-          },
-        },
-        take: limit,
-        select: {
-          shopifyCustomerId: true,
-          email: true,
-        },
-      });
+      // Envoyer à tous les clients Shopify via Admin API
+      // Note: Récupérer la liste des clients depuis Shopify Admin API
+      try {
+        const customersResponse = await adminClient.getCustomers({ limit });
+        
+        if (customersResponse.errors && customersResponse.errors.length > 0) {
+          return NextResponse.json(
+            { 
+              success: false, 
+              error: customersResponse.errors[0]?.message || 'Erreur lors de la récupération des clients' 
+            },
+            { status: 500 }
+          );
+        }
 
-      for (const user of users) {
-        if (!user.shopifyCustomerId) continue;
+        const customers = customersResponse.data?.customers || [];
+        
+        for (const customer of customers) {
+          if (!customer.id) continue;
 
-        try {
-          const inviteResult = await adminClient.sendCustomerPasswordResetInvite(user.shopifyCustomerId);
+          try {
+            const customerId = customer.id.toString();
+            const inviteResult = await adminClient.sendCustomerPasswordResetInvite(customerId);
 
-          if (inviteResult.errors && inviteResult.errors.length > 0) {
+            if (inviteResult.errors && inviteResult.errors.length > 0) {
+              results.errors++;
+              results.details.push({
+                customerId,
+                email: customer.email,
+                success: false,
+                error: inviteResult.errors[0]?.message || 'Erreur inconnue',
+              });
+            } else {
+              results.success++;
+              results.details.push({
+                customerId,
+                email: customer.email,
+                success: true,
+              });
+            }
+          } catch (error) {
             results.errors++;
             results.details.push({
-              customerId: user.shopifyCustomerId,
-              email: user.email,
+              customerId: customer.id?.toString() || 'unknown',
+              email: customer.email,
               success: false,
-              error: inviteResult.errors[0]?.message || 'Erreur inconnue',
-            });
-          } else {
-            results.success++;
-            results.details.push({
-              customerId: user.shopifyCustomerId,
-              email: user.email,
-              success: true,
+              error: error instanceof Error ? error.message : 'Erreur inconnue',
             });
           }
-        } catch (error) {
-          results.errors++;
-          results.details.push({
-            customerId: user.shopifyCustomerId,
-            email: user.email,
-            success: false,
-            error: error instanceof Error ? error.message : 'Erreur inconnue',
-          });
         }
+      } catch (error) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'Erreur lors de la récupération des clients depuis Shopify',
+            details: error instanceof Error ? error.message : 'Erreur inconnue'
+          },
+          { status: 500 }
+        );
       }
     } else {
       return NextResponse.json(
@@ -184,4 +198,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

@@ -11,52 +11,29 @@ import { join } from 'path';
 import { config } from 'dotenv';
 
 // Charger les variables d'environnement
-// Essayer plusieurs emplacements possibles
-const possibleEnvPaths = [
-  join(process.cwd(), 'variables', '.env.local'),
-  join(process.cwd(), '.env.local'),
-  join(process.cwd(), 'env.backup'),
-];
-
-let envLoaded = false;
-for (const envPath of possibleEnvPaths) {
-  try {
-    const envContent = readFileSync(envPath, 'utf-8');
-    const envVars = envContent.split('\n').reduce((acc, line) => {
-      // Ignorer les commentaires et lignes vides
-      const trimmedLine = line.trim();
-      if (!trimmedLine || trimmedLine.startsWith('#')) {
-        return acc;
-      }
-      
-      const [key, ...valueParts] = trimmedLine.split('=');
-      if (key && valueParts.length > 0) {
-        acc[key.trim()] = valueParts.join('=').trim().replace(/^["']|["']$/g, '');
-      }
-      return acc;
-    }, {} as Record<string, string>);
-    
-    // Charger dans process.env
-    Object.entries(envVars).forEach(([key, value]) => {
-      if (!process.env[key] && value) {
-        process.env[key] = value;
-      }
-    });
-    
-    envLoaded = true;
-    console.log(`✅ Variables d'environnement chargées depuis: ${envPath}`);
-    break;
-  } catch (error) {
-    // Continuer avec le prochain chemin
-  }
-}
-
-if (!envLoaded) {
-  console.warn('⚠️ Aucun fichier .env.local trouvé, utilisation des variables système');
+const envPath = join(process.cwd(), 'variables', '.env.local');
+try {
+  const envContent = readFileSync(envPath, 'utf-8');
+  const envVars = envContent.split('\n').reduce((acc, line) => {
+    const [key, ...valueParts] = line.split('=');
+    if (key && valueParts.length > 0) {
+      acc[key.trim()] = valueParts.join('=').trim();
+    }
+    return acc;
+  }, {} as Record<string, string>);
+  
+  // Charger dans process.env
+  Object.entries(envVars).forEach(([key, value]) => {
+    if (!process.env[key]) {
+      process.env[key] = value;
+    }
+  });
+} catch (error) {
+  console.warn('⚠️ Fichier .env.local non trouvé, utilisation des variables système');
 }
 
 // Configuration
-const WEBHOOK_SECRET = process.env.SHOPIFY_WEBHOOK_SECRET || '';
+const WEBHOOK_SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
 const BASE_URL = process.env.TEST_WEBHOOK_URL || 'http://localhost:3000';
 const WEBHOOK_ENDPOINT = `${BASE_URL}/api/webhooks/revalidate`;
 

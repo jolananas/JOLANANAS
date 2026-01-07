@@ -1,8 +1,14 @@
+/**
+ * 🍍 JOLANANAS - Webhook Revalidation Next.js ISR
+ * ===============================================
+ * Traitement des webhooks Shopify pour invalider le cache ISR
+ * Plus de stockage DB - utilise uniquement les logs serveur
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag } from 'next/cache';
 import { verifyWebhookSignature } from '@/app/src/lib/shopify/verify-webhook';
 import { TAGS } from '@/app/src/lib/constants';
-import { db } from '@/app/src/lib/db';
 import { ENV } from '@/app/src/lib/env';
 
 /**
@@ -32,7 +38,6 @@ function verifyRevalidationSecret(req: NextRequest): boolean {
 
 export async function POST(req: NextRequest) {
   const startTime = Date.now();
-  let webhookEventId: string | null = null;
   
   try {
     // Vérifier le secret de revalidation personnalisé (si configuré et fourni)
@@ -67,40 +72,20 @@ export async function POST(req: NextRequest) {
       payload = hmacPayload;
     }
 
-    if (!isValid) {
-      console.error(`❌ Webhook revalidate: ${error}`);
-      return NextResponse.json({ message: error }, { status: 401 });
-    }
-
     // Logique de revalidation basée sur le Topic Shopify
     if (!topic) {
       console.warn('⚠️ Webhook revalidate: Topic manquant');
       return NextResponse.json({ status: 200, message: 'Topic manquant' });
     }
 
-    // Extraire l'ID Shopify du payload pour l'enregistrement
+    // Extraire l'ID Shopify du payload pour le logging
     const shopifyId = payload?.id?.toString() || 
                      payload?.admin_graphql_api_id?.split('/').pop() || 
-                     `test-${Date.now()}`;
+                     `unknown-${Date.now()}`;
 
-    // Enregistrer l'événement webhook dans la base de données
-    try {
-      const webhookEvent = await db.webhookEvent.create({
-        data: {
-          topic,
-          shopifyId,
-          payload: JSON.stringify(payload || {}),
-          status: 'PROCESSING',
-        },
-      });
-      webhookEventId = webhookEvent.id;
-      console.log(`📝 Webhook enregistré dans la DB: ${webhookEventId} (${topic})`);
-    } catch (dbError) {
-      console.warn('⚠️ Impossible d\'enregistrer le webhook dans la DB:', dbError);
-      // Continuer même si l'enregistrement DB échoue
-    }
-
-    console.log(`⚡ Webhook reçu: ${topic} (ID: ${shopifyId}). Revalidation en cours...`);
+    // Logger l'événement webhook (remplace le stockage DB)
+    console.log(`📝 Webhook reçu: ${topic} (ID: ${shopifyId})`);
+    console.log(`⚡ Revalidation en cours...`);
 
     let revalidatedTag: string | null = null;
 
@@ -124,21 +109,6 @@ export async function POST(req: NextRequest) {
         break;
     }
 
-    // Marquer l'événement comme traité
-    if (webhookEventId) {
-      try {
-        await db.webhookEvent.update({
-          where: { id: webhookEventId },
-          data: {
-            status: 'PROCESSED',
-            processedAt: new Date(),
-          },
-        });
-      } catch (dbError) {
-        console.warn('⚠️ Impossible de mettre à jour le statut du webhook:', dbError);
-      }
-    }
-
     const duration = Date.now() - startTime;
     console.log(`✅ Webhook traité avec succès en ${duration}ms`);
 
@@ -147,7 +117,7 @@ export async function POST(req: NextRequest) {
       revalidated: true, 
       topic,
       tag: revalidatedTag,
-      webhookEventId,
+      shopifyId,
       duration: `${duration}ms`,
       now: Date.now() 
     });
@@ -155,21 +125,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('❌ Erreur lors du traitement du webhook:', error);
     
-    // Marquer l'événement comme échoué si on a un ID
-    if (webhookEventId) {
-      try {
-        await db.webhookEvent.update({
-          where: { id: webhookEventId },
-          data: {
-            status: 'FAILED',
-            processedAt: new Date(),
-          },
-        });
-      } catch (dbError) {
-        console.warn('⚠️ Impossible de mettre à jour le statut du webhook:', dbError);
-      }
-    }
-
     return NextResponse.json(
       { 
         status: 500, 
@@ -180,4 +135,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

@@ -3,13 +3,13 @@
  * ==================================================
  * Traite les notifications de paiement réussi depuis Shopify
  * Convertit le draft order en commande finale
+ * Plus de stockage DB - utilise uniquement les logs serveur
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getShopifyAdminClient } from '@/lib/ShopifyAdminClient';
 import { ENV } from '@/app/src/lib/env';
 import { validateWebhookHMAC } from '@/lib/utils/formatters.server';
-import { db } from '@/app/src/lib/db';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,15 +31,11 @@ export async function POST(request: NextRequest) {
     }
 
     const paymentData = JSON.parse(body);
-    console.log('💳 Notification paiement reçue:', paymentData);
-
-    await db.webhookEvent.create({
-      data: {
-        topic: 'payments/success',
-        shopifyId: paymentData.id?.toString() || paymentData.draft_order_id?.toString() || 'unknown',
-        payload: paymentData,
-        status: 'PROCESSING',
-      },
+    console.log('💳 Notification paiement reçue:', {
+      id: paymentData.id,
+      draft_order_id: paymentData.draft_order_id,
+      status: paymentData.status || paymentData.financial_status,
+      timestamp: new Date().toISOString(),
     });
 
     const draftOrderId = paymentData.draft_order_id || paymentData.draft_order?.id;
@@ -53,17 +49,11 @@ export async function POST(request: NextRequest) {
     
     if (paymentStatus !== 'paid' && paymentStatus !== 'pending') {
       console.log('⚠️ Paiement non réussi:', paymentStatus);
-      await db.webhookEvent.updateMany({
-        where: {
-          shopifyId: paymentData.id?.toString() || draftOrderId.toString(),
-          topic: 'payments/success',
-        },
-        data: {
-          status: 'PROCESSED',
-          processedAt: new Date(),
-        },
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Paiement non réussi, ignoré', 
+        status: paymentStatus 
       });
-      return NextResponse.json({ success: true, message: 'Paiement non réussi, ignoré', status: paymentStatus });
     }
 
     const adminClient = getShopifyAdminClient();
@@ -81,22 +71,16 @@ export async function POST(request: NextRequest) {
 
     if (completeResponse.errors) {
       console.error('❌ Erreur finalisation draft order:', completeResponse.errors);
-      await db.webhookEvent.updateMany({
-        where: { shopifyId: draftOrderId.toString(), topic: 'payments/success' },
-        data: { status: 'PROCESSED', processedAt: new Date() },
-      });
-      return NextResponse.json({ error: 'Erreur lors de la finalisation de la commande' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Erreur lors de la finalisation de la commande' 
+      }, { status: 500 });
     }
-
-    await db.webhookEvent.updateMany({
-      where: { shopifyId: draftOrderId.toString(), topic: 'payments/success' },
-      data: { status: 'PROCESSED', processedAt: new Date() },
-    });
 
     console.log('✅ Paiement traité avec succès:', {
       draftOrderId,
       orderId: completeResponse.data?.draft_order?.order_id,
       paymentStatus,
+      timestamp: new Date().toISOString(),
     });
 
     return NextResponse.json({

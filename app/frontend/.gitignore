@@ -28,4 +28,9 @@ next-env.d.ts
 
 # logs
 /log/
-*.logpublic/assets/images/background/bg-jolananas.gif
+*.log
+
+# Large files
+public/assets/images/background/bg-jolananas.gif
+app/frontend/public/assets/images/background/bg-jolananas.gif
+env.backup

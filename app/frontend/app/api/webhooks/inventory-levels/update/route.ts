@@ -2,14 +2,16 @@
  * 🍍 JOLANANAS - Webhook Inventaire Shopify (Consolidé)
  * ====================================================
  * Traitement des mises à jour inventaire Shopify
+ * Plus de stockage DB - utilise uniquement les logs serveur
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
 import { ENV } from '@/app/src/lib/env';
 import { getShopifyAdminClient } from '@/lib/ShopifyAdminClient';
 import { validateWebhookHMAC } from '@/app/src/lib/utils/formatters.server';
 import { normalizeDataForAPI } from '@/app/src/lib/utils/formatters';
+import { revalidateTag } from 'next/cache';
+import { TAGS } from '@/app/src/lib/constants';
 
 /**
  * POST /api/webhooks/inventory-levels/update
@@ -29,29 +31,23 @@ export async function POST(request: NextRequest) {
 
     const body = normalizeDataForAPI(bodyRaw);
     const inventoryData = normalizeDataForAPI(JSON.parse(body));
-    console.log('📦 Inventaire mis à jour Shopify:', inventoryData.inventory_item_id);
-
-    await db.webhookEvent.create({
-      data: {
-        topic: 'inventory_levels/update',
-        shopifyId: inventoryData.inventory_item_id.toString(),
-        payload: inventoryData,
-        status: 'PROCESSING',
-      },
+    console.log('📦 Inventaire mis à jour Shopify:', {
+      inventory_item_id: inventoryData.inventory_item_id,
+      location_id: inventoryData.location_id,
+      available: inventoryData.available,
+      timestamp: new Date().toISOString(),
     });
+
+    // Invalider le cache Next.js ISR pour les produits affectés
+    // Note: On invalide le tag 'products' pour forcer la régénération
+    try {
+      revalidateTag(TAGS.PRODUCTS);
+      console.log('✅ Cache produits invalidé via ISR');
+    } catch (cacheError) {
+      console.warn('⚠️ Erreur invalidation cache ISR:', cacheError);
+    }
 
     await updateInventory(inventoryData);
-
-    await db.webhookEvent.updateMany({
-      where: {
-        shopifyId: inventoryData.inventory_item_id.toString(),
-        topic: 'inventory_levels/update',
-      },
-      data: {
-        status: 'PROCESSED',
-        processedAt: new Date(),
-      },
-    });
 
     console.log('✅ Inventaire mis à jour:', inventoryData.inventory_item_id);
     return NextResponse.json({ success: true });
@@ -66,6 +62,8 @@ async function updateInventory(inventoryData: any) {
   try {
     const { inventory_item_id, location_id, available } = inventoryData;
     console.log(`📦 Stock mis à jour - Location: ${location_id}, Available: ${available}`);
+    // Note: Le stock est déjà mis à jour dans Shopify
+    // Cette fonction peut être utilisée pour des actions supplémentaires (notifications, etc.)
   } catch (error: unknown) {
     console.error('❌ Erreur mise à jour inventaire:', error);
     throw error;

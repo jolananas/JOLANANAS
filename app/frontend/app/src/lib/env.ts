@@ -48,10 +48,8 @@ const envSchema = z.object({
     })
     .default('development'),
   
-  DATABASE_URL: z
-    .string()
-    .min(1, 'DATABASE_URL est requis')
-    .default('memory:test.sqlite'),
+  // DATABASE_URL supprimé - Plus de base de données locale
+  // L'application utilise uniquement Shopify APIs et Next.js ISR
   
   NEXTAUTH_SECRET: z
     .string()
@@ -152,7 +150,7 @@ function validateEnv(): EnvironmentConfig {
       SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
       SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
       NODE_ENV: process.env.NODE_ENV,
-      DATABASE_URL: process.env.DATABASE_URL,
+      // DATABASE_URL supprimé - Plus de base de données locale
       NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
       SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN,
@@ -183,7 +181,7 @@ function validateEnv(): EnvironmentConfig {
         SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'fallback-token',
         SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION ,
         NODE_ENV: (process.env.NODE_ENV as any) || 'production',
-        DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
+        // DATABASE_URL supprimé - Plus de base de données locale
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret',
         NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
         SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN || 'fallback-admin-token',

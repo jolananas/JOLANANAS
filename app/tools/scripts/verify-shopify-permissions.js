@@ -375,7 +375,7 @@ async function main() {
   // Récupérer les variables depuis envVars ou process.env
   const storeDomain = envVars.SHOPIFY_STORE_DOMAIN || process.env.SHOPIFY_STORE_DOMAIN;
   const adminToken = envVars.SHOPIFY_ADMIN_TOKEN || process.env.SHOPIFY_ADMIN_TOKEN;
-  const apiVersion = envVars.SHOPIFY_API_VERSION || process.env.SHOPIFY_API_VERSION || '2026-04';
+  const apiVersion = envVars.SHOPIFY_API_VERSION || process.env.SHOPIFY_API_VERSION ;
   
   // Tester les permissions
   const testResult = await testAdminAPIPermissions(storeDomain, adminToken, apiVersion);

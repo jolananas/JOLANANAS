@@ -1,36 +1,25 @@
 /**
  * 🍍 JOLANANAS - Endpoint de Santé Base de Données
  * ==============================================
- * Vérifie la connexion à la base de données Prisma
+ * Endpoint désactivé - Plus de base de données locale
+ * 
+ * Note: Cet endpoint retourne un message indiquant que la DB n'est plus utilisée.
+ * Pour vérifier la santé de l'application, utilisez /api/health
  */
 
-import { db } from '@/app/src/lib/db'
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function GET() {
-  try {
-    // Test simple de connexion à la base de données
-    await db.$queryRaw`SELECT 1`
-    
-    return NextResponse.json(
-      { 
-        status: 'ok', 
-        message: 'Base de données connectée',
-        timestamp: new Date().toISOString(),
-      },
-      { status: 200 }
-    )
-  } catch (error) {
-    console.error('❌ Erreur de connexion à la base de données:', error)
-    
-    return NextResponse.json(
-      { 
-        status: 'error', 
-        message: 'Base de données non disponible',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        timestamp: new Date().toISOString(),
-      },
-      { status: 503 }
-    )
-  }
+  return NextResponse.json(
+    { 
+      status: 'deprecated', 
+      message: 'La base de données locale n\'est plus utilisée. L\'application utilise uniquement Shopify APIs.',
+      architecture: 'database-less',
+      dataSource: 'Shopify APIs (Cart, Orders, Customer Accounts, Metafields)',
+      cache: 'Next.js ISR',
+      logs: 'Vercel Analytics / Server Logs',
+      timestamp: new Date().toISOString(),
+    },
+    { status: 200 }
+  );
 }

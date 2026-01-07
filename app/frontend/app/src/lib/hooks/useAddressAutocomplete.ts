@@ -220,8 +220,8 @@ export function useAddressAutocomplete() {
             label,
             street: street || name,
             housenumber,
-            postcode: postcode || '',
-            city: city || '',
+            postcode: postcode,
+            city: city,
             type,
             coordinates: feature.geometry.coordinates,
           };
@@ -354,8 +354,8 @@ export function useAddressAutocomplete() {
             label,
             street: street || name,
             housenumber,
-            postcode: postcode || '',
-            city: city || '',
+            postcode: postcode,
+            city: city,
             type,
             coordinates: [lon, lat] as [number, number],
           };
@@ -688,9 +688,9 @@ export function useAddressAutocomplete() {
       const queryWords = queryLower.split(/\s+/).filter(w => w.length > 0);
       
       const suggestionsWithScore = uniqueSuggestions.map(suggestion => {
-        const labelLower = (suggestion.label || '').toLowerCase();
-        const streetLower = (suggestion.street || '').toLowerCase();
-        const cityLower = (suggestion.city || '').toLowerCase();
+        const labelLower = (suggestion.label).toLowerCase();
+        const streetLower = (suggestion.street).toLowerCase();
+        const cityLower = (suggestion.city).toLowerCase();
         
         let score = 0;
         
@@ -772,8 +772,8 @@ export function useAddressAutocomplete() {
             'place': 3,
             'locality': 4,
           };
-          const aPriority = typePriority[a.suggestion.type || ''] || 5;
-          const bPriority = typePriority[b.suggestion.type || ''] || 5;
+          const aPriority = typePriority[a.suggestion.type] || 5;
+          const bPriority = typePriority[b.suggestion.type] || 5;
           
           return aPriority - bPriority;
         })

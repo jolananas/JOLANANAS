@@ -118,11 +118,89 @@ Après configuration, redémarrez le serveur et vérifiez les logs :
 ✅ Shopify Admin Client initialisé: votre-boutique.myshopify.com
 ```
 
+## 🔐 Configuration Customer Account API (OAuth 2.0)
+
+Le Customer Account API permet l'authentification sécurisée des clients avec OAuth 2.0, l'accès aux données de compte (historique de commandes, adresses sauvegardées) et l'intégration avec Shopify Checkout.
+
+### Variables Requises
+
+```env
+# Customer Account API - OAuth 2.0 Authentication
+# Obtenu depuis: Settings → Customer accounts → Customer Account API Client ID
+SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID=votre_client_id_ici
+
+# Client Secret (optionnel, requis pour certains flux OAuth)
+SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET=votre_client_secret_ici
+
+# Version de l'API Customer Account (par défaut: 2026-04)
+SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION=2026-04
+```
+
+### Comment obtenir le Customer Account API Client ID
+
+1. **Accédez à Shopify Admin**
+   - Allez sur <https://admin.shopify.com>
+   - Connectez-vous à votre boutique
+
+2. **Accédez aux paramètres Customer Accounts**
+   - Cliquez sur **Settings** (Paramètres) en bas à gauche
+   - Cliquez sur **Customer accounts** (Comptes clients)
+
+3. **Trouvez le Customer Account API Client ID**
+   - Dans la section **Customer Account API**, vous trouverez votre **Client ID**
+   - ⚠️ **Note** : Le Client ID est visible directement dans l'interface
+   - Si vous avez besoin d'un **Client Secret**, il sera généré lors de la configuration OAuth
+
+4. **Configurez l'authentification OAuth 2.0**
+   - Le Customer Account API utilise OAuth 2.0 pour l'authentification
+   - Configurez les **redirect URIs** dans Shopify Admin pour votre application Next.js
+   - Exemple : `https://votre-domaine.com/api/auth/callback/shopify`
+
+5. **Ajoutez les variables dans `.env.local`**
+
+   ```env
+   SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID=votre_client_id_obtenu
+   SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET=votre_client_secret_si_requis
+   ```
+
+### Fonctionnalités disponibles avec Customer Account API
+
+- ✅ **Authentification sans mot de passe** : Connexion avec code de vérification à 6 chiffres
+- ✅ **Historique des commandes** : Accès sécurisé aux commandes passées
+- ✅ **Adresses sauvegardées** : Gestion des adresses de livraison
+- ✅ **Méthodes de paiement** : Sauvegarde sécurisée des méthodes de paiement
+- ✅ **Fonctionnalités B2B** : Support des comptes B2B si activé
+- ✅ **Sign in with Shop** : Expérience de connexion simplifiée
+
+### Intégration avec Next.js
+
+Pour intégrer le Customer Account API dans votre application Next.js :
+
+1. **Configurez le flux OAuth 2.0**
+   - Créez une route API pour gérer le callback OAuth
+   - Exemple : `app/api/auth/callback/shopify/route.ts`
+
+2. **Authentifiez les sessions client**
+   - Utilisez le Client ID pour initier le flux d'authentification
+   - Stockez les tokens d'accès de manière sécurisée (cookies httpOnly)
+
+3. **Accédez aux données client**
+   - Utilisez les tokens d'accès pour appeler l'API Customer Account
+   - Récupérez les commandes, adresses, et autres données de compte
+
+### Documentation technique
+
+Pour l'implémentation technique complète, consultez :
+- [Shopify Customer Account API Documentation](https://shopify.dev/docs/api/customer-account)
+- [OAuth 2.0 Authentication Flow](https://shopify.dev/docs/api/customer-account/authentication)
+
+📖 **Guide détaillé** : Voir [Migration Shopify Customer Accounts — JOLANANAS.md](../../docs/Migration%20Shopify%20Customer%20Accounts%20—%20JOLANANAS.md) pour les instructions complètes.
+
 ## ✅ Variables Optionnelles
 
 ```env
-# Version de l'API Shopify (par défaut: 2025-10)
-SHOPIFY_API_VERSION=2025-10
+# Version de l'API Shopify (par défaut: 2026-04)
+SHOPIFY_API_VERSION=2026-04
 
 # Secret pour valider les webhooks (optionnel)
 SHOPIFY_WEBHOOK_SECRET=
@@ -194,7 +272,7 @@ Après le redémarrage, vous devriez voir dans les logs :
 ```console
 ✅ Variables d'environnement validées: {
   SHOPIFY_STORE_DOMAIN: 'u6ydbb-sx.myshopify.com',
-  SHOPIFY_API_VERSION: '2025-10',
+  SHOPIFY_API_VERSION: '2026-04',
   NODE_ENV: 'development',
   ...
 }
@@ -215,8 +293,8 @@ Si vous ne voyez pas ce message, les variables ne sont pas chargées correctemen
 **SHOPIFY_API_VERSION** doit être au format `YYYY-MM` :
 
 ```env
-✅ Correct: 2025-10
-❌ Incorrect: 2025-10-01
+✅ Correct: 2026-04
+❌ Incorrect: 2026-04-01
 ❌ Incorrect: latest
 ```
 

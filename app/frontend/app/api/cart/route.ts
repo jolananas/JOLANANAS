@@ -1,121 +1,81 @@
 /**
- * 🍍 JOLANANAS - API Panier Persisté
+ * 🍍 JOLANANAS - API Panier Shopify
  * =====================================
- * CRUD complet pour les paniers persistés
+ * CRUD complet pour les paniers utilisant uniquement Shopify Cart API
+ * Plus de base de données locale - tout est géré par Shopify
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/src/lib/auth';
-import { db } from '@/app/src/lib/db';
 import { getShopifyClient } from '@/lib/ShopifyStorefrontClient';
+import { getCart, createCart, addToCart, updateCartLine, removeFromCart } from '@/app/src/lib/shopify/index';
+import { getCartIdFromRequest, setCartIdInResponse, removeCartIdFromResponse } from '@/app/src/lib/utils/cart-storage';
 import { z } from 'zod';
 
 export const runtime = 'nodejs';
 
 // Schémas de validation
 const AddItemSchema = z.object({
-  productId: z.string().min(1),
   variantId: z.string().min(1),
   quantity: z.number().min(1).max(99),
 });
 
 const UpdateItemSchema = z.object({
-  cartItemId: z.string().min(1),
+  lineId: z.string().min(1),
   quantity: z.number().min(0).max(99),
 });
 
 /**
  * GET /api/cart
- * Récupère le panier actuel de l'utilisateur
+ * Récupère le panier actuel depuis Shopify
  */
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    const { searchParams } = new URL(request.url);
-    const sessionId = searchParams.get('sessionId');
+    // Récupérer le cartId depuis les cookies
+    let cartId = getCartIdFromRequest(request);
 
-    // Trouver ou créer un panier
-    let cart = null;
-    
-    try {
-      if (session?.user?.shopifyCustomerId) {
-        // Utilisateur connecté - rechercher son panier par shopifyCustomerId
-        cart = await db.cart.findFirst({
-          where: {
-            shopifyCustomerId: session.user.shopifyCustomerId,
-            status: 'ACTIVE',
-          },
-          include: {
-            items: true,
-          },
-        });
-      } else if (sessionId) {
-        // Session anonyme - rechercher par sessionId
-        cart = await db.cart.findFirst({
-          where: {
-            sessionId,
-            status: 'ACTIVE',
-          },
-          include: {
-            items: true,
-          },
-        });
-      }
-
-      // Créer un nouveau panier si nécessaire
-      if (!cart) {
-        cart = await db.cart.create({
-          data: {
-            shopifyCustomerId: session?.user?.shopifyCustomerId || undefined,
-            sessionId: sessionId || undefined,
-            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 jours
-          },
-          include: {
-            items: true,
-          },
-        });
-      }
-
-      // Synchroniser avec Shopify si nécessaire
-      if (!cart.shopifyCartId) {
-        try {
-          const shopifyClient = getShopifyClient();
-          const shopifyCart = await shopifyClient.createCart();
-          
-          if (shopifyCart.data?.cartCreate?.cart) {
-            await db.cart.update({
-              where: { id: cart.id },
-              data: { shopifyCartId: shopifyCart.data.cartCreate.cart.id },
-            });
-            cart.shopifyCartId = shopifyCart.data.cartCreate.cart.id;
-          }
-        } catch (shopifyError) {
-          console.warn('⚠️ Erreur synchronisation Shopify (non bloquant):', shopifyError);
-          // Continuer sans bloquer - le panier local existe
-        }
-      }
-
+    // Si pas de cartId, retourner un panier vide
+    if (!cartId) {
       return NextResponse.json({
         success: true,
-        data: cart,
-      });
-    } catch (dbError) {
-      // Si erreur DB mais pas de session, retourner un panier vide
-      if (!session?.user?.shopifyCustomerId && !sessionId) {
-        console.warn('⚠️ Erreur DB sans session - retour panier vide');
-        return NextResponse.json({
-          success: true,
-          data: {
-            id: null,
-            items: [],
-            total: 0,
-            isEmpty: true,
+        data: {
+          id: null,
+          lines: [],
+          totalQuantity: 0,
+          cost: {
+            totalAmount: { amount: '0', currencyCode: 'EUR' },
           },
-        });
-      }
-      throw dbError; // Relancer l'erreur si session présente
+          isEmpty: true,
+        },
+      });
     }
+
+    // Récupérer le panier depuis Shopify
+    const cart = await getCart(cartId);
+
+    if (!cart) {
+      // Panier invalide ou expiré - supprimer le cookie
+      const response = NextResponse.json({
+        success: true,
+        data: {
+          id: null,
+          lines: [],
+          totalQuantity: 0,
+          cost: {
+            totalAmount: { amount: '0', currencyCode: 'EUR' },
+          },
+          isEmpty: true,
+        },
+      });
+      response.headers.set('Set-Cookie', removeCartIdFromResponse()['Set-Cookie']);
+      return response;
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: cart,
+    });
 
   } catch (error: unknown) {
     console.error('❌ Erreur récupération panier:', error);
@@ -131,14 +91,13 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/cart/items
- * Ajoute un article au panier
+ * POST /api/cart
+ * Ajoute un article au panier Shopify
  */
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     const body = await request.json();
-    const sessionId = body.sessionId;
 
     // Validation des données
     const validation = AddItemSchema.safeParse(body);
@@ -149,86 +108,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { productId, variantId, quantity } = validation.data;
+    const { variantId, quantity } = validation.data;
 
-    // Trouver ou créer un panier
+    // Récupérer ou créer le panier
+    let cartId = getCartIdFromRequest(request);
     let cart = null;
-    
-    if (session?.user?.shopifyCustomerId) {
-      cart = await db.cart.findFirst({
-        where: {
-          shopifyCustomerId: session.user.shopifyCustomerId,
-          status: 'ACTIVE',
-        },
-      });
-    } else if (sessionId) {
-      cart = await db.cart.findFirst({
-        where: {
-          sessionId,
-          status: 'ACTIVE',
-        },
-      });
+
+    if (cartId) {
+      // Récupérer le panier existant
+      cart = await getCart(cartId);
     }
 
-    if (!cart) {
-      cart = await db.cart.create({
-        data: {
-          shopifyCustomerId: session?.user?.shopifyCustomerId || undefined,
-          sessionId: sessionId || undefined,
-          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        },
-      });
-    }
-
-    // Synchroniser avec Shopify
-    const shopifyClient = getShopifyClient();
-    if (!cart.shopifyCartId) {
-      const shopifyCart = await shopifyClient.createCart();
-      if (shopifyCart.data?.cartCreate?.cart) {
-        await db.cart.update({
-          where: { id: cart.id },
-          data: { shopifyCartId: shopifyCart.data.cartCreate.cart.id },
-        });
-        cart.shopifyCartId = shopifyCart.data.cartCreate.cart.id;
+    // Créer un nouveau panier si nécessaire
+    if (!cart || !cartId) {
+      // Créer un panier avec le premier article
+      const shopifyClient = getShopifyClient();
+      const cartResponse = await shopifyClient.createCart([{
+        merchandiseId: variantId,
+        quantity,
+      }]);
+      
+      if (!cartResponse.data?.cartCreate?.cart) {
+        return NextResponse.json(
+          { success: false, error: 'Erreur lors de la création du panier' },
+          { status: 500 }
+        );
+      }
+      cart = cartResponse.data.cartCreate.cart;
+      cartId = cart.id;
+    } else {
+      // Ajouter l'article au panier existant
+      const updatedCart = await addToCart(cartId, variantId, quantity);
+      if (updatedCart) {
+        cart = updatedCart;
+      } else {
+        return NextResponse.json(
+          { success: false, error: 'Erreur lors de l\'ajout au panier' },
+          { status: 500 }
+        );
       }
     }
 
-    // Ajouter l'article au panier Shopify
-    if (cart.shopifyCartId) {
-      await shopifyClient.addToCart(cart.shopifyCartId, [
-        {
-          merchandiseId: variantId,
-          quantity,
-        },
-      ]);
+    // Retourner le panier avec le cookie
+    const response = NextResponse.json({
+      success: true,
+      data: cart,
+    });
+
+    // Définir le cookie avec le cartId
+    if (cartId) {
+      response.headers.set('Set-Cookie', setCartIdInResponse(cartId)['Set-Cookie']);
     }
 
-    // Enregistrer en base
-    const cartItem = await db.cartItem.create({
-      data: {
-        cartId: cart.id,
-        productId,
-        variantId,
-        quantity,
-        price: 0, // À récupérer depuis Shopify
-        title: '', // À récupérer depuis Shopify
-        variantTitle: '',
-        imageUrl: '',
-      },
-    });
-
-    // Retourner le panier complet
-    const updatedCart = await db.cart.findUnique({
-      where: { id: cart.id },
-      include: {
-        items: true,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      data: updatedCart,
-    });
+    return response;
 
   } catch (error: unknown) {
     console.error('❌ Erreur ajout au panier:', error);
@@ -244,8 +176,8 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * PUT /api/cart/items
- * Met à jour la quantité d'un article
+ * PUT /api/cart
+ * Met à jour la quantité d'un article dans le panier Shopify
  */
 export async function PUT(request: NextRequest) {
   try {
@@ -260,24 +192,48 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const { cartItemId, quantity } = validation.data;
+    const { lineId, quantity } = validation.data;
+
+    // Récupérer le cartId depuis les cookies
+    const cartId = getCartIdFromRequest(request);
+
+    if (!cartId) {
+      return NextResponse.json(
+        { success: false, error: 'Panier non trouvé' },
+        { status: 404 }
+      );
+    }
 
     // Supprimer l'article si quantité = 0
     if (quantity === 0) {
-      await db.cartItem.delete({
-        where: { id: cartItemId },
+      const updatedCart = await removeFromCart(cartId, lineId);
+      if (!updatedCart) {
+        return NextResponse.json(
+          { success: false, error: 'Erreur lors de la suppression' },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: updatedCart,
+        message: 'Article supprimé',
       });
-    } else {
-      // Mettre à jour la quantité
-      await db.cartItem.update({
-        where: { id: cartItemId },
-        data: { quantity },
-      });
+    }
+
+    // Mettre à jour la quantité
+    const updatedCart = await updateCartLine(cartId, lineId, quantity);
+    if (!updatedCart) {
+      return NextResponse.json(
+        { success: false, error: 'Erreur lors de la mise à jour' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
       success: true,
-      message: quantity === 0 ? 'Article supprimé' : 'Article mis à jour',
+      data: updatedCart,
+      message: 'Article mis à jour',
     });
 
   } catch (error: unknown) {
@@ -294,27 +250,43 @@ export async function PUT(request: NextRequest) {
 }
 
 /**
- * DELETE /api/cart/items
- * Supprime un article du panier
+ * DELETE /api/cart
+ * Supprime un article du panier Shopify
  */
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const cartItemId = searchParams.get('cartItemId');
+    const lineId = searchParams.get('lineId');
 
-    if (!cartItemId) {
+    if (!lineId) {
       return NextResponse.json(
-        { success: false, error: 'ID article requis' },
+        { success: false, error: 'ID ligne requis' },
         { status: 400 }
       );
     }
 
-    await db.cartItem.delete({
-      where: { id: cartItemId },
-    });
+    // Récupérer le cartId depuis les cookies
+    const cartId = getCartIdFromRequest(request);
+
+    if (!cartId) {
+      return NextResponse.json(
+        { success: false, error: 'Panier non trouvé' },
+        { status: 404 }
+      );
+    }
+
+    // Supprimer l'article du panier
+    const updatedCart = await removeFromCart(cartId, lineId);
+    if (!updatedCart) {
+      return NextResponse.json(
+        { success: false, error: 'Erreur lors de la suppression' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
+      data: updatedCart,
       message: 'Article supprimé du panier',
     });
 

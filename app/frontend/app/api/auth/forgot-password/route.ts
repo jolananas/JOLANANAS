@@ -3,10 +3,10 @@
  * ======================================
  * Endpoint pour demander une réinitialisation de mot de passe
  * Utilise Shopify Admin API pour envoyer une invitation de réinitialisation
+ * Plus de base de données locale - utilise uniquement Shopify APIs
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
 import { z } from 'zod';
 import { checkRateLimit } from '@/app/src/lib/rate-limit';
 import { getShopifyAdminClient } from '@/app/src/lib/ShopifyAdminClient';
@@ -130,4 +130,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

@@ -29,7 +29,7 @@ export async function GET(
 ) {
   try {
     const { handle } = await params;
-    const acceptHeader = request.headers.get('accept') || '';
+    const acceptHeader = request.headers.get('accept');
     const isBrowserRequest = acceptHeader.includes('text/html') && !acceptHeader.includes('application/json');
     
     console.log(`🔄 Récupération de la collection "${handle}" depuis Shopify...`);

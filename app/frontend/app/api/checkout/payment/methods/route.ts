@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       methods: paymentMethods,
-      storefrontToken: ENV.SHOPIFY_STOREFRONT_TOKEN ? 'configured' : 'not_configured',
+      storefrontToken: (ENV.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) ? 'configured' : 'not_configured',
       storeDomain: ENV.SHOPIFY_STORE_DOMAIN,
     }, {
       headers: {

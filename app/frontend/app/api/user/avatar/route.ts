@@ -2,12 +2,12 @@
  * 🍍 JOLANANAS - API Upload Avatar Utilisateur
  * ============================================
  * Endpoint pour uploader et gérer l'avatar de l'utilisateur
+ * Stockage local uniquement - peut être migré vers Shopify Metafields si nécessaire
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/src/lib/auth';
-import { db } from '@/app/src/lib/db';
 import { writeFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     // Vérifier l'authentification
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.id) {
+    if (!session?.user?.shopifyCustomerId) {
       return NextResponse.json(
         { success: false, error: 'Non authentifié' },
         { status: 401 }
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       await mkdir(avatarsDir, { recursive: true });
     }
 
-    // Générer un nom de fichier unique
+    // Générer un nom de fichier unique basé sur shopifyCustomerId
     const fileExtension = file.name.split('.').pop() || 'jpg';
     const fileName = `${session.user.shopifyCustomerId}-${Date.now()}.${fileExtension}`;
     const filePath = join(avatarsDir, fileName);
@@ -78,20 +78,19 @@ export async function POST(request: NextRequest) {
     // URL de l'avatar
     const avatarUrl = `/avatars/${fileName}`;
 
-    // Note: L'avatar est stocké localement mais n'est plus lié à un User dans la DB
-    // L'avatar peut être utilisé via l'URL retournée, mais n'est pas synchronisé avec Shopify
-    // Pour synchroniser avec Shopify, utiliser Metafields ou Admin API
+    // Note: L'avatar est stocké localement dans /public/avatars
+    // Pour synchroniser avec Shopify, utiliser Customer Metafields ou Admin API
+    // TODO: Optionnel - Stocker l'URL de l'avatar dans Shopify Metafields
 
     return NextResponse.json({
       success: true,
       message: 'Avatar mis à jour avec succès',
       avatar: avatarUrl,
       user: {
-        id: session.user.shopifyCustomerId,
+        shopifyId: session.user.shopifyCustomerId,
         email: session.user.email,
         name: session.user.name,
         avatar: avatarUrl,
-        role: session.user.role,
       },
     });
 
@@ -128,23 +127,23 @@ export async function DELETE(request: NextRequest) {
     // Vérifier l'authentification
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.id) {
+    if (!session?.user?.shopifyCustomerId) {
       return NextResponse.json(
         { success: false, error: 'Non authentifié' },
         { status: 401 }
       );
     }
 
-    // Récupérer l'utilisateur
-    const user = await db.user.findUnique({
-      where: { id: session.user.id },
-      select: { avatar: true },
-    });
-
-    // Supprimer le fichier si il existe
-    if (user?.avatar && user.avatar.startsWith('/avatars/')) {
-      const filePath = join(process.cwd(), 'public', user.avatar);
-      if (existsSync(filePath)) {
+    // Chercher les fichiers d'avatar existants pour ce client
+    const avatarsDir = join(process.cwd(), 'public', 'avatars');
+    if (existsSync(avatarsDir)) {
+      const fs = await import('fs/promises');
+      const files = await fs.readdir(avatarsDir);
+      const userAvatars = files.filter(file => file.startsWith(`${session.user.shopifyCustomerId}-`));
+      
+      // Supprimer tous les avatars de l'utilisateur
+      for (const file of userAvatars) {
+        const filePath = join(avatarsDir, file);
         try {
           await unlink(filePath);
         } catch (err) {
@@ -153,26 +152,9 @@ export async function DELETE(request: NextRequest) {
       }
     }
 
-    // Mettre à jour la base de données
-    const updatedUser = await db.user.update({
-      where: { id: session.user.id },
-      data: {
-        avatar: null,
-        image: null,
-      },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        avatar: true,
-        role: true,
-      },
-    });
-
     return NextResponse.json({
       success: true,
       message: 'Avatar supprimé avec succès',
-      user: updatedUser,
     });
 
   } catch (error: unknown) {
@@ -198,4 +180,3 @@ export async function DELETE(request: NextRequest) {
     );
   }
 }
-

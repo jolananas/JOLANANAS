@@ -13,7 +13,7 @@ function getShopifyConfig(): { endpoint: string; token: string } | null {
     
     return {
       endpoint,
-      token: ENV.SHOPIFY_STOREFRONT_TOKEN,
+      token: ENV.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
     };
   } catch (error) {
     // Si la validation ENV échoue, cela signifie que les variables ne sont pas configurées
@@ -43,10 +43,10 @@ export async function shopifyFetch<T>({
 
   if (!config) {
     // Retourner une structure avec erreur si Shopify n'est pas configuré
-    console.error('❌ Configuration Shopify manquante: SHOPIFY_STORE_DOMAIN ou SHOPIFY_STOREFRONT_TOKEN non configurés');
+    console.error('❌ Configuration Shopify manquante: SHOPIFY_STORE_DOMAIN ou SHOPIFY_STOREFRONT_TOKEN/SHOPIFY_STOREFRONT_ACCESS_TOKEN non configurés');
     return { 
       data: {} as T, 
-      errors: [{ message: "Shopify environment variables are not configured. Please set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_TOKEN in your .env.local file." }] 
+      errors: [{ message: "Shopify environment variables are not configured. Please set SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_TOKEN (or SHOPIFY_STOREFRONT_ACCESS_TOKEN) in your .env.local file." }] 
     }
   }
 
@@ -210,7 +210,7 @@ export async function shopifyFetch<T>({
         nextOptions.tags = tags;
       }
     }
-
+    
     const result = await fetch(normalizedEndpoint, {
       method: "POST",
       headers: headers,

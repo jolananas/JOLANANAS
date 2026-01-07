@@ -1,11 +1,11 @@
 /**
- * 🍍 JOLANANAS - Webhook Commandes Shopify (Consolidé)
+ * 🍍 JOLANANAS - Webhook Commandes Shopify
  * ====================================================
- * Traitement des nouvelles commandes Shopify
+ * Traitement des nouvelles commandes Shopify sans stockage DB
+ * Les commandes sont déjà stockées dans Shopify - pas besoin de duplication locale
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
 import { ENV } from '@/app/src/lib/env';
 import { validateWebhookHMAC } from '@/app/src/lib/utils/formatters.server';
 import { normalizeDataForAPI } from '@/app/src/lib/utils/formatters';
@@ -13,6 +13,9 @@ import { normalizeDataForAPI } from '@/app/src/lib/utils/formatters';
 /**
  * POST /api/webhooks/orders/create
  * Traite les nouvelles commandes Shopify
+ * 
+ * Note: Les commandes sont déjà stockées dans Shopify.
+ * Ce webhook sert uniquement à déclencher des actions (notifications, logs, etc.)
  */
 export async function POST(request: NextRequest) {
   try {
@@ -31,42 +34,39 @@ export async function POST(request: NextRequest) {
     // Normaliser le body pour éliminer les caractères Unicode problématiques
     const body = normalizeDataForAPI(bodyRaw);
     const orderData = normalizeDataForAPI(JSON.parse(body));
-    console.log('📦 Nouvelle commande Shopify:', orderData.id);
-
-    // Enregistrer l'événement webhook
-    await db.webhookEvent.create({
-      data: {
-        topic: 'orders/create',
-        shopifyId: orderData.id.toString(),
-        payload: orderData,
-        status: 'PROCESSING',
-      },
+    
+    const orderId = orderData.id;
+    const orderNumber = orderData.order_number || orderData.name;
+    const customerEmail = orderData.email;
+    const totalPrice = orderData.total_price;
+    
+    console.log('📦 Nouvelle commande Shopify:', {
+      id: orderId,
+      orderNumber,
+      email: customerEmail,
+      total: totalPrice,
+      currency: orderData.currency,
     });
 
-    // Traitement de la commande
+    // Traitement de la commande (sans stockage DB)
     await processNewOrder(orderData);
 
-    // Marquer comme traité
-    await db.webhookEvent.updateMany({
-      where: {
-        shopifyId: orderData.id.toString(),
-        topic: 'orders/create',
-      },
-      data: {
-        status: 'PROCESSED',
-        processedAt: new Date(),
-      },
+    console.log('✅ Commande traitée:', orderId);
+
+    return NextResponse.json({ 
+      success: true,
+      message: 'Webhook traité avec succès',
+      orderId: orderId.toString(),
     });
-
-    console.log('✅ Commande traitée:', orderData.id);
-
-    return NextResponse.json({ success: true });
 
   } catch (error: unknown) {
     console.error('❌ Erreur webhook orders/create:', error);
     
     return NextResponse.json(
-      { error: 'Erreur traitement commande' },
+      { 
+        error: 'Erreur traitement commande',
+        message: error instanceof Error ? error.message : 'Erreur inconnue',
+      },
       { status: 500 }
     );
   }
@@ -74,6 +74,12 @@ export async function POST(request: NextRequest) {
 
 /**
  * Traite une nouvelle commande Shopify
+ * Actions possibles :
+ * - Envoyer des notifications (email, SMS, etc.)
+ * - Logger l'événement pour analytics
+ * - Déclencher des actions métier (stock, marketing, etc.)
+ * 
+ * Note: Les données de commande sont déjà dans Shopify et peuvent être récupérées via Orders API
  */
 async function processNewOrder(orderData: any) {
   try {
@@ -91,83 +97,32 @@ async function processNewOrder(orderData: any) {
 
     const shopifyCustomerId = customer?.id?.toString() || null;
 
-    // Détecter la devise à utiliser
-    const { getCurrency } = await import('@/lib/currency/currencyService');
-    const detectedCurrency = currency || await getCurrency();
-
-    // Créer la commande locale
-    const order = await db.order.create({
-      data: {
-        shopifyOrderId: shopifyOrderId.toString(),
-        shopifyCustomerId: shopifyCustomerId, 
-        status: 'PAID',
-        total: parseFloat(total_price),
-        currency: detectedCurrency,
-        shippingCost: parseFloat(orderData.shipping_lines?.[0]?.price || '0'),
-        taxAmount: parseFloat(orderData.total_tax || '0'),
-        createdAt: new Date(created_at),
-      },
+    // Logger l'événement pour analytics (Vercel Analytics, logs serveur, etc.)
+    console.log('📊 Commande créée:', {
+      shopifyOrderId: shopifyOrderId.toString(),
+      shopifyCustomerId,
+      email,
+      total: total_price,
+      currency,
+      itemsCount: line_items?.length || 0,
+      createdAt: created_at,
     });
 
-    // Ajouter les articles de la commande
-    for (const lineItem of line_items) {
-      await db.orderItem.create({
-        data: {
-          orderId: order.id,
-          productId: lineItem.product_id?.toString(),
-          variantId: lineItem.variant_id?.toString(),
-          quantity: lineItem.quantity,
-          price: parseFloat(lineItem.price),
-          title: lineItem.title,
-          variantTitle: lineItem.variant_title,
-          imageUrl: lineItem.image || null,
-        },
-      });
-    }
+    // TODO: Actions optionnelles à implémenter selon les besoins :
+    // - Envoyer un email de confirmation au client
+    // - Envoyer une notification au service client
+    // - Mettre à jour des métriques analytics
+    // - Déclencher des workflows marketing (abandoned cart recovery, etc.)
+    // - Synchroniser avec des systèmes externes (ERP, comptabilité, etc.)
 
-    // Adresses
-    if (shipping_address) {
-      await db.address.create({
-        data: {
-          orderId: order.id,
-          type: 'SHIPPING',
-          firstName: shipping_address.first_name,
-          lastName: shipping_address.last_name,
-          company: shipping_address.company || null,
-          address1: shipping_address.address1,
-          address2: shipping_address.address2 || null,
-          city: shipping_address.city,
-          province: shipping_address.province || null,
-          country: shipping_address.country,
-          zip: shipping_address.zip,
-          phone: shipping_address.phone || null,
-        },
-      }).catch((err) => console.warn('⚠️ Erreur creation adresse livraison:', err));
-    }
-
-    if (billing_address) {
-      await db.address.create({
-        data: {
-          orderId: order.id,
-          type: 'BILLING',
-          firstName: billing_address.first_name,
-          lastName: billing_address.last_name,
-          company: billing_address.company || null,
-          address1: billing_address.address1,
-          address2: billing_address.address2 || null,
-          city: billing_address.city,
-          province: billing_address.province || null,
-          country: billing_address.country,
-          zip: billing_address.zip,
-          phone: billing_address.phone || null,
-        },
-      }).catch((err) => console.warn('⚠️ Erreur creation adresse facturation:', err));
-    }
-
-    console.log('✅ Commande locale créée:', order.id);
+    // Exemple : Envoyer une notification si nécessaire
+    // if (ENV.RESEND_API_KEY) {
+    //   await sendOrderConfirmationEmail(email, orderData);
+    // }
 
   } catch (error: unknown) {
     console.error('❌ Erreur traitement commande:', error);
-    throw error;
+    // Ne pas throw l'erreur pour éviter que Shopify retry indéfiniment
+    // Les erreurs sont loggées pour debugging
   }
 }

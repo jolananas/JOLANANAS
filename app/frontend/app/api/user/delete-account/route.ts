@@ -1,7 +1,8 @@
 /**
  * 🍍 JOLANANAS - API Suppression Compte Utilisateur (RGPD)
  * =========================================================
- * Endpoint pour supprimer le compte utilisateur avec anonymisation des données
+ * Endpoint pour supprimer le compte utilisateur dans Shopify uniquement
+ * Plus de base de données locale - tout est géré par Shopify
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,7 +11,6 @@ import { authOptions } from '@/app/src/lib/auth';
 import { z } from 'zod';
 import { authenticateCustomer } from '@/app/src/lib/shopify/auth';
 import { getShopifyAdminClient } from '@/app/src/lib/ShopifyAdminClient';
-import { db } from '@/app/src/lib/db';
 
 export const runtime = 'nodejs';
 
@@ -23,7 +23,7 @@ const DeleteAccountSchema = z.object({
 
 /**
  * DELETE /api/user/delete-account
- * Supprime le compte utilisateur avec anonymisation des données
+ * Supprime le compte utilisateur dans Shopify
  */
 export async function DELETE(request: NextRequest): Promise<NextResponse> {
   try {
@@ -64,25 +64,6 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Supprimer les paniers locaux liés à ce client (si shopifyCustomerId existe)
-    try {
-      await db.cart.deleteMany({
-        where: { 
-          // Note: On utilisera shopifyCustomerId une fois le schéma migré
-          // Pour l'instant, on ne peut pas supprimer car userId n'existe plus
-        },
-      });
-    } catch (error) {
-      console.warn('⚠️ Erreur lors de la suppression des paniers locaux:', error);
-    }
-
-    // Supprimer les préférences locales si elles existent
-    try {
-      // Note: UserPreferences sera supprimé une fois le schéma migré
-    } catch (error) {
-      console.warn('⚠️ Erreur lors de la suppression des préférences:', error);
-    }
-
     // Supprimer le client dans Shopify via Admin API
     const adminClient = getShopifyAdminClient();
     const deleteResult = await adminClient.deleteCustomer(session.user.shopifyCustomerId);
@@ -97,9 +78,12 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
       );
     }
 
+    // Note: Les paniers Shopify sont automatiquement supprimés quand le client est supprimé
+    // Les préférences dans Metafields sont également supprimées automatiquement
+
     return NextResponse.json({
       success: true,
-      message: 'Compte supprimé avec succès. Toutes vos données ont été supprimées.',
+      message: 'Compte supprimé avec succès. Toutes vos données ont été supprimées de Shopify.',
     });
 
   } catch (error: unknown) {
@@ -125,4 +109,3 @@ export async function DELETE(request: NextRequest): Promise<NextResponse> {
     );
   }
 }
-

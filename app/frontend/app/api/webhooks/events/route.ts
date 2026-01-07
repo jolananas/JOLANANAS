@@ -1,52 +1,40 @@
+/**
+ * 🍍 JOLANANAS - API Événements Webhooks
+ * =======================================
+ * Endpoint pour consulter les événements webhooks récents
+ * Plus de stockage DB - utilise uniquement les logs serveur
+ * 
+ * Note: Cet endpoint retourne un message indiquant que les webhooks
+ * ne sont plus stockés en DB. Pour consulter les logs, utilisez
+ * les logs serveur (Vercel Logs, CloudWatch, etc.)
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/app/src/lib/db';
 
 /**
  * GET /api/webhooks/events
- * Récupère la liste des événements webhooks enregistrés
+ * Retourne un message indiquant que les webhooks ne sont plus stockés en DB
+ * Les logs sont disponibles dans les logs serveur (Vercel, etc.)
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const topic = searchParams.get('topic');
-    const status = searchParams.get('status');
-    const limit = parseInt(searchParams.get('limit') || '50');
-    const offset = parseInt(searchParams.get('offset') || '0');
-
-    // Construire les filtres
-    const where: any = {};
-    if (topic) {
-      where.topic = topic;
-    }
-    if (status) {
-      where.status = status;
-    }
-
-    // Récupérer les événements
-    const [events, total] = await Promise.all([
-      db.webhookEvent.findMany({
-        where,
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-        skip: offset,
-      }),
-      db.webhookEvent.count({ where }),
-    ]);
-
-    // Parser les payloads JSON
-    const eventsWithParsedPayload = events.map(event => ({
-      ...event,
-      payload: typeof event.payload === 'string' 
-        ? JSON.parse(event.payload) 
-        : event.payload,
-    }));
-
     return NextResponse.json({
-      events: eventsWithParsedPayload,
-      total,
-      limit,
-      offset,
-      hasMore: offset + limit < total,
+      message: 'Les événements webhooks ne sont plus stockés en base de données locale.',
+      info: {
+        reason: 'Migration vers architecture sans DB - utilisation de Shopify APIs uniquement',
+        logs: 'Les événements webhooks sont loggés dans les logs serveur (Vercel Logs)',
+        webhookIdempotency: 'Shopify garantit l\'idempotence des webhooks via shopifyId',
+      },
+      howToViewLogs: {
+        vercel: 'Accédez à Vercel Dashboard → Votre projet → Logs',
+        local: 'Consultez les logs de votre terminal ou fichier de logs',
+        production: 'Utilisez les outils de monitoring de votre plateforme (Vercel Analytics, etc.)',
+      },
+      events: [],
+      total: 0,
+      limit: 0,
+      offset: 0,
+      hasMore: false,
     });
 
   } catch (error) {
@@ -57,4 +45,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
