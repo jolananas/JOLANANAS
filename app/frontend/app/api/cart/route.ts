@@ -38,61 +38,84 @@ export async function GET(request: NextRequest) {
     // Trouver ou créer un panier
     let cart = null;
     
-    if (session?.user?.shopifyCustomerId) {
-      // Utilisateur connecté - rechercher son panier par shopifyCustomerId
-      cart = await db.cart.findFirst({
-        where: {
-          shopifyCustomerId: session.user.shopifyCustomerId,
-          status: 'ACTIVE',
-        },
-        include: {
-          items: true,
-        },
-      });
-    } else if (sessionId) {
-      // Session anonyme - rechercher par sessionId
-      cart = await db.cart.findFirst({
-        where: {
-          sessionId,
-          status: 'ACTIVE',
-        },
-        include: {
-          items: true,
-        },
-      });
-    }
-
-    // Créer un nouveau panier si nécessaire
-    if (!cart) {
-      cart = await db.cart.create({
-        data: {
-          shopifyCustomerId: session?.user?.shopifyCustomerId || undefined,
-          sessionId: sessionId || undefined,
-          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 jours
-        },
-        include: {
-          items: true,
-        },
-      });
-    }
-
-    // Synchroniser avec Shopify si nécessaire
-    if (!cart.shopifyCartId) {
-      const shopifyClient = getShopifyClient();
-      const shopifyCart = await shopifyClient.createCart();
-      
-      if (shopifyCart.data?.cartCreate?.cart) {
-        await db.cart.update({
-          where: { id: cart.id },
-          data: { shopifyCartId: shopifyCart.data.cartCreate.cart.id },
+    try {
+      if (session?.user?.shopifyCustomerId) {
+        // Utilisateur connecté - rechercher son panier par shopifyCustomerId
+        cart = await db.cart.findFirst({
+          where: {
+            shopifyCustomerId: session.user.shopifyCustomerId,
+            status: 'ACTIVE',
+          },
+          include: {
+            items: true,
+          },
+        });
+      } else if (sessionId) {
+        // Session anonyme - rechercher par sessionId
+        cart = await db.cart.findFirst({
+          where: {
+            sessionId,
+            status: 'ACTIVE',
+          },
+          include: {
+            items: true,
+          },
         });
       }
-    }
 
-    return NextResponse.json({
-      success: true,
-      data: cart,
-    });
+      // Créer un nouveau panier si nécessaire
+      if (!cart) {
+        cart = await db.cart.create({
+          data: {
+            shopifyCustomerId: session?.user?.shopifyCustomerId || undefined,
+            sessionId: sessionId || undefined,
+            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 jours
+          },
+          include: {
+            items: true,
+          },
+        });
+      }
+
+      // Synchroniser avec Shopify si nécessaire
+      if (!cart.shopifyCartId) {
+        try {
+          const shopifyClient = getShopifyClient();
+          const shopifyCart = await shopifyClient.createCart();
+          
+          if (shopifyCart.data?.cartCreate?.cart) {
+            await db.cart.update({
+              where: { id: cart.id },
+              data: { shopifyCartId: shopifyCart.data.cartCreate.cart.id },
+            });
+            cart.shopifyCartId = shopifyCart.data.cartCreate.cart.id;
+          }
+        } catch (shopifyError) {
+          console.warn('⚠️ Erreur synchronisation Shopify (non bloquant):', shopifyError);
+          // Continuer sans bloquer - le panier local existe
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: cart,
+      });
+    } catch (dbError) {
+      // Si erreur DB mais pas de session, retourner un panier vide
+      if (!session?.user?.shopifyCustomerId && !sessionId) {
+        console.warn('⚠️ Erreur DB sans session - retour panier vide');
+        return NextResponse.json({
+          success: true,
+          data: {
+            id: null,
+            items: [],
+            total: 0,
+            isEmpty: true,
+          },
+        });
+      }
+      throw dbError; // Relancer l'erreur si session présente
+    }
 
   } catch (error: unknown) {
     console.error('❌ Erreur récupération panier:', error);
