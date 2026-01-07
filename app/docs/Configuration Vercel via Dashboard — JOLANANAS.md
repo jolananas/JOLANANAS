@@ -45,6 +45,11 @@ Framework: Next.js                   ✅
 6. Entrer : `app/frontend`
 7. Cliquer sur **"Save"**
 
+**⚠️ Si vous voyez "Framework Settings" avec un avertissement** :
+- L'avertissement "Configuration Settings in the current Production deployment differ from your current Project Settings" est normal
+- Cela signifie que le déploiement actuel utilise des settings différents des Project Settings
+- Vous devez mettre à jour les **Project Settings** pour que les futurs déploiements utilisent la bonne configuration
+
 **Vérification** : Le champ doit afficher `app/frontend` après sauvegarde.
 
 ### Étape 3 : Configurer Node.js Version ⚠️ CRITIQUE
@@ -52,10 +57,20 @@ Framework: Next.js                   ✅
 1. Dans la même section **General**
 2. Chercher **"Node.js Version"** (ou **"Node Version"**)
 3. Cliquer sur **"Edit"** (icône crayon)
-4. **Sélectionner** : `20.x` (pas `Latest`, pas `24.x`)
+4. **Section "Project Settings"** (pas Production Overrides) :
+   - **Sélectionner** : `20.x` (pas `Latest`, pas `24.x`)
+   - ⚠️ **IMPORTANT** : Mettre à jour les **Project Settings**, pas seulement les Production Overrides
 5. Cliquer sur **"Save"**
 
-**Vérification** : Le champ doit afficher `20.x` après sauvegarde.
+**⚠️ ATTENTION** : 
+- Si vous voyez un avertissement "Configuration Settings in the current Production deployment differ from your current Project Settings"
+- Cela signifie que le déploiement actuel utilise Node.js 20.x (Production Overrides)
+- Mais les **Project Settings** sont encore à 24.x
+- **Vous DEVEZ mettre à jour les Project Settings à 20.x** pour que les futurs déploiements utilisent Node.js 20.x
+
+**Vérification** : 
+- **Project Settings** doit afficher `20.x` après sauvegarde
+- **Production Overrides** peut afficher `20.x` (c'est normal si vous avez déjà un déploiement avec 20.x)
 
 ### Étape 4 : Vérifier l'Intégration GitHub
 
