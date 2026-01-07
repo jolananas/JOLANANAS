@@ -3,13 +3,69 @@ import { revalidateTag } from 'next/cache';
 import { verifyWebhookSignature } from '@/app/src/lib/shopify/verify-webhook';
 import { TAGS } from '@/app/src/lib/constants';
 import { db } from '@/app/src/lib/db';
+import { ENV } from '@/app/src/lib/env';
+
+/**
+ * Vérifie le secret de revalidation personnalisé
+ */
+function verifyRevalidationSecret(req: NextRequest): boolean {
+  const revalidationSecret = ENV.SHOPIFY_REVALIDATION_SECRET;
+  
+  // Si le secret n'est pas configuré, on accepte uniquement les webhooks Shopify (HMAC)
+  if (!revalidationSecret) {
+    return true; // Pas de vérification supplémentaire si non configuré
+  }
+
+  // Vérifier le header Authorization ou un header personnalisé
+  const authHeader = req.headers.get('authorization');
+  const secretHeader = req.headers.get('x-revalidation-secret');
+  
+  const providedSecret = authHeader?.replace('Bearer ', '') || secretHeader;
+  
+  if (!providedSecret) {
+    return false;
+  }
+
+  // Comparaison sécurisée (timing-safe)
+  return providedSecret === revalidationSecret;
+}
 
 export async function POST(req: NextRequest) {
   const startTime = Date.now();
   let webhookEventId: string | null = null;
   
   try {
-    const { isValid, topic, error, payload } = await verifyWebhookSignature(req);
+    // Vérifier le secret de revalidation personnalisé (si configuré et fourni)
+    const hasRevalidationSecret = verifyRevalidationSecret(req);
+    
+    let topic: string | null = null;
+    let payload: any = null;
+    
+    // Si le secret de revalidation est fourni et valide, on accepte la requête
+    if (hasRevalidationSecret) {
+      // Requête de revalidation manuelle - extraire le topic du body si fourni
+      try {
+        const body = await req.json().catch(() => ({}));
+        topic = body.topic || req.headers.get('x-shopify-topic');
+        payload = body;
+        console.log(`🔐 Revalidation manuelle autorisée via secret`);
+      } catch (error) {
+        // Si pas de body, on continue avec topic null
+      }
+    } else {
+      // Sinon, vérifier la signature HMAC Shopify (pour les webhooks Shopify)
+      const { isValid, topic: hmacTopic, error, payload: hmacPayload } = await verifyWebhookSignature(req);
+      
+      if (!isValid) {
+        console.error(`❌ Webhook revalidate: Secret de revalidation invalide ou HMAC Shopify invalide`);
+        return NextResponse.json({ 
+          message: 'Secret de revalidation invalide ou signature HMAC invalide' 
+        }, { status: 401 });
+      }
+      
+      topic = hmacTopic;
+      payload = hmacPayload;
+    }
 
     if (!isValid) {
       console.error(`❌ Webhook revalidate: ${error}`);

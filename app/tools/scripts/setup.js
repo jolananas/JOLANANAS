@@ -83,6 +83,9 @@ SHOPIFY_ADMIN_API_TOKEN=
 # Webhook Secret (optionnel)
 SHOPIFY_WEBHOOK_SECRET=
 
+# Revalidation Secret (optionnel - pour sécuriser les endpoints de revalidation manuelle)
+SHOPIFY_REVALIDATION_SECRET=
+
 # =============================================================================
 # 🌐 Application Configuration
 # =============================================================================

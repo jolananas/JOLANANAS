@@ -69,6 +69,10 @@ const envSchema = z.object({
   // Variables optionnelles (SHOPIFY_ADMIN_TOKEN maintenant requis pour Customer Accounts)
   SHOPIFY_ADMIN_TOKEN: z.string().min(1, 'SHOPIFY_ADMIN_TOKEN est requis pour Shopify Customer Accounts'),
   SHOPIFY_WEBHOOK_SECRET: z.string().optional(),
+  SHOPIFY_REVALIDATION_SECRET: z
+    .string()
+    .min(1, 'SHOPIFY_REVALIDATION_SECRET doit être une chaîne non vide si configuré')
+    .optional(),
   DOMAIN_URL: z.string().url().optional(),
   
   // Variables Customer Account API (requises pour l'authentification frontend)
@@ -145,6 +149,7 @@ function validateEnv(): EnvironmentConfig {
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
       SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN,
       SHOPIFY_WEBHOOK_SECRET: process.env.SHOPIFY_WEBHOOK_SECRET,
+      SHOPIFY_REVALIDATION_SECRET: process.env.SHOPIFY_REVALIDATION_SECRET,
       DOMAIN_URL: process.env.DOMAIN_URL,
       SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID,
       SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION,
@@ -166,7 +171,7 @@ function validateEnv(): EnvironmentConfig {
       return {
         SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'jolananas.myshopify.com',
         SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'fallback-token',
-        SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION || '2026-04',
+        SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION ,
         NODE_ENV: (process.env.NODE_ENV as any) || 'production',
         DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret',
