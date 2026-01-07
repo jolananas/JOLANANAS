@@ -3,6 +3,10 @@ import { revalidateTag, revalidatePath } from 'next/cache';
 import { ENV } from '@/app/src/lib/env';
 import { TAGS } from '@/app/src/lib/constants';
 
+// Forcer le mode dynamique pour éviter la mise en cache
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 /**
  * POST /api/revalidate
  * Endpoint sécurisé pour la revalidation manuelle
