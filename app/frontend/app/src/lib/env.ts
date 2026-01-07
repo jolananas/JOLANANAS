@@ -80,9 +80,17 @@ const envSchema = z.object({
     .string()
     .min(1, 'SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID est requis pour Customer Account API')
     .optional(),
+  SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET: z
+    .string()
+    .min(1, 'SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET est requis pour OAuth 2.0 avec Customer Account API')
+    .optional(),
   SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION: z
     .string()
     .regex(/^\d{4}-\d{2}$/, 'Format de version API invalide. Format attendu: YYYY-MM')
+    .optional(),
+  SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN: z
+    .string()
+    .min(1, 'SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN doit être une chaîne non vide si configuré')
     .optional(),
   
   // Variables PayPal (optionnelles mais requises si PayPal est utilisé)
@@ -141,7 +149,7 @@ function validateEnv(): EnvironmentConfig {
   try {
     const parsed = envSchema.parse({
       SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN,
-      SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN,
+      SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
       SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
       NODE_ENV: process.env.NODE_ENV,
       DATABASE_URL: process.env.DATABASE_URL,
@@ -152,7 +160,9 @@ function validateEnv(): EnvironmentConfig {
       SHOPIFY_REVALIDATION_SECRET: process.env.SHOPIFY_REVALIDATION_SECRET,
       DOMAIN_URL: process.env.DOMAIN_URL,
       SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID,
+      SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET,
       SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION: process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION,
+      SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN: process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN,
       PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
       PAYPAL_SECRET: process.env.PAYPAL_SECRET,
     });
@@ -170,7 +180,7 @@ function validateEnv(): EnvironmentConfig {
       // Retourner une version de secours pour éviter que l'import de ENV ne crash tout le serveur
       return {
         SHOPIFY_STORE_DOMAIN: process.env.SHOPIFY_STORE_DOMAIN || 'jolananas.myshopify.com',
-        SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || 'fallback-token',
+        SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || 'fallback-token',
         SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION ,
         NODE_ENV: (process.env.NODE_ENV as any) || 'production',
         DATABASE_URL: process.env.DATABASE_URL || 'file:./dev.db',

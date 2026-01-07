@@ -17,25 +17,51 @@ import { getShopifyAdminClient } from '../ShopifyAdminClient';
  * Construit l'URL de base pour Customer Account API GraphQL
  * Le domaine Customer Account est généralement dérivé du domaine de la boutique
  * Format: https://{customer-account-domain}/api/customer-account/v1
+ * 
+ * Priorité :
+ * 1. Variable d'environnement SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN (si définie)
+ * 2. Dérivation depuis DOMAIN_URL (si défini, extrait le domaine principal)
+ * 3. Dérivation depuis SHOPIFY_STORE_DOMAIN (extrait le domaine principal)
  */
 function getCustomerAccountApiBase(): string {
-  // Si un domaine Customer Account est configuré explicitement
-  if (process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN) {
-    return `https://${process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN}/api/customer-account/v1`;
+  // 1. Variable d'environnement explicite (priorité la plus haute)
+  if (ENV.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN) {
+    return `https://${ENV.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN}/api/customer-account/v1`;
   }
-  
-  // Sinon, utiliser le domaine par défaut (account.jolananas.com)
-  // ou dériver du domaine de la boutique si configuré
+
+  // 2. Dériver depuis DOMAIN_URL si disponible
+  if (ENV.DOMAIN_URL) {
+    try {
+      const url = new URL(ENV.DOMAIN_URL);
+      const hostname = url.hostname;
+      // Extraire le domaine principal (ex: jolananas.com depuis https://jolananas.com)
+      const domainParts = hostname.split('.');
+      if (domainParts.length >= 2) {
+        // Prendre les 2 dernières parties (ex: jolananas.com)
+        const mainDomain = domainParts.slice(-2).join('.');
+        return `https://account.${mainDomain}/api/customer-account/v1`;
+      }
+    } catch {
+      // Ignorer les erreurs de parsing URL
+    }
+  }
+
+  // 3. Dériver depuis SHOPIFY_STORE_DOMAIN
   const storeDomain = ENV.SHOPIFY_STORE_DOMAIN;
   if (storeDomain && storeDomain.includes('.myshopify.com')) {
-    // Extraire le nom de la boutique et construire le domaine Customer Account
-    const shopName = storeDomain.replace('.myshopify.com', '');
-    // Par défaut, utiliser account.{shop-name}.com ou account.jolananas.com
+    // Pour JOLANANAS, le domaine principal est jolananas.com
+    // Le domaine Customer Account est généralement account.{domaine-principal}.com
+    // Note: En production, Shopify utilise généralement un domaine personnalisé configuré dans Admin
     return `https://account.jolananas.com/api/customer-account/v1`;
   }
-  
-  // Fallback par défaut
-  return `https://account.jolananas.com/api/customer-account/v1`;
+
+  // Fallback: Si aucune configuration n'est disponible, lancer une erreur
+  // plutôt que d'utiliser une valeur hardcodée
+  throw new Error(
+    'SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN non configuré. ' +
+    'Définissez SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN dans .env.local ou ' +
+    'configurez DOMAIN_URL pour dériver automatiquement le domaine Customer Account.'
+  );
 }
 
 const CUSTOMER_ACCOUNT_API_BASE = getCustomerAccountApiBase();

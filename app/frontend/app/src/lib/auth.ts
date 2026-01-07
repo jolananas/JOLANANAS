@@ -2,7 +2,7 @@
  * 🍍 JOLANANAS - Configuration NextAuth.js avec Shopify Customer Accounts
  * =======================================================================
  * Configuration de l'authentification utilisant Shopify Customer Account API
- * Remplace la gestion locale des comptes clients
+ * Utilise OAuth 2.0 via account.jolananas.com pour l'authentification sécurisée
  */
 
 import { NextAuthOptions } from 'next-auth';
@@ -11,6 +11,62 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { ENV } from './env';
 import { checkRateLimit, resetRateLimit } from './rate-limit';
 import { authenticateCustomer } from './shopify/auth';
+import { getCustomerFrontend } from './shopify/customer-accounts';
+
+/**
+ * Obtient le domaine Customer Account pour les endpoints OAuth
+ * 
+ * Priorité :
+ * 1. Variable d'environnement SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN (si définie)
+ * 2. Dérivation depuis DOMAIN_URL (si défini, extrait le domaine principal)
+ * 3. Dérivation depuis SHOPIFY_STORE_DOMAIN (extrait le domaine principal)
+ * 
+ * Le domaine Customer Account est généralement au format: account.{domaine-principal}.com
+ */
+function getCustomerAccountDomain(): string {
+  // 1. Variable d'environnement explicite (priorité la plus haute)
+  if (ENV.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN) {
+    return ENV.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN;
+  }
+
+  // 2. Dériver depuis DOMAIN_URL si disponible
+  if (ENV.DOMAIN_URL) {
+    try {
+      const url = new URL(ENV.DOMAIN_URL);
+      const hostname = url.hostname;
+      // Extraire le domaine principal (ex: jolananas.com depuis https://jolananas.com)
+      const domainParts = hostname.split('.');
+      if (domainParts.length >= 2) {
+        // Prendre les 2 dernières parties (ex: jolananas.com)
+        const mainDomain = domainParts.slice(-2).join('.');
+        return `account.${mainDomain}`;
+      }
+    } catch {
+      // Ignorer les erreurs de parsing URL
+    }
+  }
+
+  // 3. Dériver depuis SHOPIFY_STORE_DOMAIN
+  const storeDomain = ENV.SHOPIFY_STORE_DOMAIN;
+  if (storeDomain && storeDomain.includes('.myshopify.com')) {
+    // Extraire le nom de la boutique (ex: u6ydbb-sx depuis u6ydbb-sx.myshopify.com)
+    const shopName = storeDomain.replace('.myshopify.com', '');
+    
+    // Si le domaine principal est connu (jolananas), l'utiliser
+    // Sinon, utiliser le format account.{shop-name}.myshopify.com
+    // Note: En production, Shopify utilise généralement un domaine personnalisé
+    // Pour JOLANANAS, le domaine principal est jolananas.com
+    return 'account.jolananas.com';
+  }
+
+  // Fallback: Si aucune configuration n'est disponible, lancer une erreur
+  // plutôt que d'utiliser une valeur hardcodée
+  throw new Error(
+    'SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN non configuré. ' +
+    'Définissez SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN dans .env.local ou ' +
+    'configurez DOMAIN_URL pour dériver automatiquement le domaine Customer Account.'
+  );
+}
 
 /**
  * Nettoie une chaîne pour l'utiliser dans les cookies HTTP
@@ -42,6 +98,67 @@ export const authOptions: NextAuthOptions = {
   },
   
   providers: [
+    // Provider OAuth pour Shopify Customer Account API (account.jolananas.com)
+    // Utilisé si CLIENT_ID et CLIENT_SECRET sont configurés
+    ...(ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID && ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET
+      ? [
+          {
+            id: 'shopify',
+            name: 'Shopify',
+            type: 'oauth' as const,
+            clientId: ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID,
+            clientSecret: ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET,
+            authorization: {
+              url: `https://${getCustomerAccountDomain()}/auth/oauth/authorize`,
+              params: {
+                scope: 'openid email customer-account-api:full',
+                response_type: 'code',
+              },
+            },
+            token: {
+              url: `https://${getCustomerAccountDomain()}/auth/oauth/token`,
+            },
+            userinfo: {
+              url: `https://${getCustomerAccountDomain()}/api/customer-account/v1/customer`,
+              async request(context) {
+                // Utiliser GraphQL pour récupérer les informations client
+                const clientId = ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID!;
+                const accessToken = context.tokens.access_token as string;
+                
+                if (!accessToken) {
+                  throw new Error('Access token manquant');
+                }
+
+                // Récupérer les informations client via GraphQL
+                const customerResult = await getCustomerFrontend(accessToken, clientId);
+                
+                if (customerResult.errors.length > 0 || !customerResult.customer) {
+                  throw new Error(customerResult.errors[0]?.message || 'Erreur récupération client');
+                }
+
+                const customer = customerResult.customer;
+                return {
+                  sub: customer.id,
+                  email: customer.email,
+                  name: customer.firstName && customer.lastName
+                    ? `${customer.firstName} ${customer.lastName}`
+                    : customer.firstName || customer.lastName || undefined,
+                  picture: undefined,
+                };
+              },
+            },
+            profile(profile) {
+              return {
+                id: profile.sub,
+                email: profile.email,
+                name: profile.name || undefined,
+                image: profile.picture || undefined,
+              };
+            },
+          },
+        ]
+      : []),
+    // Fallback: CredentialsProvider si OAuth n'est pas configuré
     CredentialsProvider({
       id: 'credentials',
       name: 'Credentials',
@@ -119,6 +236,26 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user, account }) {
+      // Gérer le flux OAuth (Shopify Customer Account API)
+      if (account?.provider === 'shopify' && account.access_token) {
+        token.shopifyAccessToken = account.access_token as string;
+        token.shopifyCustomerId = user.id;
+        token.role = 'CUSTOMER' as const;
+        token.avatar = user.image || null;
+        if (user.name) {
+          token.name = sanitizeForCookie(user.name);
+        }
+        if (user.email) {
+          token.email = user.email;
+        }
+        // emailVerified peut être défini si disponible
+        if ((user as any).emailVerified) {
+          token.emailVerified = (user as any).emailVerified;
+        }
+        return token;
+      }
+
+      // Gérer le flux Credentials (fallback)
       if (account && user) {
         token.role = user.role;
         token.avatar = user.avatar;
