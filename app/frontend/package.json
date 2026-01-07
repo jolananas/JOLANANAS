@@ -1,7 +1,7 @@
 {
   "name": "@jolananas/frontend",
   "type": "module",
-  "version": "3.0.0",
+  "version": "latest",
   "description": "JOLANANAS Frontend - React/Next.js Storefront",
   "private": true,
   "scripts": {
@@ -33,7 +33,8 @@
     "db:seed": "ts-node --compiler-account ./prisma-seed.ts",
     "db:create-test-user": "tsx scripts/create-test-user.ts",
     "db:cleanup-test-users": "tsx scripts/cleanup-test-users.ts",
-    "db:cleanup-test-users:dry-run": "tsx scripts/cleanup-test-users.ts --dry-run"
+    "db:cleanup-test-users:dry-run": "tsx scripts/cleanup-test-users.ts --dry-run",
+    "test:webhooks": "tsx scripts/test-webhooks.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
