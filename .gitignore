@@ -9,12 +9,48 @@ out/
 build/
 dist/
 
-# Environnement & Secrets (CRITIQUE)
+# 🛑 SÉCURITÉ CRITIQUE - Environnement & Secrets
+# ============================================================
+# ⚠️ NE JAMAIS COMMITTER ces fichiers - Risque de compromission
+
+# Fichiers d'environnement (TOUTES variantes)
 .env
+.env.*
 .env*.local
 .env.production
 .env.development
 .env.test
+.env.staging
+.env.backup
+.env.old
+.env.bak
+env.backup
+env.*
+*.env
+*.env.*
+*.secret
+*.secrets
+
+# Fichiers de backup contenant des secrets
+*.backup
+*.bak
+*.old
+*_backup
+*_backup.*
+backup.*
+*.backup.*
+
+# Fichiers de configuration sensibles
+config.local.*
+config.production.*
+secrets.*
+credentials.*
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
 
 # Logs
 npm-debug.log*

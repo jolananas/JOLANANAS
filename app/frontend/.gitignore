@@ -1,36 +1,129 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# 🛑 SÉCURITÉ CRITIQUE - Fichiers de secrets et credentials
+# ============================================================
+# ⚠️ NE JAMAIS COMMITTER ces fichiers - Risque de compromission
 
-# dependencies
+# Fichiers d'environnement (TOUTES variantes)
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+.env.staging
+.env.backup
+.env.old
+.env.bak
+env.backup
+env.*
+*.env
+*.env.*
+*.secret
+*.secrets
+
+# Fichiers de backup contenant des secrets
+*.backup
+*.bak
+*.old
+*_backup
+*_backup.*
+backup.*
+*.backup.*
+
+# Fichiers de configuration sensibles
+config.local.*
+config.production.*
+secrets.*
+credentials.*
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# ============================================================
+# Dépendances
+# ============================================================
 /node_modules
+/.pnpm-store
+/.yarn/cache
+/.yarn/unplugged
+/.yarn/build-state.yml
+/.yarn/install-state.gz
+.pnp.*
 
-# next.js
+# ============================================================
+# Next.js
+# ============================================================
 /.next/
 /out/
-
-# production
 /build
+/dist
+*.tsbuildinfo
+next-env.d.ts
 
-# debug
+# ============================================================
+# Vercel
+# ============================================================
+.vercel
+
+# ============================================================
+# Logs
+# ============================================================
+/log/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 
-# env files
-.env*
+# ============================================================
+# Système
+# ============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# logs
-/log/
-*.log
-
-# Large files
+# ============================================================
+# Fichiers volumineux (images, assets)
+# ============================================================
 public/assets/images/background/bg-jolananas.gif
 app/frontend/public/assets/images/background/bg-jolananas.gif
-env.backup
+
+# ============================================================
+# Cache et temporaires
+# ============================================================
+.cache/
+.temp/
+.tmp/
+*.tmp
+*.temp
+
+# ============================================================
+# Tests et couverture
+# ============================================================
+/coverage/
+.nyc_output/
+*.lcov
+
+# ============================================================
+# Autres
+# ============================================================
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.stylelintcache
