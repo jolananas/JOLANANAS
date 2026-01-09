@@ -9,7 +9,7 @@
 ## 🔑 CREDENTIALS COMPROMIS (À RÉVOQUER)
 
 **Client ID** : `a7385bb4625e6185cea682446401dafb`  
-**Secret** : `shpss_[SECRET_COMPROMISED]`  
+**Secret** : `shpss_[SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**  
 **Date de création** : 9 Janvier 2026, 2:40 AM  
 **URL Dev Dashboard** : https://dev.shopify.com/dashboard/175998111/apps/309550710785
 

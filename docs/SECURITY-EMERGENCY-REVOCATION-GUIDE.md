@@ -11,8 +11,8 @@
 **Problème** : Le fichier `app/frontend/env.backup` contenant des credentials API a été exposé publiquement sur GitHub.
 
 **Credentials compromis identifiés** :
-- ✅ `SHOPIFY_STOREFRONT_TOKEN=[STOREFRONT_TOKEN_COMPROMISED]` (Storefront API)
-- ✅ `SHOPIFY_ADMIN_TOKEN=shpat_[TOKEN_COMPROMISED]` (Admin API)
+- ✅ `SHOPIFY_STOREFRONT_TOKEN=[STOREFRONT_TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ** (Storefront API)
+- ✅ `SHOPIFY_ADMIN_TOKEN=shpat_[TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ** (Admin API)
 - ✅ `RESEND_API_KEY=re_9tnawTCv_K3Pm6HQZ5bN4uTCppgNyHH92` (Service email Resend)
 - ✅ `DATABASE_URL=file:./app/src/prisma/dev.db` (Base de données locale)
 

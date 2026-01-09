@@ -12,24 +12,24 @@ D'après l'analyse de `.env.local`, les clés suivantes sont compromises et doiv
 
 ### **1. App Principale (Dev Dashboard)**
 - **Client ID** : `a7385bb4625e6185cea682446401dafb`
-- **Secret** : `shpss_[SECRET_COMPROMISED]`
+- **Secret** : `shpss_[SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - **URL** : https://dev.shopify.com/dashboard/175998111/apps/309550710785/settings
 
 ### **2. Admin API Token**
-- **Token** : `shpat_[TOKEN_COMPROMISED]`
+- **Token** : `shpat_[TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - **Source** : App principale ou app séparée
 
 ### **3. Storefront API Token**
-- **Token** : `[STOREFRONT_TOKEN_COMPROMISED]`
+- **Token** : `[STOREFRONT_TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - **Token alternatif** : `[STOREFRONT_TOKEN_COMPROMISED]` (même valeur)
 
 ### **4. Headless Tokens**
-- **Public Token** : `shpat_[HEADLESS_PUBLIC_COMPROMISED]`
-- **Private Token** : `[HEADLESS_PRIVATE_COMPROMISED]`
+- **Public Token** : `shpat_[HEADLESS_PUBLIC_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
+- **Private Token** : `[HEADLESS_PRIVATE_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 
 ### **5. Customer Account API**
 - **Client ID** : `427578ae-e7aa-486d-b31f-f291afa38815`
-- **Client Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]`
+- **Client Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 
 ---
 

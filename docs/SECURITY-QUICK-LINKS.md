@@ -99,20 +99,20 @@
 
 ### **App Principale**
 - **Client ID** : `a7385bb4625e6185cea682446401dafb`
-- **Secret** : `shpss_[SECRET_COMPROMISED]`
+- **Secret** : `shpss_[SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - 🔗 **Rotate** : [https://dev.shopify.com/dashboard/175998111/apps/309550710785/settings](https://dev.shopify.com/dashboard/175998111/apps/309550710785/settings)
 
 ### **Storefront API**
-- **Token** : `[STOREFRONT_TOKEN_COMPROMISED]`
+- **Token** : `[STOREFRONT_TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - **Action** : Créer nouvelle app ou réinstaller app principale
 
 ### **Admin API**
-- **Token** : `shpat_[TOKEN_COMPROMISED]`
+- **Token** : `shpat_[TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - **Action** : Créer nouvelle app ou réinstaller app principale
 
 ### **Customer Account API**
 - **Client ID** : `427578ae-e7aa-486d-b31f-f291afa38815`
-- **Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]`
+- **Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - 🔗 **Trouver l'app** : [https://dev.shopify.com/dashboard/175998111/apps](https://dev.shopify.com/dashboard/175998111/apps)
 - **Action** : Trouver l'app et cliquer sur "Rotate"
 
