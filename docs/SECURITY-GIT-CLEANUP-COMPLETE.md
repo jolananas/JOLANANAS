@@ -77,8 +77,7 @@ git push origin --force --all
 git log --all --full-history --source -- "app/frontend/env.backup"
 
 # Vérifier sur GitHub
-# Le lien https://github.com/jolananas/JOLANANAS/blob/ac4d463a2f83b70f3fe5bf8d1eb8b6158b329c18/app/frontend/env.backup
-# doit maintenant retourner une erreur 404
+# 🔗 Lien direct (doit retourner 404) : https://github.com/jolananas/JOLANANAS/blob/ac4d463a2f83b70f3fe5bf8d1eb8b6158b329c18/app/frontend/env.backup
 ```
 
 ---

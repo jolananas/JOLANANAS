@@ -24,14 +24,15 @@
 
 ### A. Révocation Storefront API Token
 
-1. **Connectez-vous à Shopify Admin**
-   - URL : https://u6ydbb-sx.myshopify.com/admin
+🔗 **Lien direct - Shopify Admin** : [https://u6ydbb-sx.myshopify.com/admin](https://u6ydbb-sx.myshopify.com/admin)
+
+1. **Cliquez sur le lien ci-dessus** → Ouvre Shopify Admin
    - Connectez-vous avec vos identifiants
 
 2. **Accédez aux Apps de développement**
    - Cliquez sur **Settings** (Paramètres) en bas à gauche
    - Cliquez sur **Apps and sales channels** (Apps et canaux de vente)
-   - Cliquez sur **Develop apps** (Développer des apps)
+   - 🔗 **Lien direct - Develop Apps** : [https://u6ydbb-sx.myshopify.com/admin/settings/apps/develop](https://u6ydbb-sx.myshopify.com/admin/settings/apps/develop)
 
 3. **Trouvez l'application "Jolananas Storefront API"**
    - Recherchez l'app dans la liste
@@ -138,12 +139,13 @@ NODE_ENV=production
 
 ### B. Variables Vercel (Production)
 
-1. **Connectez-vous à Vercel Dashboard**
-   - URL : https://vercel.com/dashboard
+🔗 **Lien direct - Vercel Dashboard** : [https://vercel.com/dashboard](https://vercel.com/dashboard)
+
+1. **Cliquez sur le lien ci-dessus** → Ouvre Vercel Dashboard
    - Sélectionnez le projet **Jolananas**
 
 2. **Accédez aux Environment Variables**
-   - Allez dans **Settings** > **Environment Variables**
+   - 🔗 **Lien direct - Environment Variables** : [https://vercel.com/jolananas/settings/environment-variables](https://vercel.com/jolananas/settings/environment-variables)
 
 3. **Mettez à jour chaque variable** :
    - `SHOPIFY_STOREFRONT_TOKEN` → Nouveau token
@@ -151,8 +153,8 @@ NODE_ENV=production
    - `RESEND_API_KEY` → Nouvelle clé
 
 4. **Redeploy l'application**
-   - Allez dans **Deployments**
-   - Cliquez sur **Redeploy** sur le dernier déploiement
+   - 🔗 **Lien direct - Deployments** : [https://vercel.com/jolananas/deployments](https://vercel.com/jolananas/deployments)
+   - Cliquez sur **Redeploy** sur le dernier déploiement (menu ⋮ à droite)
    - ⚠️ **Cela applique immédiatement les nouvelles clés**
 
 ---
