@@ -1,0 +1,297 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import de la police Weather Sunday depuis les fichiers locaux */
+@font-face {
+  font-family: "weather sunday";
+  src: url("/assets/fonts/weather-sunday-personal-use.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* #FFFFFF : Blanc pur */
+    --foreground: 260 5% 10%; /* #141318 : Noir très foncé */
+    --card: 0 0% 100%; /* #FFFFFF : Blanc pur */
+    --card-foreground: 260 5% 10%; /* #141318 : Noir très foncé */
+    --popover: 0 0% 100%; /* #FFFFFF : Blanc pur */
+    --popover-foreground: 260 5% 10%; /* #141318 : Noir très foncé */
+    --primary: 342 76% 70%; /* #EC7B9C : Rose profond */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF : Blanc pur */
+    --secondary: 17 76% 82%; /* #F4C0AC : Pêche */
+    --secondary-foreground: 260 5% 10%; /* #141318 : Noir très foncé */
+    --muted: 30 50% 97%; /* #FBF7F3 : Beige très clair */
+    --muted-foreground: 260 5% 45%; /* #716D78 : Gris moyen */
+    --accent: 348 83% 76%; /* #F38FA3 : Rose moyen */
+    --accent-foreground: 260 5% 10%; /* #141318 : Noir très foncé */
+    --destructive: 0 84.2% 60.2%; /* #EC7B9C : Rose profond */
+    --destructive-foreground: 210 40% 98%; /* #F8FAFC : Blanc cassé */
+    --border: 214.3 31.8% 91.4%; /* #E2E8F0 : Gris clair */
+    --input: 214.3 31.8% 91.4%; /* #E2E8F0 : Gris clair */
+    --ring: 342 76% 70%; /* #EC7B9C : Rose profond */
+    --radius: 1rem; /* 16px - Assez rond et doux (Soft Roundness) */
+
+    /* HELVETICA STYLE : Espacement serré pour le contraste avec les rondeurs */
+    --font-tracking: -0.03em;
+    /* Garde tes variables de fonts existantes ici si nécessaire */
+    --font-inter: "Inter", system-ui, sans-serif;
+    --font-serif: "Poppins", system-ui, serif;
+    /* Variables Glassmorphism conservées */
+    --glass-bg: rgba(244, 192, 172, 0.7);
+    --glass-border: rgba(243, 143, 163, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(243, 143, 163, 0.37);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased tracking-tight;
+  }
+  /* TITRES : Swiss Style (Gros, Serré) mais Doux */
+  h1,
+  h2,
+  h3 {
+    @apply font-bold tracking-tighter;
+    letter-spacing: var(--font-tracking);
+  }
+
+  /* Glassmorphism utilities */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 0.75rem;
+  }
+}
+
+@layer utilities {
+  /* L'EFFET LIQUID METAL */
+  .liquid-blob {
+    background: var(
+      --liquid-metal,
+      linear-gradient(135deg, #e0e0e0 0%, #ffffff 50%, #a0a0a0 100%)
+    );
+    box-shadow:
+      inset -5px -5px 10px rgba(0, 0, 0, 0.1),
+      inset 5px 5px 10px rgba(255, 255, 255, 0.8),
+      0 10px 20px rgba(0, 0, 0, 0.1);
+    animation: morph 8s ease-in-out infinite;
+    @apply transition-all duration-500;
+  }
+
+  /* TEXTE CHROME (Optionnel pour les titres) */
+  .text-chrome {
+    background: linear-gradient(to bottom, #333 0%, #999 50%, #333 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Optimisation tactile pour mobile */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Tips container - Glassmorphism sans effet hover */
+  .tips-container {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255) 0%,
+      rgba(255, 255, 255, 0.75) 20%,
+      rgba(255, 255, 255) 45%,
+      rgba(255, 255, 255, 0.7) 70%,
+      rgba(255, 255, 255) 100%
+    ); /* Fond en Glassmorphism */
+    box-shadow:
+      0 0 5px rgba(255, 255, 255, 0.5),
+      0 0px 15px rgba(0, 0, 0, 0.05); /* Ombres combinées */
+    border-radius: 12px; /* Contours arrondis */
+    border: 1px solid rgba(255, 255, 255, 0.13); /* Bordure */
+    padding: 20px;
+    width: fit-content;
+    max-width: 100%;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      "Montserrat",
+      "Open Sans",
+      "Helvetica Neue",
+      sans-serif;
+    font-size: 75% !important;
+    text-align: center;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tips-container h2 {
+    color: black;
+    font-family:
+      "Montserrat",
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    font-weight: bold;
+    font-size: 135% !important;
+    margin: 0;
+    padding: 0;
+  }
+  .tips-container p {
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+  .tips-container SPAN {
+    font-family: "weather sunday", cursive, system-ui, sans-serif;
+    font-weight: bold;
+    font-size: 175% !important;
+    margin: 0;
+    padding: 0;
+  }
+  .tips-container h2 p SPAN {
+    mix-blend-mode: exclusion;
+  }
+  /* Style pour la transcription phonétique */
+  .tips-container p .phonétique {
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      "Montserrat",
+      "Open Sans",
+      "Helvetica Neue",
+      sans-serif;
+    font-weight: normal;
+    font-size: inherit;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer components {
+  /* Enhanced Card Effects */
+  .spotlight-card {
+    position: relative;
+  }
+  .spotlight-card .blob {
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .spotlight-card .fake-blob {
+    pointer-events: none;
+    opacity: 0;
+  }
+  /* Désactiver les effets sur mobile/touch */
+  @media (hover: none) and (pointer: coarse) {
+    .spotlight-card .blob {
+      opacity: 0 !important;
+    }
+  }
+
+  /* Optimisation pour les cartes 3D */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Error Pages Animations */
+  @keyframes shine {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .animate-shine {
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoom-in {
+    0% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-in {
+    animation:
+      fade-in 0.5s ease-out,
+      zoom-in 0.5s ease-out;
+  }
+
+  .fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  .zoom-in {
+    animation: zoom-in 0.5s ease-out;
+  }
+
+  .duration-700 {
+    animation-duration: 0.7s;
+  }
+
+  @keyframes slide-in-from-bottom {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-in-from-bottom-10 {
+    animation: slide-in-from-bottom 0.7s ease-out;
+  }
+}

@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /checkout
+Disallow: /cart
+Disallow: /api
+
+# Host
+Host: https://jolananas.com
+
+# Sitemaps
+Sitemap: https://jolananas.com/sitemap.xml

@@ -1,0 +1,37 @@
+# JOLANANAS Startup Script Configuration
+# Place ce fichier à la racine du projet et renomme-le en .jolananasrc
+
+# Ports par défaut
+DEFAULT_PORT=3000
+DEFAULT_API_PORT=3001
+DEFAULT_FRONTEND_PORT=3002
+
+# Configuration du logging
+LOG_LEVEL=INFO
+LOG_MAX_FILES=5
+LOG_MAX_SIZE=10MB
+
+# Configuration Turbo
+TURBO_PARALLEL=true
+TURBO_CACHE=true
+
+# Configuration surveillance debug
+DEBUG_WATCH_DIRS=(src app)
+DEBUG_RELOAD_DELAY=2
+
+# Configuration santé
+HEALTH_CHECK_TIMEOUT=30
+HEALTH_CHECK_RETRIES=3
+
+# Configuration nettoyage
+AUTO_CLEANUP=true
+CLEAN_CACHE_ON_START=false
+
+# Configuration Shopify (override si env.local ne suffit pas)
+SHOPIFY_TIMEOUT=10000
+SHOPIFY_RETRIES=3
+
+# Options développement
+DISABLE_HEALTH_CHECK=false
+SKIP_DEPENDENCY_CHECK=false
+VERBOSE_MODE=false
