@@ -167,10 +167,10 @@
     "luxury",
     "professional"
   ],
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": ">=20.0.0",
-    "pnpm": ">=10.0.0"
+    "pnpm": "^9.0.0"
   },
   "browserslist": [
     "> 1%",

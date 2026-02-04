@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd apps/frontend && npm install -g pnpm@10.24.0 && pnpm install && pnpm build",
+  "buildCommand": "cd apps/frontend && npm install -g pnpm@9.15.0 && pnpm install && pnpm build",
   "outputDirectory": "apps/frontend/.next",
-  "installCommand": "cd apps/frontend && npm install -g pnpm@10.24.0 && pnpm install",
+  "installCommand": "cd apps/frontend && npm install -g pnpm@9.15.0 && pnpm install",
   "framework": "nextjs",
   "headers": [
     {
