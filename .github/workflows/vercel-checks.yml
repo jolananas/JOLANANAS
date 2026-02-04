@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app/frontend
+        working-directory: apps/frontend
     
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
-          cache-dependency-path: app/frontend/pnpm-lock.yaml
+          cache-dependency-path: apps/frontend/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app/frontend
+        working-directory: apps/frontend
     
     steps:
       - name: Checkout code
@@ -70,7 +70,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
-          cache-dependency-path: app/frontend/pnpm-lock.yaml
+          cache-dependency-path: apps/frontend/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app/frontend
+        working-directory: apps/frontend
     
     steps:
       - name: Checkout code
@@ -107,7 +107,7 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'pnpm'
-          cache-dependency-path: app/frontend/pnpm-lock.yaml
+          cache-dependency-path: apps/frontend/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

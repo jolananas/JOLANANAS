@@ -189,6 +189,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                         src={activeImage}
                         alt={product.title}
                         fill
+                        sizes="(max-width: 1024px) 100vw, 60vw"
                         className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                         priority
                       />
@@ -227,6 +228,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                         src={node.url}
                         alt={node.altText || `Vue ${i + 1}`}
                         fill
+                        sizes="(max-width: 768px) 80px, 96px"
                         className="object-cover"
                       />
                     </button>
@@ -259,6 +261,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                             src={node.previewImage.url}
                             alt="Produit en vidéo"
                             fill
+                            sizes="(max-width: 768px) 80px, 96px"
                             className="object-cover"
                           />
                         )}
@@ -459,7 +462,7 @@ export function ProductPageClient({ product }: { product: Product }) {
         </div>
       </div>
       {/* STICKY MOBILE BAR (Fixé en bas sur mobile) */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-black/5 z-40 md:hidden flex items-center gap-4 animate-in slide-in-from-bottom-full duration-500 pb-[env(safe-area-inset-bottom)] shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-black/5 z-40 md:hidden flex items-center gap-4 animate-in slide-in-from-bottom-full duration-500 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
         <div className="flex-1">
           <p className="text-xs font-bold text-foreground truncate max-w-[150px]">
             {product.title}
@@ -479,7 +482,7 @@ export function ProductPageClient({ product }: { product: Product }) {
           size="sm"
           onClick={handleAddToCart}
           disabled={!selectedVariant?.availableForSale || isAdding}
-          className="rounded-full px-6 font-bold uppercase tracking-wider bg-black text-white hover:bg-primary shadow-lg"
+          className="rounded-full px-6 font-bold uppercase tracking-wider bg-primary text-white hover:bg-primary/80 shadow-lg"
         >
           {isAdding ? "..." : "Ajouter"}
         </Button>

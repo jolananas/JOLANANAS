@@ -27,24 +27,48 @@ export function Navigation() {
 
   // Détecter quand le footer est à 75% visible pour masquer la navbar
   React.useEffect(() => {
-    const footer = document.getElementById("footer");
-    if (!footer) return;
+    let observer: IntersectionObserver | null = null;
+    let intervalId: NodeJS.Timeout | null = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Masquer la navbar quand le footer est visible à 75% ou plus
-          setShouldHideNav(entry.intersectionRatio >= 0.75);
-        });
-      },
-      {
-        threshold: [0, 0.75, 1], // Observer à 0%, 75%, et 100%
-      },
-    );
+    const initObserver = () => {
+      const footer = document.getElementById("footer");
+      if (!footer) return false;
 
-    observer.observe(footer);
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            // Masquer la navbar quand le footer est visible à 75% ou plus
+            setShouldHideNav(entry.intersectionRatio >= 0.75);
+          });
+        },
+        {
+          threshold: [0, 0.75, 1], // Observer à 0%, 75%, et 100%
+        },
+      );
 
-    return () => observer.disconnect();
+      observer.observe(footer);
+      return true;
+    };
+
+    // Tentative immédiate
+    if (!initObserver()) {
+      // Si pas encore là (Suspense/Hydration), on réessaie
+      intervalId = setInterval(() => {
+        if (initObserver()) {
+          if (intervalId) clearInterval(intervalId);
+        }
+      }, 200);
+
+      // Sécurité : arrêter de chercher après 10 secondes
+      setTimeout(() => {
+        if (intervalId) clearInterval(intervalId);
+      }, 10000);
+    }
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (intervalId) clearInterval(intervalId);
+    };
   }, []);
 
   return (
@@ -52,7 +76,7 @@ export function Navigation() {
       className={cn(
         "fixed z-50 border border-border/50 backdrop-blur-xl shadow-sm overflow-hidden bg-white/60",
         // ANIMATION DE MASQUAGE AU FOOTER
-        "transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]", // Transition fluide
+        "transition-all duration-500 ease-swiss", // Transition fluide
         shouldHideNav && "-translate-y-40 opacity-0 pointer-events-none", // Masquage
         // LOGIQUE DE POSITIONNEMENT (TOP)
         // Si Bannière visible : top-24
@@ -126,7 +150,7 @@ export function Navigation() {
         {/* LIENS */}
         <div
           className={cn(
-            "flex flex-col gap-2 px-4 w-full transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            "flex flex-col gap-2 px-4 w-full transition-all duration-500 ease-swiss",
             isOpen
               ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
               : "max-h-0 opacity-0", // Cache le contenu proprement
@@ -157,7 +181,7 @@ export function Navigation() {
         {/* CARTE ACTUALITÉS */}
         <div
           className={cn(
-            "grid grid-cols-1 md:grid-cols-2 gap-4 px-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            "grid grid-cols-1 md:grid-cols-2 gap-4 px-4 transition-all duration-500 ease-swiss",
             isOpen
               ? "max-h-[600px] opacity-100 pb-6 pt-2"
               : "max-h-0 opacity-0", // Toujours visible sur desktop
@@ -267,7 +291,7 @@ export function Navigation() {
         {/* BOUTONS CTA PREMIUM */}
         <div
           className={cn(
-            "grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            "grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 transition-all duration-500 ease-swiss",
             isOpen
               ? "max-h-[400px] opacity-100 pb-6 pt-4"
               : "max-h-0 opacity-0",

@@ -58,6 +58,13 @@ yarn-debug.log*
 yarn-error.log*
 logs/
 *.log
+pnpm-debug.log*
+lighthouse-report*.json
+
+
+
+# Tests
+/coverage
 
 # Prisma
 /prisma/*.db

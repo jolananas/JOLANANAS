@@ -10,6 +10,9 @@ build/
 .next/
 out/
 
+# TypeScript
+*.tsbuildinfo
+
 # Environment variables
 .env
 .env.local
@@ -36,6 +39,9 @@ Thumbs.db
 # Logs
 logs
 *.log
+pnpm-debug.log*
+lighthouse-report*.json
+
 
 # Runtime data
 pids

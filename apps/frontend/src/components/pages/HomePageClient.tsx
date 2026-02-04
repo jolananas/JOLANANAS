@@ -25,7 +25,7 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
         className={cn(
           "relative w-full flex flex-col justify-center overflow-hidden",
           // LA LOGIQUE DE DÉCOLLEMENT (ESSENTIELLE)
-          "transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+          "transition-transform duration-500 ease-swiss",
           isBannerVisible ? "translate-y-12" : "translate-y-0",
         )}
       >
@@ -44,7 +44,7 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
           <div className="flex flex-row items-center justify-start gap-6 lg:gap-12">
             {/* 1. COLONNE VISUELLE */}
             {/* CORRECTION : On retire flex-1. On met flex-none pour qu'il ne prenne que la taille de l'image */}
-            <div className="flex-none relative shrink-0">
+            <div className="hidden md:flex flex-none relative shrink-0">
               {/* Cercle décoratif derrière le logo pour l'ancrer visuellement */}
               <div className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full scale-150 -z-10" />
 
@@ -53,7 +53,7 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
                 alt="Logo – JOLANANAS"
                 width={350}
                 height={350}
-                className="object-contain w-[250px] md:w-[350px] h-auto"
+                className="object-contain w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] xl:w-[400px] 2xl:w-[500px] h-auto"
                 priority
               />
             </div>

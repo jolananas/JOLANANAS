@@ -231,7 +231,7 @@ export function InfoBanner({ className }: InfoBannerProps) {
         "fixed top-0 left-0 right-0 z-[101] w-full overflow-hidden",
         "shadow-sm dark:shadow-none",
         // ANIMATION HAUTEUR : On joue sur max-height pour glisser
-        "transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        "transition-all duration-700 ease-swiss",
         isVisible && banner ? "max-h-20" : "max-h-0",
         className,
       )}

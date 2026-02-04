@@ -79,7 +79,7 @@ To connect to your Shopify store, add these environment variables:
 \`\`\`env
 SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
 SHOPIFY_STOREFRONT_TOKEN=your_storefront_access_token
-SHOPIFY_API_VERSION=2026-04
+SHOPIFY_API_VERSION=2026-01
 \`\`\`
 
 **Note**: These environment variables are required for the application to function. The app uses only real Shopify data - no mock or fake data is used.

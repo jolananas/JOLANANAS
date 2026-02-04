@@ -1,8 +1,10 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import Image from "next/image";
-import { FaGithub, FaDiscord, FaYoutube, FaBookOpen } from 'react-icons/fa';
-import { ChevronRight } from 'lucide-react';
 
+import Github from "./assets/github.svg";
+import Discord from "./assets/discord.svg";
+import Youtube from "./assets/youtube.svg";
+import Tutorials from "./assets/tutorials.svg";
 import Styling from "./assets/styling.png";
 import Context from "./assets/context.png";
 import Assets from "./assets/assets.png";
@@ -14,7 +16,21 @@ import Accessibility from "./assets/accessibility.png";
 import Theming from "./assets/theming.png";
 import AddonLibrary from "./assets/addon-library.png";
 
-export const RightArrow = () => <ChevronRight className="h-3 w-3 inline-block ml-1" />
+export const RightArrow = () => <svg 
+    viewBox="0 0 14 14" 
+    width="8px" 
+    height="14px" 
+    style={{ 
+      marginLeft: '4px',
+      display: 'inline-block',
+      shapeRendering: 'inherit',
+      verticalAlign: 'middle',
+      fill: 'currentColor',
+      'path fill': 'currentColor'
+    }}
+>
+  <path d="m11.1 7.35-5.5 5.5a.5.5 0 0 1-.7-.7L10.04 7 4.9 1.85a.5.5 0 1 1 .7-.7l5.5 5.5c.2.2.2.5 0 .7Z" />
+</svg>
 
 <Meta title="Configure your project" />
 
@@ -202,8 +218,13 @@ export const RightArrow = () => <ChevronRight className="h-3 w-3 inline-block ml
 
 <div className="sb-section sb-socials">
     <div className="sb-section-item">
-      <FaGithub 
-        className="sb-explore-image text-4xl text-gray-800" 
+      <Image 
+        width={32}
+        height={32}
+        layout="fixed"
+        src={Github} 
+        alt="Github logo" 
+        className="sb-explore-image"
       />
       Join our contributors building the future of UI development.
 
@@ -213,8 +234,13 @@ export const RightArrow = () => <ChevronRight className="h-3 w-3 inline-block ml
       >Star on GitHub<RightArrow /></a>
     </div>
     <div className="sb-section-item">
-      <FaDiscord 
-        className="sb-explore-image text-4xl text-indigo-600" 
+      <Image 
+        width={33}
+        height={32}
+        layout="fixed"
+        src={Discord} 
+        alt="Discord logo" 
+        className="sb-explore-image"
       />
       <div>
         Get support and chat with frontend developers.
@@ -226,8 +252,13 @@ export const RightArrow = () => <ChevronRight className="h-3 w-3 inline-block ml
       </div>
     </div>
     <div className="sb-section-item">
-      <FaYoutube 
-        className="sb-explore-image text-4xl text-red-600" 
+      <Image 
+        width={32}
+        height={32}
+        layout="fixed"
+        src={Youtube} 
+        alt="Youtube logo" 
+        className="sb-explore-image"
       />
       <div>
         Watch tutorials, feature previews and interviews.
@@ -239,8 +270,13 @@ export const RightArrow = () => <ChevronRight className="h-3 w-3 inline-block ml
       </div>
     </div>
     <div className="sb-section-item">
-      <FaBookOpen 
-        className="sb-explore-image text-4xl text-blue-600" 
+      <Image 
+        width={33}
+        height={32}
+        layout="fixed"
+        src={Tutorials} 
+        alt="A book" 
+        className="sb-explore-image"
       />
       <p>Follow guided walkthroughs on for key workflows.</p>
 

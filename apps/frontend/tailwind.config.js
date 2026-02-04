@@ -83,6 +83,8 @@ export default {
       },
       transitionTimingFunction: {
         smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
+        swiss: "cubic-bezier(0.32, 0.72, 0, 1)",
+        curtain: "cubic-bezier(0.87, 0, 0.13, 1)",
       },
     },
   },

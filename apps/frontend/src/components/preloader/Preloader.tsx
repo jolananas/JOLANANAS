@@ -63,7 +63,7 @@ export function Preloader() {
       <div
         className={cn(
           // On ajoute un délai (delay-100) pour que le rideau parte juste APRES le début du zoom du logo
-          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-[cubic-bezier(0.87,0,0.13,1)]",
+          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain",
           !isLoading && "-translate-x-full",
         )}
         style={{ ...commonStyle, backgroundPosition: "0% center" }}
@@ -75,7 +75,7 @@ export function Preloader() {
       <div
         className={cn(
           // Même délai pour la synchro
-          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-[cubic-bezier(0.87,0,0.13,1)]",
+          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain",
           !isLoading && "translate-x-full",
         )}
         style={{ ...commonStyle, backgroundPosition: "100% center" }}

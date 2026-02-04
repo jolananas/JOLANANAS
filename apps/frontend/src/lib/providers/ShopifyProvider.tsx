@@ -4,9 +4,9 @@
  * Provider pour le contexte Shopify Storefront
  */
 
-'use client';
+"use client";
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from "react";
 
 interface ShopifyConfig {
   domain: string;
@@ -28,10 +28,12 @@ interface ShopifyProviderProps {
 export function ShopifyProvider({ children, config }: ShopifyProviderProps) {
   const defaultConfig = {
     domain: process.env.SHOPIFY_STORE_DOMAIN,
-    storefrontToken: process.env.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-    apiVersion: process.env.SHOPIFY_API_VERSION ?? '2026-04',
+    storefrontToken:
+      process.env.SHOPIFY_STOREFRONT_TOKEN ||
+      process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+    apiVersion: process.env.SHOPIFY_API_VERSION ?? "2026-01",
   };
-  
+
   const shopifyConfig = config || defaultConfig;
 
   return (
@@ -44,7 +46,7 @@ export function ShopifyProvider({ children, config }: ShopifyProviderProps) {
 export function useShopifyConfig() {
   const context = useContext(ShopifyContext);
   if (context === undefined) {
-    throw new Error('useShopifyConfig must be used within a ShopifyProvider');
+    throw new Error("useShopifyConfig must be used within a ShopifyProvider");
   }
   return context;
 }
