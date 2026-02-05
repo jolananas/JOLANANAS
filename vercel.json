@@ -1,9 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm install -g pnpm@9.15.0 && pnpm install && pnpm build",
-  "outputDirectory": ".next",
-  "installCommand": "npm install -g pnpm@9.15.0 && pnpm install",
-  "framework": "nextjs",
   "headers": [
     {
       "source": "/api/(.*)",
@@ -24,3 +20,4 @@
     }
   ]
 }
+
