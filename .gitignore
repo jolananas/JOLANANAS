@@ -30,6 +30,7 @@ env.*
 *.env.*
 *.secret
 *.secrets
+sync_env.sh
 
 # Fichiers de backup contenant des secrets
 *.backup

@@ -1,18 +1,3 @@
-/**
- * 🍍 JOLANANAS - Bandeau d'informations intelligent (Version moderne)
- * ============================================================================
- * Bandeau affiché au-dessus de la navbar avec messages contextuels intelligents
- * Basé sur les meilleures pratiques de Stripe, Vercel, GitHub
- *
- * Caractéristiques :
- * - ✅ 100% responsive (320px → 1600px+)
- * - ✅ Boutons toujours visibles et accessibles
- * - ✅ Microcopy de qualité
- * - ✅ Animations GSAP fluides
- * - ✅ Accessibilité complète (ARIA, clavier)
- * - ✅ Respect des lois UX (Fitts, Hick)
- */
-
 "use client";
 
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";

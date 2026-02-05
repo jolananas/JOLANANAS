@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, LogIn, Sparkles, Crown, Palette } from "lucide-react";
 import { CartSheet } from "@/components/cart/CartSheet";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useBanner } from "@/components/layout/BannerContext";
 
@@ -89,8 +90,8 @@ export function Navigation() {
           : "left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-[34px] h-[68px]", // Fermé
         // Desktop : comportement original même quand ouvert
         isOpen
-          ? "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl md:rounded-[2rem] md:h-fit md:top-6"
-          : "",
+          ? "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl md:rounded-[2rem] md:h-fit md:top-6" // Desktop
+          : "", // Fermé
       )}
     >
       {/* BARRE DU HAUT (Toujours visible) */}
@@ -146,38 +147,63 @@ export function Navigation() {
       </div>
 
       {/* MENU DÉROULANT */}
-      <div className="flex flex-col md:flex-row gap-2 px-4 overflow-y-auto max-h-[80vh]">
-        {/* LIENS */}
+      <div className="flex flex-col md:flex-row justify-between px-4 overflow-y-auto max-h-[80vh]">
+        {/* LIENS & BOUTON CONNEXION */}
         <div
           className={cn(
-            "flex flex-col gap-2 px-4 w-full transition-all duration-500 ease-swiss",
-            isOpen
-              ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
-              : "max-h-0 opacity-0", // Cache le contenu proprement
-            "md:max-h-full md:opacity-100 md:pb-0 md:pt-0", // Toujours visible sur desktop
+            "flex flex-col justify-between",
+            isOpen ? "opacity-100 pb-6 pt-2" : "opacity-0", // Toujours visible sur desktop
           )}
         >
-          {navItems.map((item, index) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              // Délai progressif pour chaque item (stagger effect)
-              style={{ transitionDelay: isOpen ? `${index * 50}ms` : "0ms" }}
-              className={cn(
-                "text-lg font-medium py-3 px-6 rounded-xl transition-all duration-300 transform",
-                pathname === item.href
-                  ? "bg-secondary/20 text-primary translate-x-2 md:translate-x-0"
-                  : "text-foreground hover:bg-secondary/10 hover:translate-x-1 md:hover:translate-x-0",
-                isOpen
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+          {/* LIENS */}
+          <div
+            className={cn(
+              "flex flex-col gap-2 px-4 w-full transition-all duration-500 ease-swiss",
+              isOpen
+                ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
+                : "max-h-0 opacity-0", // Cache le contenu proprement
+              "md:max-h-full md:opacity-100 md:pb-0 md:pt-0", // Toujours visible sur desktop
+            )}
+          >
+            {navItems.map((item, index) => (
+              <Button
+                key={item.href}
+                asChild
+                variant="ghost"
+                style={{ transitionDelay: isOpen ? `${index * 50}ms` : "0ms" }}
+                className={cn(
+                  "text-lg font-medium h-auto py-3 px-6 rounded-xl transition-all duration-300 transform justify-start",
+                  pathname === item.href,
+                  isOpen
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
+                )}
+              >
+                <Link href={item.href}>{item.name}</Link>
+              </Button>
+            ))}
+          </div>
 
+          {/* BOUTTON CONNEXION */}
+          <div
+            className={cn(
+              "flex flex-row gap-2 px-4 w-full transition-all duration-500 ease-swiss",
+              isOpen
+                ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
+                : "max-h-0 opacity-0", // Cache le contenu proprement
+              "md:max-h-full md:opacity-100 md:pb-0 md:pt-0", // Toujours visible sur desktop
+            )}
+          >
+            <Button
+              variant="default"
+              size="lg"
+              className="w-full"
+              onClick={() => setIsOpen(false)}
+            >
+              Connexion
+            </Button>
+          </div>
+        </div>
         {/* CARTE ACTUALITÉS */}
         <div
           className={cn(
@@ -191,7 +217,7 @@ export function Navigation() {
           <Link
             href="/collections/nouvelle-collection"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 transition-all duration-100 hover:shadow-md",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
@@ -216,7 +242,7 @@ export function Navigation() {
           <Link
             href="/promo"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 transition-all duration-100 hover:shadow-md",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
@@ -241,7 +267,7 @@ export function Navigation() {
           <Link
             href="/about"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all duration-100 hover:shadow-md",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
@@ -266,7 +292,7 @@ export function Navigation() {
           <Link
             href="/contact"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 transition-all duration-100 hover:shadow-md",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
@@ -284,128 +310,6 @@ export function Navigation() {
               <p className="mt-2 text-sm text-muted-foreground">
                 Une question ? Notre équipe vous répond
               </p>
-            </div>
-          </Link>
-        </div>
-
-        {/* BOUTONS CTA PREMIUM */}
-        <div
-          className={cn(
-            "grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 transition-all duration-500 ease-swiss",
-            isOpen
-              ? "max-h-[400px] opacity-100 pb-6 pt-4"
-              : "max-h-0 opacity-0",
-          )}
-        >
-          {/* CTA 1 - CONNEXION */}
-          <Link
-            href="/login"
-            className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 via-purple-500 to-purple-600 p-5 transition-all duration-200 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]",
-              isOpen
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
-            )}
-            style={{ transitionDelay: isOpen ? "400ms" : "0ms" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-                  <LogIn className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <span className="inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white mb-1">
-                    MEMBRE
-                  </span>
-                  <h4 className="text-base font-bold text-white">Connexion</h4>
-                </div>
-              </div>
-              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            </div>
-          </Link>
-
-          {/* CTA 2 - QUIZ STYLE */}
-          <Link
-            href="/quiz"
-            className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-400 via-pink-400 to-rose-500 p-5 transition-all duration-200 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]",
-              isOpen
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
-            )}
-            style={{ transitionDelay: isOpen ? "450ms" : "0ms" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <span className="inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white mb-1">
-                    NOUVEAU
-                  </span>
-                  <h4 className="text-base font-bold text-white">Quiz Style</h4>
-                </div>
-              </div>
-              <div className="text-white/60 text-xs font-medium">30s</div>
-            </div>
-          </Link>
-
-          {/* CTA 3 - CLUB VIP */}
-          <Link
-            href="/club-vip"
-            className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 p-5 transition-all duration-200 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]",
-              isOpen
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
-            )}
-            style={{ transitionDelay: isOpen ? "500ms" : "0ms" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-                  <Crown className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <span className="inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white mb-1">
-                    PREMIUM
-                  </span>
-                  <h4 className="text-base font-bold text-white">Club VIP</h4>
-                </div>
-              </div>
-              <div className="text-white/80 text-xs font-bold">👑</div>
-            </div>
-          </Link>
-
-          {/* CTA 4 - CRÉER SUR MESURE */}
-          <Link
-            href="/creer-sur-mesure"
-            className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-blue-600 p-5 transition-all duration-200 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]",
-              isOpen
-                ? "translate-y-0 opacity-100"
-                : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
-            )}
-            style={{ transitionDelay: isOpen ? "550ms" : "0ms" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm">
-                  <Palette className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <span className="inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold text-white mb-1">
-                    UNIQUE
-                  </span>
-                  <h4 className="text-base font-bold text-white">Sur Mesure</h4>
-                </div>
-              </div>
-              <div className="text-white/60 text-xs font-medium">✨</div>
             </div>
           </Link>
         </div>

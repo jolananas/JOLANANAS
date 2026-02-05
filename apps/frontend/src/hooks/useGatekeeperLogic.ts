@@ -6,11 +6,18 @@ import { useSearchParams } from "next/navigation";
 const STORAGE_KEY = "jolananas_gatekeeper_bypass";
 
 export function useGatekeeperLogic() {
-  const [shouldBlock, setShouldBlock] = useState(false);
+  // 1. Initialiser directement avec la valeur env pour éviter le flash blanc
+  // Utilisation de NEXT_PUBLIC_ pour l'accès client
+  const [shouldBlock, setShouldBlock] = useState(() => {
+    if (typeof window === "undefined") return false; // Serveur : ne pas bloquer par défaut
+    const mode = process.env.SITE_MODE || "live";
+    return mode !== "live";
+  });
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    // 1. Vérifier la clé .env
+    // 2. Vérification Client
     const mode = process.env.SITE_MODE || "live";
 
     // Si on est en "live", on ne bloque jamais
@@ -19,18 +26,16 @@ export function useGatekeeperLogic() {
       return;
     }
 
-    // 2. Vérifier le Bypass (Passage Secret) - UNIQUEMENT EN DEV
-    // Si l'URL contient ?unlock=admin OU si le navigateur a déjà le cookie
-    // ET que nous sommes en environnement de développement
+    // 3. Vérifier le Bypass (Passage Secret) - UNIQUEMENT EN DEV
     const isDev = process.env.NODE_ENV === "development";
     const unlockKey = searchParams.get("unlock");
     const isBypassed = localStorage.getItem(STORAGE_KEY) === "true";
 
     if (isDev && (unlockKey === "admin" || isBypassed)) {
-      localStorage.setItem(STORAGE_KEY, "true"); // On mémorise l'accès
-      setShouldBlock(false); // On laisse passer
+      localStorage.setItem(STORAGE_KEY, "true");
+      setShouldBlock(false);
     } else {
-      setShouldBlock(true); // On bloque
+      setShouldBlock(true);
     }
   }, [searchParams]);
 
