@@ -196,15 +196,15 @@ export function InfoBanner({ className }: InfoBannerProps) {
   const getBackgroundStyles = () => {
     switch (banner?.type) {
       case "promotion":
-        return "bg-gradient-to-r from-[#F38FA3]/10 via-[#F4B4AB]/10 to-[#EC7B9C]/10 dark:from-[#F38FA3]/20 dark:via-[#F4B4AB]/20 dark:to-[#EC7B9C]/20 border-b border-[#F38FA3]/60 backdrop-blur-md";
+        return "bg-gradient-to-r from-[#F38FA3] via-[#F4B4AB] to-[#EC7B9C] dark:from-[#F38FA3] dark:via-[#F4B4AB] dark:to-[#EC7B9C] border-b border-[#F38FA3] backdrop-blur-md";
       case "info":
-        return "bg-[#DBEAFE]/90 dark:bg-[#1E3A8A]/30 border-b border-[#93C5FD]/60 dark:border-[#3B82F6]/60 backdrop-blur-md";
+        return "bg-[#DBEAFE] dark:bg-[#1E3A8A] border-b border-[#93C5FD] dark:border-[#3B82F6] backdrop-blur-md";
       case "warning":
-        return "bg-[#FEF3C7]/90 dark:bg-[#78350F]/30 border-b border-[#FDE68A]/60 dark:border-[#F59E0B]/60 backdrop-blur-md";
+        return "bg-[#FEF3C7] dark:bg-[#78350F] border-b border-[#FDE68A] dark:border-[#F59E0B] backdrop-blur-md";
       case "success":
-        return "bg-[#D1FAE5]/90 dark:bg-[#064E3B]/30 border-b border-[#86EFAC]/60 dark:border-[#10B981]/60 backdrop-blur-md";
+        return "bg-[#D1FAE5] dark:bg-[#064E3B] border-b border-[#86EFAC] dark:border-[#10B981] backdrop-blur-md";
       default:
-        return "bg-[#FEF7F0]/95 dark:bg-[#1A1625]/90 border-b border-[#F3E8FF] backdrop-blur-md";
+        return "bg-[#FEF7F0] dark:bg-[#1A1625] border-b border-[#F3E8FF] backdrop-blur-md";
     }
   };
 
