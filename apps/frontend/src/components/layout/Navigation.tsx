@@ -75,23 +75,27 @@ export function Navigation() {
   return (
     <header
       className={cn(
-        "fixed z-50 border border-border/50 backdrop-blur-xl shadow-sm overflow-hidden bg-white/60",
+        "fixed border border-border/50 backdrop-blur-xl shadow-sm overflow-hidden bg-white/60",
+        // Z-Index : Nav au-dessus du banner (z-101) uniquement quand ouvert pour éviter le chevauchement
+        isOpen ? "z-[102]" : "z-50",
         // ANIMATION DE MASQUAGE AU FOOTER
         "transition-all duration-500 ease-swiss", // Transition fluide
         shouldHideNav && "-translate-y-40 opacity-0 pointer-events-none", // Masquage
-        // LOGIQUE DE POSITIONNEMENT (TOP)
-        // Si Bannière visible : top-24
-        // Sinon : top-6
-        isBannerVisible ? "top-24" : "top-6",
-        // ANIMATION DU CONTAINER PRINCIPAL
-        // Mobile : plein écran quand ouvert
+
+        // LOGIQUE DE POSITIONNEMENT
         isOpen
-          ? "w-full h-full rounded-none bg-white/95 inset-0" // Mobile fullscreen
-          : "left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-[34px] h-[68px]", // Fermé
-        // Desktop : comportement original même quand ouvert
-        isOpen
-          ? "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl md:rounded-[2rem] md:h-fit md:top-6" // Desktop
-          : "", // Fermé
+          ? cn(
+              // MOBILE OUVERT : Plein écran, top-0 pour couvrir le banner
+              "top-0 w-full h-full rounded-none bg-white/95",
+              // DESKTOP OUVERT : Garde la position relative au banner et les styles desktop
+              "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl md:rounded-[2rem] md:h-fit",
+              isBannerVisible ? "md:top-24" : "md:top-6",
+            )
+          : cn(
+              // FERMÉ (Mobile & Desktop) : Position pillule
+              "left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-[34px] h-[68px]",
+              isBannerVisible ? "top-24" : "top-6",
+            ),
       )}
     >
       {/* BARRE DU HAUT (Toujours visible) */}
@@ -147,7 +151,15 @@ export function Navigation() {
       </div>
 
       {/* MENU DÉROULANT */}
-      <div className="flex flex-col md:flex-row justify-between px-4 overflow-y-auto max-h-[80vh]">
+      <div
+        className={cn(
+          "flex flex-col md:flex-row justify-between px-4 overflow-y-auto",
+          // Mobile : Hauteur calculée pour remplir l'écran moins la barre du haut (66px)
+          isOpen ? "h-[calc(100dvh-66px)]" : "h-0",
+          // Desktop : Hauteur auto
+          "md:h-auto",
+        )}
+      >
         {/* LIENS & BOUTON CONNEXION */}
         <div
           className={cn(

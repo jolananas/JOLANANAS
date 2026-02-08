@@ -29,6 +29,36 @@ import {
   type BannerMessage,
 } from "@/lib/config/bannerConfig";
 
+const BANNER_STYLES = {
+  promotion: {
+    bg: "bg-accent dark:bg-accent/20",
+    border: "border-accent dark:border-accent/30",
+    text: "text-foreground dark:text-accent-foreground",
+    badge:
+      "bg-background/90 text-accent border-transparent hover:bg-background",
+  },
+  info: {
+    bg: "bg-slate-100 dark:bg-slate-900",
+    border: "border-slate-200 dark:border-slate-800",
+    text: "text-slate-900 dark:text-slate-100",
+  },
+  warning: {
+    bg: "bg-amber-50 dark:bg-amber-950/50",
+    border: "border-amber-200 dark:border-amber-800",
+    text: "text-amber-900 dark:text-amber-100",
+  },
+  success: {
+    bg: "bg-emerald-50 dark:bg-emerald-950/50",
+    border: "border-emerald-200 dark:border-emerald-800",
+    text: "text-emerald-900 dark:text-emerald-100",
+  },
+  default: {
+    bg: "bg-muted dark:bg-muted/10",
+    border: "border-muted-foreground/20",
+    text: "text-foreground",
+  },
+} as const;
+
 interface InfoBannerProps {
   className?: string;
 }
@@ -178,36 +208,12 @@ export function InfoBanner({ className }: InfoBannerProps) {
   };
 
   // Styles de fond selon le type
-  const getBackgroundStyles = () => {
-    switch (banner?.type) {
-      case "promotion":
-        return "bg-gradient-to-r from-[#F38FA3] via-[#F4B4AB] to-[#EC7B9C] dark:from-[#F38FA3] dark:via-[#F4B4AB] dark:to-[#EC7B9C] border-b border-[#F38FA3] backdrop-blur-md";
-      case "info":
-        return "bg-[#DBEAFE] dark:bg-[#1E3A8A] border-b border-[#93C5FD] dark:border-[#3B82F6] backdrop-blur-md";
-      case "warning":
-        return "bg-[#FEF3C7] dark:bg-[#78350F] border-b border-[#FDE68A] dark:border-[#F59E0B] backdrop-blur-md";
-      case "success":
-        return "bg-[#D1FAE5] dark:bg-[#064E3B] border-b border-[#86EFAC] dark:border-[#10B981] backdrop-blur-md";
-      default:
-        return "bg-[#FEF7F0] dark:bg-[#1A1625] border-b border-[#F3E8FF] backdrop-blur-md";
-    }
+  const getBannerStyle = (type?: string) => {
+    const styleKey = (type as keyof typeof BANNER_STYLES) || "default";
+    return BANNER_STYLES[styleKey] || BANNER_STYLES.default;
   };
 
-  // Couleurs de texte selon le type
-  const getTextStyles = () => {
-    switch (banner?.type) {
-      case "promotion":
-        return "text-[#141318] dark:text-[#FEF7F0]";
-      case "info":
-        return "text-[#1E40AF] dark:text-[#DBEAFE]";
-      case "warning":
-        return "text-[#92400E] dark:text-[#FEF3C7]";
-      case "success":
-        return "text-[#065F46] dark:text-[#D1FAE5]";
-      default:
-        return "text-[#141318] dark:text-[#FEF7F0]";
-    }
-  };
+  const currentStyle = getBannerStyle(banner?.type);
 
   return (
     <div
@@ -230,8 +236,10 @@ export function InfoBanner({ className }: InfoBannerProps) {
         className={cn(
           "w-full transition-opacity duration-300",
           isVisible && banner ? "opacity-100 delay-200" : "opacity-0",
-          getBackgroundStyles(),
-          getTextStyles(),
+          currentStyle.bg,
+          "border-b",
+          currentStyle.border,
+          currentStyle.text,
         )}
       >
         <div className="mx-auto max-w-7xl">
@@ -267,10 +275,13 @@ export function InfoBanner({ className }: InfoBannerProps) {
                   aria-label={banner.link.label}
                 >
                   <Badge
-                    variant={
-                      banner.type === "promotion" ? "promotion" : "outline"
-                    }
-                    className="text-xs font-semibold cursor-pointer transition-all duration-200 hover:scale-105 h-6 px-2.5 sm:h-7 sm:px-3"
+                    variant="outline"
+                    className={cn(
+                      "text-xs font-semibold cursor-pointer transition-all duration-200 hover:scale-105 h-6 px-2.5 sm:h-7 sm:px-3",
+                      banner.type === "promotion"
+                        ? BANNER_STYLES.promotion.badge
+                        : "bg-transparent hover:bg-accent/50",
+                    )}
                   >
                     {banner.link.label}
                     <ArrowRight

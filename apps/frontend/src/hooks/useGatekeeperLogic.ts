@@ -10,7 +10,7 @@ export function useGatekeeperLogic() {
   // Utilisation de NEXT_PUBLIC_ pour l'accès client
   const [shouldBlock, setShouldBlock] = useState(() => {
     if (typeof window === "undefined") return false; // Serveur : ne pas bloquer par défaut
-    const mode = process.env.SITE_MODE || "live";
+    const mode = process.env.NEXT_PUBLIC_SITE_MODE || "live";
     return mode !== "live";
   });
 
@@ -18,7 +18,7 @@ export function useGatekeeperLogic() {
 
   useEffect(() => {
     // 2. Vérification Client
-    const mode = process.env.SITE_MODE || "live";
+    const mode = process.env.NEXT_PUBLIC_SITE_MODE || "live";
 
     // Si on est en "live", on ne bloque jamais
     if (mode === "live") {
@@ -39,5 +39,5 @@ export function useGatekeeperLogic() {
     }
   }, [searchParams]);
 
-  return { shouldBlock, activeMode: process.env.SITE_MODE };
+  return { shouldBlock, activeMode: process.env.NEXT_PUBLIC_SITE_MODE };
 }
