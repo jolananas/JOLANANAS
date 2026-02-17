@@ -1,6 +1,5 @@
 # Dépendances
 node_modules
-pnpm-lock.yaml
 .pnp
 .pnp
 .pnp.js
