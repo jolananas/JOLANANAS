@@ -97,16 +97,7 @@ export function ProductQuickView({
 
     setIsAddingToCart(true);
     try {
-      addItem({
-        variantId,
-        productId: product.id,
-        title: product.title,
-        price: product.price,
-        quantity,
-        image:
-          product.images?.[0]?.url || "/assets/images/collections/placeholder.svg",
-        handle: product.handle,
-      });
+      await addItem(variantId, quantity);
 
       // Feedback visuel puis fermeture
       setTimeout(() => {
@@ -296,7 +287,7 @@ export function ProductQuickView({
                 )}
 
                 {/* Tags */}
-                {product.tags.length > 0 && (
+                {product.tags && product.tags.length > 0 && (
                   <>
                     <Separator />
                     <div className="flex flex-wrap gap-2">

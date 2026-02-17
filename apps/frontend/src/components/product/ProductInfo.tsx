@@ -16,7 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AddToCartButton } from "@/components/AddToCartButton";
+import { AddToCartButton } from "@/components/product/AddToCartButton";
 import { useProductCurrency } from "@/hooks/useProductCurrency";
 import type { Product } from "@/lib/shopify/types";
 
@@ -75,7 +75,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       {/* Tags */}
-      {product.tags.length > 0 && (
+      {product.tags && product.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {product.tags.map((tag) => (
             <Badge key={tag} variant="secondary">

@@ -199,6 +199,7 @@ export async function getProductByHandle(handle: string) {
           name
           values
         }
+        tags
       }
     }
   `;
