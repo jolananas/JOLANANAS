@@ -75,7 +75,9 @@ export function useCurrency(shopifyCurrencyCode?: string): UseCurrencyReturn {
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       // Construire l'URL avec le currencyCode si fourni
-      const url = new URL('/api/currency', window.location.origin);
+      // Utiliser une URL absolue pour le fetch côté client
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
+      const url = new URL('/api/currency', origin);
       if (shopifyCurrencyCode) {
         url.searchParams.set('shopifyCurrencyCode', shopifyCurrencyCode);
       }
@@ -128,7 +130,7 @@ export function useCurrency(shopifyCurrencyCode?: string): UseCurrencyReturn {
     (amount: string | number, currencyCode?: string): string => {
       const currency = currencyCode || state.currentCurrency;
       const value = typeof amount === 'string' ? parseFloat(amount) : amount;
-      const locale = navigator.language || 'fr-FR';
+      const locale = typeof window !== 'undefined' ? navigator.language : 'fr-FR';
 
       try {
         return new Intl.NumberFormat(locale, {
