@@ -66,7 +66,7 @@ export function ProductQuickView({
       fetch(`/api/products/${productHandle}`)
         .then((res) => res.json())
         .then((data) => {
-          setProduct(data);
+          setProduct(data.product);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -104,7 +104,7 @@ export function ProductQuickView({
         price: product.price,
         quantity,
         image:
-          product.images[0] || "/assets/images/collections/placeholder.svg",
+          product.images?.[0]?.url || "/assets/images/collections/placeholder.svg",
         handle: product.handle,
       });
 
@@ -132,6 +132,8 @@ export function ProductQuickView({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         {isLoading ? (
           <div className="flex items-center justify-center min-h-[400px]">
+            <DialogTitle className="sr-only">Chargement</DialogTitle>
+            <DialogDescription className="sr-only">Chargement du produit en cours</DialogDescription>
             <Loader2 className="h-8 w-8 animate-spin text-jolananas-pink-medium" />
             <span className="ml-2 text-muted-foreground">
               Chargement du produit <LoadingDots size="sm" />
@@ -152,8 +154,8 @@ export function ProductQuickView({
                 <AspectRatio ratio={1} className="overflow-hidden rounded-xl">
                   <Image
                     src={
-                      product.images[selectedImageIndex] ||
-                      product.images[0] ||
+                      product.images?.[selectedImageIndex]?.url ||
+                      product.images?.[0]?.url ||
                       "/assets/images/collections/placeholder.svg"
                     }
                     alt={product.title}
@@ -178,8 +180,8 @@ export function ProductQuickView({
                         aria-label={`Voir l'image ${index + 1}`}
                       >
                         <Image
-                          src={image}
-                          alt={`${product.title} miniature ${index + 1}`}
+                          src={image.url}
+                          alt={image.altText || `${product.title} miniature ${index + 1}`}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 25vw, 12.5vw"
@@ -315,6 +317,8 @@ export function ProductQuickView({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+            <DialogTitle className="sr-only">Erreur</DialogTitle>
+            <DialogDescription className="sr-only">Impossible de charger le produit</DialogDescription>
             <p className="text-muted-foreground mb-4">
               Impossible de charger ce produit.
             </p>

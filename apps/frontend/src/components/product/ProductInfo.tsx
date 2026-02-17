@@ -95,7 +95,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             productTitle={product.title}
             productHandle={product.handle}
             productImage={
-              product.images[0] || "/assets/images/collections/placeholder.svg"
+              product.images?.[0]?.url || "/assets/images/collections/placeholder.svg"
             }
             productPrice={product.price}
             variantId={variantId}
