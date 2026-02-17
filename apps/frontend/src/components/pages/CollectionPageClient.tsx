@@ -4,12 +4,13 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function CollectionPageClient({ collection }: { collection: any }) {
-  const products = collection.products.edges.map((edge: any) => edge.node);
+  const products = collection.products || [];
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <PageContainer className="container mx-auto px-4 py-12">
       {/* Header Collection */}
       <div className="flex flex-col items-center text-center space-y-4 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <Link
@@ -48,6 +49,6 @@ export function CollectionPageClient({ collection }: { collection: any }) {
           </Link>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }

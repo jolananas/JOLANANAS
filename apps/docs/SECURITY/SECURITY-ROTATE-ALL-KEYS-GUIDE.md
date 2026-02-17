@@ -33,7 +33,7 @@ D'après l'analyse de `.env.local`, les clés suivantes sont compromises et doiv
 
 ### **5. Customer Account API**
 
-- **Client ID** : `427578ae-e7aa-486d-b31f-f291afa38815`
+- **Client ID** : `fd66803f-150c-42cc-8076-202f8bab1e42`
 - **Client Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 
 ---
@@ -122,7 +122,7 @@ D'après l'analyse de `.env.local`, les clés suivantes sont compromises et doiv
 🔗 **Lien direct - Liste des apps** : [https://dev.shopify.com/dashboard/175998111/apps](https://dev.shopify.com/dashboard/175998111/apps)
 
 1. **Cliquez sur le lien ci-dessus** → Ouvre la liste des apps
-2. **Trouvez l'app Customer Account** avec **Client ID** : `427578ae-e7aa-486d-b31f-f291afa38815`
+2. **Trouvez l'app Customer Account** avec **Client ID** : `fd66803f-150c-42cc-8076-202f8bab1e42`
 3. **Cliquez sur l'app** → Ouvre la page de l'app
 4. **Allez dans** : Settings > Credentials
 5. **Cliquez sur "Rotate"** pour le Secret
@@ -169,10 +169,10 @@ SHOPIFY_STOREFRONT_TOKEN=votre_nouveau_storefront_token_ici
 SHOPIFY_STOREFRONT_ACCESS_TOKEN=votre_nouveau_storefront_token_ici
 
 # Admin API
-SHOPIFY_ADMIN_TOKEN=votre_nouveau_admin_token_ici
+SHOPIFY_STOREFRONT_TOKEN=votre_nouveau_admin_token_ici
 
 # Customer Account API
-SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID=427578ae-e7aa-486d-b31f-f291afa38815
+SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID=fd66803f-150c-42cc-8076-202f8bab1e42
 SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET=votre_nouveau_customer_secret_ici
 
 # Headless (si utilisé)

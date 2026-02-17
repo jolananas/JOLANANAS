@@ -31,39 +31,45 @@ import {
 
 const BANNER_STYLES = {
   promotion: {
-    bg: "bg-accent dark:bg-accent/20",
-    border: "border-accent dark:border-accent/30",
-    text: "text-foreground dark:text-accent-foreground",
+    bg: "bg-accent/75 backdrop-blur-3xl dark:bg-accent/20",
+    // border: "border-accent dark:border-accent/30",
+    text: "text-white dark:text-white",
+    description: "text-white/90 dark:text-white/90",
     badge:
-      "bg-background/90 text-accent border-transparent hover:bg-background",
+      "bg-white/90 text-accent border-transparent hover:bg-white",
   },
   info: {
-    bg: "bg-slate-100 dark:bg-slate-900",
-    border: "border-slate-200 dark:border-slate-800",
-    text: "text-slate-900 dark:text-slate-100",
+    bg: "bg-slate-100/75 backdrop-blur-3xl dark:bg-slate-900/75",
+    // border: "border-slate-200 dark:border-slate-800",
+    text: "text-black dark:text-white",
+    description: "text-black/80 dark:text-white/80",
   },
   warning: {
-    bg: "bg-amber-50 dark:bg-amber-950/50",
-    border: "border-amber-200 dark:border-amber-800",
-    text: "text-amber-900 dark:text-amber-100",
+    bg: "bg-amber-50/75 backdrop-blur-3xl dark:bg-amber-950/50",
+    // border: "border-amber-200 dark:border-amber-800",
+    text: "text-black dark:text-white",
+    description: "text-black/80 dark:text-white/80",
   },
   success: {
-    bg: "bg-emerald-50 dark:bg-emerald-950/50",
-    border: "border-emerald-200 dark:border-emerald-800",
-    text: "text-emerald-900 dark:text-emerald-100",
+    bg: "bg-emerald-50/75 backdrop-blur-3xl dark:bg-emerald-950/50",
+    // border: "border-emerald-200 dark:border-emerald-800",
+    text: "text-black dark:text-white",
+    description: "text-black/80 dark:text-white/80",
   },
   default: {
-    bg: "bg-muted dark:bg-muted/10",
-    border: "border-muted-foreground/20",
-    text: "text-foreground",
+    bg: "bg-muted/75 backdrop-blur-3xl dark:bg-muted/10",
+    // border: "border-muted-foreground/20",
+    text: "text-black dark:text-white",
+    description: "text-black/80 dark:text-white/80",
   },
 } as const;
 
 interface InfoBannerProps {
   className?: string;
+  forceBanner?: BannerMessage;
 }
 
-export function InfoBanner({ className }: InfoBannerProps) {
+export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
   const [banner, setBanner] = useState<BannerMessage | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const { totalPrice, totalItems } = useCart();
@@ -72,6 +78,14 @@ export function InfoBanner({ className }: InfoBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Si une prop banner est fournie (pour le Storybook), l'utiliser directement
+    if (forceBanner) {
+      setBanner(forceBanner);
+      setIsVisible(true);
+      setIsBannerVisible(true);
+      return;
+    }
+
     // Déterminer le message à afficher selon le contexte
     const context = {
       isFirstVisit:
@@ -100,7 +114,7 @@ export function InfoBanner({ className }: InfoBannerProps) {
       setIsVisible(false);
       setIsBannerVisible(false);
     }
-  }, [totalPrice, totalItems, setIsBannerVisible]);
+  }, [totalPrice, totalItems, setIsBannerVisible, forceBanner]);
 
   // Animation GSAP (remplace Framer Motion)
   useLayoutEffect(() => {
@@ -237,8 +251,8 @@ export function InfoBanner({ className }: InfoBannerProps) {
           "w-full transition-opacity duration-300",
           isVisible && banner ? "opacity-100 delay-200" : "opacity-0",
           currentStyle.bg,
-          "border-b",
-          currentStyle.border,
+          // "border-b",
+          // currentStyle.border,
           currentStyle.text,
         )}
       >
@@ -257,7 +271,12 @@ export function InfoBanner({ className }: InfoBannerProps) {
                   {banner?.title}
                 </p>
                 {banner?.description && (
-                  <p className="hidden sm:block text-xs text-muted-foreground/90 mt-0.5 leading-tight line-clamp-1">
+                  <p
+                    className={cn(
+                      "hidden sm:block text-xs mt-0.5 leading-tight line-clamp-1",
+                      currentStyle.description,
+                    )}
+                  >
                     {banner.description}
                   </p>
                 )}
@@ -296,7 +315,7 @@ export function InfoBanner({ className }: InfoBannerProps) {
               {banner?.dismissible && (
                 <Button
                   variant="ghost"
-                  size="icon-sm"
+                  size="icon"
                   className="h-7 w-7 sm:h-8 sm:w-8 opacity-70 hover:opacity-100 transition-all duration-200 hover:bg-accent/50 flex-shrink-0"
                   onClick={handleDismiss}
                   aria-label="Fermer le bandeau d'information"

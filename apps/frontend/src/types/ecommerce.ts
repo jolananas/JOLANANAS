@@ -5,20 +5,20 @@
  * Étendus depuis les types Shopify existants
  */
 
-import type { Product, CartItem } from "@/lib/shopify/types";
+import type { Product, CartItem, Media } from "@/lib/shopify/types";
 
 /**
  * Produit étendu pour les composants eCommerce
  */
-export interface EcommerceProduct extends Product {
+export interface EcommerceProduct extends Omit<Product, "variants"> {
   // Variantes détaillées
   variants?: Array<{
     id: string;
     title: string;
     price: number;
-    compareAtPrice: number | null;
+    compareAtPrice?: number;
     availableForSale: boolean;
-    selectedOptions?: Array<{
+    selectedOptions: Array<{
       name: string;
       value: string;
     }>;
@@ -40,7 +40,7 @@ export interface EcommerceProduct extends Product {
 /**
  * Item de panier étendu
  */
-export interface EcommerceCartItem extends CartItem {
+export interface EcommerceCartItem extends Omit<CartItem, "selectedOptions"> {
   // Informations supplémentaires
   variantTitle?: string;
   selectedOptions?: Array<{

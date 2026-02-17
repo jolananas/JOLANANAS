@@ -32,7 +32,7 @@ export function Preloader() {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex pointer-events-none">
+    <div className="fixed inset-0 z-[100000] flex pointer-events-none">
       {/* --- LOGO CENTRAL INDÉPENDANT --- */}
       {/* Positionné au-dessus des rideaux (z-50) */}
       <div

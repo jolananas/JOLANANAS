@@ -22,11 +22,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | JOLANANAS",
-    default: "JOLANANAS - L'art de la fantaisie",
+    default: "JOLANANAS - L'Artisanat au cœur | Bijoux Fantaisie & Pièces Uniques",
+    template: "%s | JOLANANAS"
   },
-  description:
-    "Boutique exclusive de créations faites main. Bijoux et accessoires uniques.",
+  description: "Des créations artisanales uniques, faites main avec passion, pour apporter une touche personnelle et originale à votre style.",
   alternates: {
     languages: {
       "fr-FR": "/fr",
@@ -50,7 +49,7 @@ export default function RootLayout({
       className={`${inter.variable} ${poppins.variable}`}
       suppressHydrationWarning
     >
-      <body className="antialiased min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
+      <body className="antialiased min-h-screen flex flex-col bg-background text-primary selection:bg-primary/20">
         <Suspense fallback={null}>
           <SiteGatekeeper />
         </Suspense>

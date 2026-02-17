@@ -16,7 +16,7 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+          "text-primary [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         promotion:
           "bg-gradient-to-r from-jolananas-pink-medium to-jolananas-pink-deep text-black border-transparent hover:from-jolananas-pink-deep hover:to-jolananas-pink-medium transition-all duration-300 shadow-sm hover:shadow-md dark:from-jolananas-pink-medium/90 dark:to-jolananas-pink-deep/90",
       },

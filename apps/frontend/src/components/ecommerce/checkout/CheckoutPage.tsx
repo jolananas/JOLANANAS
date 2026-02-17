@@ -849,7 +849,7 @@ export function CheckoutPage({ className, onComplete }: CheckoutPageProps) {
                           💡
                         </span>
                         <span>
-                          <strong className="text-foreground">Conseil :</strong>{" "}
+                          <strong className="text-primary">Conseil :</strong>{" "}
                           Votre adresse n'a pas de numéro de voie. Nous vous
                           recommandons d'ajouter des détails dans ce champ
                           (numéro de boîte aux lettres, numéro de porte,

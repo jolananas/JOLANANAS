@@ -154,7 +154,7 @@ NEXTAUTH_SECRET=xxx
 NEXTAUTH_URL=http://localhost:3000
 
 # Optionnelles (pour fonctionnalités avancées)
-SHOPIFY_ADMIN_TOKEN=xxx
+SHOPIFY_STOREFRONT_TOKEN=xxx
 SHOPIFY_WEBHOOK_SECRET=xxx
 ```
 

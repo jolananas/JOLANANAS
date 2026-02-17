@@ -719,7 +719,7 @@
           "NEXTAUTH_SECRET",
           "NEXTAUTH_URL",
           "SHOPIFY_STORE_DOMAIN",
-          "SHOPIFY_ADMIN_TOKEN",
+          "SHOPIFY_STOREFRONT_TOKEN",
           "OPENAI_API_KEY"
         ]
       },
@@ -771,7 +771,7 @@
           "DATABASE_URL",
           "JWT_SECRET",
           "SHOPIFY_STORE_DOMAIN",
-          "SHOPIFY_ADMIN_TOKEN",
+          "SHOPIFY_STOREFRONT_TOKEN",
           "OPENAI_API_KEY",
           "REDIS_URL"
         ]
@@ -799,7 +799,7 @@
           "REPLIT_DB_URL",
           "JWT_SECRET",
           "SHOPIFY_STORE_DOMAIN",
-          "SHOPIFY_ADMIN_TOKEN",
+          "SHOPIFY_STOREFRONT_TOKEN",
           "OPENAI_API_KEY"
         ]
       },

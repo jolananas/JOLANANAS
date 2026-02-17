@@ -8,6 +8,7 @@ import { ArrowLeft, RefreshCcw, Home, Search, Mail, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 interface ErrorLayoutProps {
   code: string;
@@ -16,7 +17,8 @@ interface ErrorLayoutProps {
   actionLabel?: string;
   onAction?: () => void;
   href?: string;
-  showBack?: boolean; // Nouvelle option
+  showBack?: boolean;
+  fullScreen?: boolean; // Nouvelle option pour usage dans les drawers/modales
 }
 
 export function ErrorLayout({
@@ -27,16 +29,15 @@ export function ErrorLayout({
   onAction,
   href,
   showBack = true,
+  fullScreen = true,
 }: ErrorLayoutProps) {
   const router = useRouter();
 
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(`Erreur ${code} - Jolananas`);
-    toast.success("Code erreur copié pour le support");
-  };
-
   return (
-    <div className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#FEF7F0] font-sans">
+    <div className={cn(
+      "relative w-full flex flex-col items-center justify-center overflow-hidden bg-[#FEF7F0] font-sans",
+      fullScreen ? "min-h-screen" : "min-h-[400px] py-12"
+    )}>
       {/* 1. AMBIANCE */}
       <RetroGrid
         className="opacity-25"
@@ -44,31 +45,38 @@ export function ErrorLayout({
         darkLineColor="#EC7B9C"
       />
 
+      {/* 1.5 LASER HEIST SCENE */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none perspective-[1000px] opacity-50">
+        <div className="relative w-full h-full transform-gpu">
+          {/* Laser lines */}
+          <Laser lineStyle={{ top: '20%', left: '-10%', width: '120%', height: '1px', transform: 'rotate(15deg) translateZ(100px)' }} />
+          <Laser lineStyle={{ top: '60%', left: '-10%', width: '120%', height: '1px', transform: 'rotate(-25deg) translateZ(-50px)' }} />
+          <Laser lineStyle={{ top: '40%', left: '-20%', width: '140%', height: '1px', transform: 'rotate(5deg) translateZ(200px)' }} />
+          <Laser lineStyle={{ top: '80%', left: '-10%', width: '120%', height: '1px', transform: 'rotate(12deg) translateZ(50px)' }} />
+          <Laser lineStyle={{ top: '0%',  left: '70%',  width: '100%', height: '1px', transform: 'rotate(90deg) translateZ(-100px)' }} />
+        </div>
+      </div>
+
       {/* 2. LE CHIFFRE GÉANT (Interactif maintenant) */}
-      <div
-        onClick={handleCopyCode}
-        className="absolute inset-0 flex items-center justify-center select-none z-0 cursor-help group"
-        title="Copier le code erreur"
-      >
-        <span className="text-[35vw] font-serif font-black text-primary/5 leading-none tracking-tighter mix-blend-multiply transition-colors group-hover:text-primary/10">
+      <div className="absolute inset-0 flex items-center justify-center select-none z-05">
+        <span className="text-[35vw] font-serif font-black text-primary/5 leading-none tracking-tighter mix-blend-multiply transition-colors animate-glitch">
           {code}
         </span>
-        <Copy className="absolute opacity-0 group-hover:opacity-20 w-12 h-12 text-primary transition-opacity" />
       </div>
 
       {/* 3. CONTENU CENTRAL */}
-      <div className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-2xl px-6 animate-in fade-in zoom-in duration-700 slide-in-from-bottom-10">
+      <PageContainer className="relative z-10 flex flex-col items-center text-center space-y-10 max-w-2xl px-6 animate-in fade-in zoom-in duration-700 slide-in-from-bottom-10">
         {/* Badge Système */}
-        <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-black/5 bg-white/60 backdrop-blur-md shadow-sm">
+        <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-black/5 bg-white/50 backdrop-blur-md shadow-sm">
           <span className="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-primary">
             System Alert • {code}
           </span>
         </div>
 
         {/* Textes Éditoriaux */}
         <div className="space-y-6">
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-foreground uppercase leading-[0.9]">
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-primary uppercase leading-[0.9]">
             {title}
           </h1>
           <p className="text-lg sm:text-2xl text-primary font-serif italic max-w-lg mx-auto">
@@ -97,22 +105,22 @@ export function ErrorLayout({
               variant="outline"
               size="lg"
               onClick={() => router.back()}
-              className="w-full sm:w-auto h-14 rounded-full border-2 border-black/10 bg-transparent hover:bg-white hover:border-black text-black transition-all hover:scale-105 active:scale-95"
+              className="w-full sm:w-auto h-14 rounded-full border-2 border-primary/10 backdrop-blur-md hover:border-primary text-primary transition-all hover:scale-105 active:scale-95"
             >
               <ArrowLeft className="mr-2 w-4 h-4" />
               RETOUR
             </Button>
           )}
         </div>
-      </div>
+      </PageContainer>
 
       {/* 4. NAVIGATION DE SECOURS (Footer flottant) */}
       <div className="absolute bottom-12 left-0 right-0 flex justify-center z-20">
-        <div className="flex items-center gap-2 sm:gap-6 px-6 py-3 bg-white/80 backdrop-blur-md rounded-full border border-black/5 shadow-lg mx-4">
+        <div className="flex items-center gap-2 sm:gap-6 px-6 py-3 bg-white/75 backdrop-blur-md rounded-full border border-primary/5 shadow-md mx-4">
           <QuickLink href="/" icon={Home} label="Accueil" />
-          <div className="w-px h-4 bg-black/10" />
+          <div className="w-px h-4 bg-primary/10" />
           <QuickLink href="/collections" icon={Search} label="Collections" />
-          <div className="w-px h-4 bg-black/10" />
+          <div className="w-px h-4 bg-primary/10" />
           <QuickLink href="/contact" icon={Mail} label="Aide" />
         </div>
       </div>
@@ -173,5 +181,18 @@ function QuickLink({
       <Icon className="w-4 h-4" />
       <span className="hidden sm:inline">{label}</span>
     </Link>
+  );
+}
+
+// Sous-composant Laser
+function Laser({ lineStyle }: { lineStyle: React.CSSProperties }) {
+  return (
+    <div
+      className="absolute h-[1px] bg-primary animate-laser-flicker"
+      style={{
+        boxShadow: "0 0 8px #ff0000, 0 0 12px #ff0000",
+        ...lineStyle,
+      }}
+    />
   );
 }

@@ -33,7 +33,9 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { Product } from "@/lib/shopify/types";
+import { useCurrency } from "@/hooks/useCurrency";
 import Image from "next/image";
+import { EmptySearchContent } from "@/components/error";
 
 interface SearchDialogProps {
   products: Product[];
@@ -43,6 +45,7 @@ export function SearchDialog({ products }: SearchDialogProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Product[]>([]);
+  const { formatPrice } = useCurrency();
   const router = useRouter();
 
   // Gestion du scroll lock quand le menu est ouvert
@@ -123,7 +126,6 @@ export function SearchDialog({ products }: SearchDialogProps) {
         <DialogContent
           className="fixed top-0 right-0 left-0 bottom-0 w-full sm:left-auto sm:w-2/3 lg:w-2/3 max-w-none h-full translate-x-0 translate-y-0 rounded-none border-0 p-0 bg-slate-900/95 backdrop-blur-md z-50"
           showCloseButton={false}
-          showOverlay={false}
         >
           {/* Header avec icônes et bouton fermer */}
           <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-700/50">
@@ -179,7 +181,8 @@ export function SearchDialog({ products }: SearchDialogProps) {
                       <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-lg overflow-hidden bg-slate-700/50 flex-shrink-0">
                         <Image
                           src={
-                            product.images[0] ||
+                            product.featuredImage ||
+                            product.images[0]?.url ||
                             "/assets/images/collections/placeholder.svg"
                           }
                           alt={product.title}
@@ -198,40 +201,16 @@ export function SearchDialog({ products }: SearchDialogProps) {
                           </p>
                         )}
                         <p className="text-base font-bold text-sky-400">
-                          {product.price.toFixed(2)} {product.currency}
+                          {formatPrice(product.price)}
                         </p>
                       </div>
                     </button>
                   ))}
                 </div>
               ) : query.trim() ? (
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <Search className="h-12 w-12 text-white/40" />
-                    </EmptyMedia>
-                    <EmptyTitle className="text-white">
-                      Aucun produit trouvé
-                    </EmptyTitle>
-                    <EmptyDescription className="text-white/60">
-                      Aucun produit trouvé pour "{query}"
-                    </EmptyDescription>
-                  </EmptyHeader>
-                </Empty>
+                <EmptySearchContent fullScreen={false} />
               ) : (
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <Search className="h-12 w-12 text-white/40" />
-                    </EmptyMedia>
-                    <EmptyTitle className="text-white">
-                      Rechercher des produits
-                    </EmptyTitle>
-                    <EmptyDescription className="text-white/60">
-                      Commencez à taper pour rechercher
-                    </EmptyDescription>
-                  </EmptyHeader>
-                </Empty>
+                <EmptySearchContent fullScreen={false} />
               )}
             </ScrollArea>
           </div>

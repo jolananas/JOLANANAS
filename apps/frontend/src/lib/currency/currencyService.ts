@@ -9,7 +9,15 @@
 
 import 'server-only';
 
-import { getShopInfo, type ShopInfo } from '../shopify/index';
+import { getShopInfo } from '../shopify/index';
+import type { 
+  ShopifyProduct, 
+  ShopifyVariant, 
+  ShopifyCart, 
+  Product, 
+  Variant,
+  ShopInfo 
+} from '../shopify/types';
 import { ShopifyAdminClient } from '../ShopifyAdminClient';
 import type {
   CurrencyInfo,
@@ -18,7 +26,7 @@ import type {
   ShopifyCurrencyResponse,
   CurrencyServiceState,
 } from './types';
-import type { ShopifyProduct, ShopifyVariant, ShopifyCart } from '../shopify/types';
+import { getCurrencyFromCountry } from './utils';
 
 /**
  * Configuration par défaut
@@ -108,6 +116,8 @@ class CurrencyService {
     data: 
       | ShopifyProduct 
       | ShopifyVariant 
+      | Product
+      | Variant
       | ShopifyCart 
       | { priceRange?: { minVariantPrice?: { currencyCode?: string } } }
       | { price?: { currencyCode?: string } }
@@ -129,8 +139,8 @@ class CurrencyService {
 
     // Cas 2: ShopifyProduct - extraire depuis priceRange
     if ('priceRange' in data && data.priceRange) {
-      const currencyCode = data.priceRange.minVariantPrice?.currencyCode || 
-                          data.priceRange.maxVariantPrice?.currencyCode;
+      const currencyCode = (data.priceRange as any).minVariantPrice?.currencyCode || 
+                          (data.priceRange as any).maxVariantPrice?.currencyCode;
       if (currencyCode) {
         this.log('info', 'currencyCode extrait depuis priceRange', { currencyCode });
         return currencyCode;
@@ -234,13 +244,14 @@ class CurrencyService {
     }
 
     try {
-      const shopInfo: ShopInfo | null = await getShopInfo();
+      const shopInfo: any = await getShopInfo();
+      const currencyCode = shopInfo?.paymentSettings?.currencyCode || shopInfo?.currencyCode;
       
-      if (shopInfo?.currencyCode) {
-        cache.shopCurrency = shopInfo.currencyCode;
+      if (currencyCode) {
+        cache.shopCurrency = currencyCode;
         cache.shopCurrencyTimestamp = now;
-        this.log('info', 'Devise boutique récupérée depuis Shopify', { currencyCode: shopInfo.currencyCode });
-        return shopInfo.currencyCode;
+        this.log('info', 'Devise boutique récupérée depuis Shopify', { currencyCode });
+        return currencyCode;
       }
     } catch (error) {
       this.log('error', 'Erreur lors de la récupération de la devise de la boutique', { error });
@@ -268,11 +279,8 @@ class CurrencyService {
 
     const now = Date.now();
     
-    // Vérifier le cache
-    if (
-      cache.availableCurrencies.length > 0 &&
-      now - cache.availableCurrenciesTimestamp < this.config.cacheDuration
-    ) {
+    // Vérifier le cache (même si vide)
+    if (now - cache.availableCurrenciesTimestamp < this.config.cacheDuration) {
       this.log('info', 'Devises disponibles récupérées depuis le cache', { 
         count: cache.availableCurrencies.length 
       });
@@ -280,9 +288,8 @@ class CurrencyService {
     }
 
     try {
-      const response = await this.adminClient.request<ShopifyCurrencyResponse>(
-        '/currencies.json'
-      );
+      if (!this.adminClient) throw new Error('Admin Client non initialisé');
+      const response = await this.adminClient.getCurrencies();
 
       if (response.data?.currencies) {
         const currencies: CurrencyInfo[] = response.data.currencies.map((curr) => ({
@@ -300,7 +307,12 @@ class CurrencyService {
       }
     } catch (error) {
       this.log('warn', 'Impossible de récupérer les devises activées via Admin API', { error });
-      // Ne pas bloquer, retourner un tableau vide
+      
+      // Mettre en cache le résultat vide pour éviter le spam d'API en cas d'erreur
+      // Utiliser une durée de cache plus courte (ex: 5 minutes) si c'est une erreur ? 
+      // Pour l'instant on garde la même durée pour être sûr de stopper le spam.
+      cache.availableCurrencies = [];
+      cache.availableCurrenciesTimestamp = now;
     }
 
     return [];
@@ -318,201 +330,87 @@ class CurrencyService {
     return currencies.length > 1;
   }
 
+
+
   /**
    * Détecte la devise de l'utilisateur via plusieurs méthodes
    */
   async detectUserCurrency(
     shopifyCurrencyCode?: string,
-    acceptLanguage?: string
+    acceptLanguage?: string,
+    countryCode?: string
   ): Promise<CurrencyDetectionResult> {
-    // 1. Priorité : currencyCode depuis réponse Shopify
+    // 1. Priorité absolue : currencyCode depuis réponse Shopify
     if (shopifyCurrencyCode) {
-      // Valider la devise avant de l'utiliser
-      const isValid = await this.validateCurrency(shopifyCurrencyCode);
-      
+      const normalized = shopifyCurrencyCode.toUpperCase().trim();
+      const isValid = await this.validateCurrency(normalized);
+
       if (isValid) {
-        this.log('info', 'Devise détectée depuis réponse Shopify', { currencyCode: shopifyCurrencyCode });
+        this.log('info', 'Devise détectée via réponse Shopify', { currency: normalized });
         return {
-          currency: shopifyCurrencyCode.toUpperCase().trim(),
+          currency: normalized,
           source: 'shopify-response',
           confidence: 1.0,
           metadata: {
-            reason: 'Devise fournie par l\'API Shopify',
+            reason: `Devise extraite directement de la réponse Shopify: ${normalized}`,
           },
         };
-      } else {
-        this.log('warn', 'Devise Shopify non valide, passage au fallback', { currencyCode: shopifyCurrencyCode });
       }
     }
 
-    // 2. Vérifier préférence utilisateur sauvegardée (sessionStorage/localStorage)
-    if (typeof window !== 'undefined') {
-      try {
-        const savedCurrency = sessionStorage.getItem('user_currency') || 
-                             localStorage.getItem('user_currency');
-        if (savedCurrency) {
-          const isValid = await this.validateCurrency(savedCurrency);
-          
-          if (isValid) {
-            this.log('info', 'Devise détectée depuis préférence utilisateur', { currencyCode: savedCurrency });
-            return {
-              currency: savedCurrency.toUpperCase().trim(),
-              source: 'user-preference',
-              confidence: 0.9,
-              metadata: {
-                reason: 'Préférence utilisateur sauvegardée',
-              },
-            };
-          } else {
-            this.log('warn', 'Préférence utilisateur non valide, passage au fallback', { currencyCode: savedCurrency });
-          }
-        }
-      } catch (error) {
-        this.log('warn', 'Erreur lors de la lecture des préférences utilisateur', { error });
+    // 2. Priorité : Country Code (Cloudflare/GeoIP)
+    if (countryCode) {
+      const currency = getCurrencyFromCountry(countryCode);
+      const isValid = await this.validateCurrency(currency);
+
+      if (isValid) {
+        this.log('info', 'Devise détectée via Country Code (Cloudflare)', { currency, countryCode });
+        return {
+          currency,
+          source: 'geolocation',
+          confidence: 0.95,
+          metadata: {
+            country: countryCode,
+            reason: `Détection via header Cloudflare: ${countryCode}`,
+          },
+        };
       }
     }
 
-    // 3. Détection via géolocalisation (si disponible)
-    if (this.config.enableAutoDetection && typeof window !== 'undefined') {
-      try {
-        const geoCurrency = await this.detectCurrencyFromGeolocation(acceptLanguage);
-        if (geoCurrency) {
-          this.log('info', 'Devise détectée via géolocalisation', { currencyCode: geoCurrency.currency });
-          return geoCurrency;
-        }
-      } catch (error) {
-        this.log('warn', 'Erreur lors de la détection géolocalisée', { error });
-      }
-    }
+    // 3. Tentative via Accept-Language header
+    if (acceptLanguage) {
+      const langMatch = acceptLanguage.match(/^([a-z]{2})-([A-Z]{2})/);
+      if (langMatch) {
+        const langCountry = langMatch[2];
+        const currency = getCurrencyFromCountry(langCountry);
+        const isValid = await this.validateCurrency(currency);
 
-    // 4. Détection via navigateur (Intl API)
-    if (this.config.enableAutoDetection && typeof window !== 'undefined') {
-      try {
-        const browserCurrency = this.detectCurrencyFromBrowser(acceptLanguage);
-        if (browserCurrency) {
-          this.log('info', 'Devise détectée via navigateur', { currencyCode: browserCurrency.currency });
-          return browserCurrency;
-        }
-      } catch (error) {
-        this.log('warn', 'Erreur lors de la détection navigateur', { error });
-      }
-    }
-
-    // 5. Fallback : Devise de la boutique
-    const shopCurrency = await this.getShopCurrency();
-    this.log('info', 'Utilisation de la devise de la boutique comme fallback', { currencyCode: shopCurrency });
-    return {
-      currency: shopCurrency,
-      source: 'shop-default',
-      confidence: 0.7,
-      metadata: {
-        reason: 'Devise par défaut de la boutique Shopify',
-      },
-    };
-  }
-
-  /**
-   * Détecte la devise via géolocalisation
-   */
-  private async detectCurrencyFromGeolocation(
-    acceptLanguage?: string
-  ): Promise<CurrencyDetectionResult | null> {
-    // Mapping pays -> devise (principaux pays)
-    const countryToCurrency: Record<string, string> = {
-      FR: 'EUR', BE: 'EUR', DE: 'EUR', IT: 'EUR', ES: 'EUR', NL: 'EUR',
-      PT: 'EUR', AT: 'EUR', IE: 'EUR', FI: 'EUR', GR: 'EUR', LU: 'EUR',
-      US: 'USD', CA: 'CAD', GB: 'GBP', AU: 'AUD', NZ: 'NZD',
-      CH: 'CHF', NO: 'NOK', SE: 'SEK', DK: 'DKK', PL: 'PLN',
-      JP: 'JPY', CN: 'CNY', KR: 'KRW', IN: 'INR', BR: 'BRL',
-    };
-
-    try {
-      // Utiliser l'API Intl pour détecter la locale
-      const locale = acceptLanguage || 
-                    (typeof navigator !== 'undefined' ? navigator.language : 'fr-FR');
-      
-      // Extraire le code pays de la locale (ex: 'fr-FR' -> 'FR')
-      const countryCode = locale.split('-')[1]?.toUpperCase() || 
-                         locale.split('_')[1]?.toUpperCase();
-      
-      if (countryCode && countryToCurrency[countryCode]) {
-        const currency = countryToCurrency[countryCode];
-        const availableCurrencies = await this.getAvailableCurrencies();
-        
-        // Vérifier si la devise est disponible
-        if (availableCurrencies.length === 0 || 
-            availableCurrencies.some(c => c.code === currency)) {
+        if (isValid) {
+          this.log('info', 'Devise détectée via Accept-Language', { currency, lang: acceptLanguage });
           return {
             currency,
-            source: 'geolocation',
-            confidence: 0.8,
+            source: 'browser',
+            confidence: 0.7,
             metadata: {
-              locale,
-              country: countryCode,
-              reason: `Détection basée sur la locale: ${locale}`,
+              country: langCountry,
+              reason: `Détection via Accept-Language: ${acceptLanguage}`,
             },
           };
         }
       }
-    } catch (error) {
-      // Ignorer les erreurs
     }
 
-    return null;
-  }
-
-  /**
-   * Détecte la devise via l'API Intl du navigateur
-   */
-  private detectCurrencyFromBrowser(
-    acceptLanguage?: string
-  ): CurrencyDetectionResult | null {
-    if (typeof window === 'undefined' || typeof Intl === 'undefined') {
-      return null;
-    }
-
-    try {
-      const locale = acceptLanguage || navigator.language || 'fr-FR';
-      
-      // Utiliser Intl.NumberFormat pour détecter la devise
-      const formatter = new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: 'EUR', // Devise par défaut pour la détection
-      });
-
-      // Essayer de détecter via resolvedOptions
-      const options = formatter.resolvedOptions();
-      
-      // Mapping des locales communes vers devises
-      const localeToCurrency: Record<string, string> = {
-        'fr': 'EUR', 'fr-FR': 'EUR', 'fr-BE': 'EUR', 'fr-CH': 'CHF',
-        'en': 'USD', 'en-US': 'USD', 'en-GB': 'GBP', 'en-CA': 'CAD',
-        'en-AU': 'AUD', 'en-NZ': 'NZD', 'de': 'EUR', 'de-DE': 'EUR',
-        'it': 'EUR', 'it-IT': 'EUR', 'es': 'EUR', 'es-ES': 'EUR',
-        'pt': 'EUR', 'pt-PT': 'EUR', 'nl': 'EUR', 'nl-NL': 'EUR',
-        'pl': 'PLN', 'pl-PL': 'PLN', 'ja': 'JPY', 'ja-JP': 'JPY',
-        'zh': 'CNY', 'zh-CN': 'CNY', 'ko': 'KRW', 'ko-KR': 'KRW',
-      };
-
-      const baseLocale = locale.split('-')[0].toLowerCase();
-      const currency = localeToCurrency[locale] || localeToCurrency[baseLocale];
-
-      if (currency) {
-        return {
-          currency,
-          source: 'browser',
-          confidence: 0.75,
-          metadata: {
-            locale,
-            reason: `Détection basée sur la locale du navigateur: ${locale}`,
-          },
-        };
-      }
-    } catch (error) {
-      this.log('warn', 'Erreur lors de la détection navigateur', { error });
-    }
-
-    return null;
+    // 4. Fallback : devise de la boutique
+    const shopCurrency = await this.getShopCurrency();
+    this.log('info', 'Fallback vers la devise de la boutique', { currency: shopCurrency });
+    return {
+      currency: shopCurrency,
+      source: 'shop-default',
+      confidence: 0.5,
+      metadata: {
+        reason: `Devise par défaut de la boutique: ${shopCurrency}`,
+      },
+    };
   }
 
   /**
@@ -521,9 +419,10 @@ class CurrencyService {
    */
   async getCurrency(
     shopifyCurrencyCode?: string,
-    acceptLanguage?: string
+    acceptLanguage?: string,
+    countryCode?: string
   ): Promise<string> {
-    const result = await this.detectUserCurrency(shopifyCurrencyCode, acceptLanguage);
+    const result = await this.detectUserCurrency(shopifyCurrencyCode, acceptLanguage, countryCode);
     return result.currency;
   }
 
@@ -547,7 +446,11 @@ class CurrencyService {
     } catch (error) {
       // Fallback simple si Intl échoue
       const symbol = this.getCurrencySymbol(currency);
-      return `${value.toFixed(2)} ${symbol}`;
+      const formattedValue = value.toLocaleString(userLocale, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      return `${formattedValue} ${symbol}`;
     }
   }
 
@@ -642,9 +545,10 @@ export async function getAvailableCurrencies(): Promise<CurrencyInfo[]> {
 
 export async function getCurrency(
   shopifyCurrencyCode?: string,
-  acceptLanguage?: string
+  acceptLanguage?: string,
+  countryCode?: string
 ): Promise<string> {
-  return currencyService.getCurrency(shopifyCurrencyCode, acceptLanguage);
+  return currencyService.getCurrency(shopifyCurrencyCode, acceptLanguage, countryCode);
 }
 
 export function formatPrice(
@@ -657,9 +561,10 @@ export function formatPrice(
 
 export async function detectUserCurrency(
   shopifyCurrencyCode?: string,
-  acceptLanguage?: string
+  acceptLanguage?: string,
+  countryCode?: string
 ): Promise<CurrencyDetectionResult> {
-  return currencyService.detectUserCurrency(shopifyCurrencyCode, acceptLanguage);
+  return currencyService.detectUserCurrency(shopifyCurrencyCode, acceptLanguage, countryCode);
 }
 
 // Export de la nouvelle fonction d'extraction

@@ -20,6 +20,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { ensureAuthenticatedSession } from "@/lib/utils/session";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function LoginClient() {
   const router = useRouter();
@@ -97,7 +98,7 @@ export function LoginClient() {
 
   if (status === "loading") {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <div className="max-w-md mx-auto">
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-60">
@@ -107,12 +108,12 @@ export function LoginClient() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-md mx-auto">
         <Card>
           <CardHeader className="text-center space-y-4">
@@ -197,6 +198,6 @@ export function LoginClient() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

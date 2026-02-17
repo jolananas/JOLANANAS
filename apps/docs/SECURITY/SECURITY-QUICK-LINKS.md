@@ -117,7 +117,7 @@
 
 ### **Customer Account API**
 
-- **Client ID** : `427578ae-e7aa-486d-b31f-f291afa38815`
+- **Client ID** : `fd66803f-150c-42cc-8076-202f8bab1e42`
 - **Secret** : `[CUSTOMER_ACCOUNT_SECRET_COMPROMISED]` ⚠️ **RÉVOQUÉ - À REMPLACER**
 - 🔗 **Trouver l'app** : [https://dev.shopify.com/dashboard/175998111/apps](https://dev.shopify.com/dashboard/175998111/apps)
 - **Action** : Trouver l'app et cliquer sur "Rotate"

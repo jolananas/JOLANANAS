@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   // Récupérer le mode du site depuis les variables d'environnement
-  const siteMode = process.env.SITE_MODE || "live";
+  const siteMode = process.env.SITE_MODE;
 
   // Si le site est en mode "live", on laisse passer sans rien faire
   if (siteMode === "live") {

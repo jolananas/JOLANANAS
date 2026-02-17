@@ -319,7 +319,7 @@ export function ShopPayPaymentSection({
         {/* Liste des produits */}
         {items.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-foreground">Articles</h3>
+            <h3 className="text-sm font-semibold text-primary">Articles</h3>
             {items.map((item) => (
               <div key={item.id} className="flex gap-3">
                 <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-muted">

@@ -16,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useCart } from "@/components/providers/CartProvider";
+import { useCurrency } from "@/hooks/useCurrency";
 import { safeJsonParse } from "@/lib/api-client";
 import type { BaseEcommerceProps } from "@/types/ecommerce";
 
@@ -43,6 +44,7 @@ export function OrderSummary({
   hideShippingAlert = false,
 }: OrderSummaryProps) {
   const { items, totalPrice } = useCart();
+  const { formatPrice } = useCurrency();
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo | null>(null);
 
   // Récupérer les informations de livraison depuis l'API
@@ -109,7 +111,7 @@ export function OrderSummary({
                       Quantité : {item.quantity}
                     </span>
                     <span className="text-sm font-semibold">
-                      {(item.price * item.quantity).toFixed(2)} €
+                      {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
                 </div>
@@ -134,7 +136,7 @@ export function OrderSummary({
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Sous-total</span>
-              <span className="font-semibold">{totalPrice.toFixed(2)} €</span>
+              <span className="font-semibold">{formatPrice(totalPrice)}</span>
             </div>
             {shippingCost !== undefined && (
               <div className="flex justify-between">
@@ -148,7 +150,7 @@ export function OrderSummary({
                       Gratuit
                     </Badge>
                   ) : (
-                    `${shippingCost.toFixed(2)} €`
+                    formatPrice(shippingCost)
                   )}
                 </span>
               </div>
@@ -158,10 +160,7 @@ export function OrderSummary({
                 Total
               </span>
               <span className="font-bold text-xl text-jolananas-pink-deep">
-                {(
-                  (shippingCost !== undefined ? shippingCost : 0) + totalPrice
-                ).toFixed(2)}{" "}
-                €
+                {formatPrice((shippingCost !== undefined ? shippingCost : 0) + totalPrice)}
               </span>
             </div>
           </div>

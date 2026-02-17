@@ -106,7 +106,7 @@ export function ProductCategory({
     // Filtre par tags
     if (filters.tags && filters.tags.length > 0) {
       result = result.filter((p) =>
-        filters.tags!.some((tag) => p.tags.includes(tag)),
+        filters.tags!.some((tag) => p.tags?.includes(tag)),
       );
     }
 
@@ -156,100 +156,47 @@ export function ProductCategory({
 
   return (
     <div className={`product-category ${className}`}>
-      {/* Header */}
-      {(collectionTitle || collectionDescription) && (
-        <div className="mb-8">
-          <Card className="border-0 shadow-none bg-gradient-to-br from-jolananas-peach-light to-jolananas-pink-medium">
-            <CardHeader className="text-center space-y-4">
-              {collectionTitle && (
-                <CardTitle className="text-4xl md:text-5xl font-bold text-jolananas-black-ink">
-                  {collectionTitle}
-                </CardTitle>
-              )}
-              {collectionDescription && (
-                <CardDescription className="text-lg text-jolananas-black-ink/70 max-w-2xl mx-auto">
-                  {collectionDescription}
-                </CardDescription>
-              )}
-              <Badge
-                variant="secondary"
-                className="text-base px-4 py-2 w-fit mx-auto"
-              >
-                {filteredAndSortedProducts.length} produit
-                {filteredAndSortedProducts.length > 1 ? "s" : ""}
-              </Badge>
-            </CardHeader>
-          </Card>
-        </div>
-      )}
-
-      {/* Filtres et tri */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-6 items-start sm:items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Button
-            variant={showFilters ? "default" : "outline"}
-            size="sm"
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <SlidersHorizontal className="h-4 w-4 mr-2" />
-            Filtres
-          </Button>
-          {Object.keys(filters).some((key) => {
-            const filterKey = key as keyof FilterOptions;
-            const value = filters[filterKey];
-            return Array.isArray(value)
-              ? value.length > 0
-              : value !== undefined && value !== "all";
-          }) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                setFilters({
-                  availability: "all",
-                  priceRange: undefined,
-                  tags: [],
-                })
-              }
-            >
-              <X className="h-4 w-4 mr-2" />
-              Réinitialiser
-            </Button>
-          )}
+      {/* View Controls - More subtle and modern */}
+      <div className="flex flex-col sm:flex-row gap-6 mb-12 items-start sm:items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">
+            {filteredAndSortedProducts.length} Produit{filteredAndSortedProducts.length > 1 ? "s" : ""}
+          </span>
+          <div className="h-px w-8 bg-jolananas-peach-light" />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Select
             value={sortBy}
             onValueChange={(value) => setSortBy(value as SortOption)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-white/50 border-0 shadow-none text-[10px] uppercase font-bold tracking-widest h-9">
               <SelectValue placeholder="Trier par" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="newest">Plus récents</SelectItem>
-              <SelectItem value="oldest">Plus anciens</SelectItem>
-              <SelectItem value="price-asc">Prix croissant</SelectItem>
-              <SelectItem value="price-desc">Prix décroissant</SelectItem>
-              <SelectItem value="name-asc">Nom A-Z</SelectItem>
-              <SelectItem value="name-desc">Nom Z-A</SelectItem>
+            <SelectContent className="glass-strong border-0 shadow-jolananas">
+              <SelectItem value="newest" className="text-[10px] uppercase font-bold tracking-widest">Plus récents</SelectItem>
+              <SelectItem value="oldest" className="text-[10px] uppercase font-bold tracking-widest">Plus anciens</SelectItem>
+              <SelectItem value="price-asc" className="text-[10px] uppercase font-bold tracking-widest">Prix croissant</SelectItem>
+              <SelectItem value="price-desc" className="text-[10px] uppercase font-bold tracking-widest">Prix décroissant</SelectItem>
+              <SelectItem value="name-asc" className="text-[10px] uppercase font-bold tracking-widest">Nom A-Z</SelectItem>
+              <SelectItem value="name-desc" className="text-[10px] uppercase font-bold tracking-widest">Nom Z-A</SelectItem>
             </SelectContent>
           </Select>
 
-          <div className="flex border rounded-lg">
+          <div className="flex items-center bg-white/50 rounded-full p-1 h-9">
             <Button
-              variant={viewMode === "grid" ? "default" : "ghost"}
+              variant="ghost"
               size="icon"
-              className="rounded-r-none"
+              className={`rounded-full h-7 w-7 ${viewMode === "grid" ? "bg-white shadow-sm text-primary" : "text-jolananas-black-ink/40"}`}
               onClick={() => setViewMode("grid")}
               aria-label="Vue grille"
             >
               <Grid3x3 className="h-4 w-4" />
             </Button>
             <Button
-              variant={viewMode === "list" ? "default" : "ghost"}
+              variant="ghost"
               size="icon"
-              className="rounded-l-none"
+              className={`rounded-full h-7 w-7 ${viewMode === "list" ? "bg-white shadow-sm text-primary" : "text-jolananas-black-ink/40"}`}
               onClick={() => setViewMode("list")}
               aria-label="Vue liste"
             >
@@ -259,152 +206,42 @@ export function ProductCategory({
         </div>
       </div>
 
-      {/* Panneau de filtres */}
-      {showFilters && (
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              {/* Filtre disponibilité */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Disponibilité</label>
-                <Select
-                  value={filters.availability || "all"}
-                  onValueChange={(value) =>
-                    setFilters({
-                      ...filters,
-                      availability: value as
-                        | "all"
-                        | "in-stock"
-                        | "out-of-stock",
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tous</SelectItem>
-                    <SelectItem value="in-stock">En stock</SelectItem>
-                    <SelectItem value="out-of-stock">Épuisé</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Filtre prix */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Prix</label>
-                <div className="flex gap-2">
-                  <Select
-                    value={filters.priceRange?.min.toString()}
-                    onValueChange={(value) =>
-                      setFilters({
-                        ...filters,
-                        priceRange: {
-                          min: parseFloat(value),
-                          max: filters.priceRange?.max || priceRange.max,
-                        },
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Min" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[0, 10, 20, 30, 50, 100].map((price) => (
-                        <SelectItem key={price} value={price.toString()}>
-                          {price}€
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select
-                    value={filters.priceRange?.max.toString()}
-                    onValueChange={(value) =>
-                      setFilters({
-                        ...filters,
-                        priceRange: {
-                          min: filters.priceRange?.min || priceRange.min,
-                          max: parseFloat(value),
-                        },
-                      })
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Max" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[50, 100, 200, 500, 1000].map((price) => (
-                        <SelectItem key={price} value={price.toString()}>
-                          {price}€
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Filtre tags */}
-              {availableTags.length > 0 && (
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Tags</label>
-                  <div className="flex flex-wrap gap-2">
-                    {availableTags.slice(0, 10).map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant={
-                          filters.tags?.includes(tag) ? "default" : "outline"
-                        }
-                        className="cursor-pointer"
-                        onClick={() => {
-                          const currentTags = filters.tags || [];
-                          const newTags = currentTags.includes(tag)
-                            ? currentTags.filter((t) => t !== tag)
-                            : [...currentTags, tag];
-                          setFilters({ ...filters, tags: newTags });
-                        }}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Résultats */}
+      {/* Résultats - Modern Grid with staggered feel */}
       {filteredAndSortedProducts.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground mb-4">
-              Aucun produit ne correspond à vos critères de recherche.
-            </p>
-            <Button
-              variant="outline"
-              onClick={() =>
-                setFilters({
-                  availability: "all",
-                  priceRange: undefined,
-                  tags: [],
-                })
-              }
-            >
-              Réinitialiser les filtres
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="py-24 text-center glass rounded-3xl border-dashed border-2 border-primary/20">
+          <p className="text-jolananas-black-ink/60 font-medium mb-6">
+            Aucune création ne correspond à votre recherche.
+          </p>
+          <Button
+            variant="outline"
+            className="rounded-full px-8 text-[10px] uppercase font-bold tracking-widest"
+            onClick={() =>
+              setFilters({
+                availability: "all",
+                priceRange: undefined,
+                tags: [],
+              })
+            }
+          >
+            Réinitialiser
+          </Button>
+        </div>
       ) : (
         <div
           className={
             viewMode === "grid"
-              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              : "space-y-4"
+              ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-8 gap-y-12"
+              : "space-y-8"
           }
         >
-          {filteredAndSortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {filteredAndSortedProducts.map((product, index) => (
+            <div 
+              key={product.id} 
+              className={`transition-all duration-700 animate-fade-in`}
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       )}

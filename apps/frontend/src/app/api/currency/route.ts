@@ -16,11 +16,20 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
   try {
     const acceptLanguage = request.headers.get('accept-language') || undefined;
+    const cfIpCountry = request.headers.get('CF-IPCountry') || request.headers.get('x-vercel-ip-country') || undefined;
+    
     const { searchParams } = new URL(request.url);
     const shopifyCurrencyCode = searchParams.get('shopifyCurrencyCode') || undefined;
 
     const state: CurrencyServiceState = await currencyService.getState();
-    const detectedCurrency = await currencyService.getCurrency(shopifyCurrencyCode, acceptLanguage);
+    
+    // Pass country code to getCurrency (need to update currencyService signature or just use util here?)
+    // Using the util directly here for the specific priority if needed, BUT currencyService has detectUserCurrency logic.
+    // Let's check currencyService again. It has detectCurrencyFromGeolocation but that uses locale.
+    // Better to update currencyService to accept countryCode or pass it as "acceptLanguage" fallback? No.
+    // Let's pass it as a separate argument to getCurrency/detectUserCurrency.
+
+    const detectedCurrency = await currencyService.getCurrency(shopifyCurrencyCode, acceptLanguage, cfIpCountry);
     const availableCurrencies = await currencyService.getAvailableCurrencies();
 
     return NextResponse.json(

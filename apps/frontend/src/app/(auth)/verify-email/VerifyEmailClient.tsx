@@ -18,6 +18,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiPost } from "@/lib/api-client";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function VerifyEmailClient() {
   const searchParams = useSearchParams();
@@ -88,7 +89,7 @@ export function VerifyEmailClient() {
 
   if (success) {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <div className="max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center space-y-4">
@@ -110,12 +111,12 @@ export function VerifyEmailClient() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-md mx-auto">
         <Card>
           <CardHeader className="text-center space-y-4">
@@ -181,6 +182,6 @@ export function VerifyEmailClient() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

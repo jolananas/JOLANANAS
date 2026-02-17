@@ -83,9 +83,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    if (!ENV.SHOPIFY_ADMIN_TOKEN) {
+    if (!ENV.SHOPIFY_STOREFRONT_TOKEN) {
       return NextResponse.json(
-        { error: "SHOPIFY_ADMIN_TOKEN n'est pas configuré" },
+        { error: "SHOPIFY_STOREFRONT_TOKEN n'est pas configuré" },
         { status: 500 },
       );
     }

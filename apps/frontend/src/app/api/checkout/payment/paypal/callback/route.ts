@@ -45,9 +45,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!ENV.SHOPIFY_ADMIN_TOKEN) {
+    if (!ENV.SHOPIFY_STOREFRONT_TOKEN) {
       return NextResponse.json(
-        { error: "SHOPIFY_ADMIN_TOKEN n'est pas configuré" },
+        { error: "SHOPIFY_STOREFRONT_TOKEN n'est pas configuré" },
         { status: 500 },
       );
     }

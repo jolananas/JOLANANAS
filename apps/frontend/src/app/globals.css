@@ -51,7 +51,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased tracking-tight;
+    @apply bg-background text-primary font-sans antialiased tracking-tight;
   }
   /* TITRES : Swiss Style (Gros, Serré) mais Doux */
   h1,

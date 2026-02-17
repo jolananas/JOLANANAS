@@ -151,7 +151,7 @@ export function DashboardCharts({ ordersByMonth }: DashboardChartsProps) {
               <YAxis 
                 className="text-xs"
                 tick={{ fill: 'currentColor' }}
-                tickFormatter={(value) => formatCurrency(value)}
+                tickFormatter={(value: number | undefined) => (value !== undefined ? formatCurrency(value) : '')}
               />
               <Tooltip 
                 contentStyle={{
@@ -160,13 +160,13 @@ export function DashboardCharts({ ordersByMonth }: DashboardChartsProps) {
                   borderRadius: '8px',
                 }}
                 labelStyle={{ color: 'hsl(var(--foreground))' }}
-                formatter={(value: number) => formatCurrency(value)}
+                formatter={(value: number, name: string) => formatCurrency(value as number)}
               />
               <Legend />
               <Bar 
                 dataKey="total" 
                 fill="hsl(var(--primary))"
-                name="Montant (€)"
+                name={`Montant (${currency})`}
                 radius={[8, 8, 0, 0]}
               />
             </BarChart>

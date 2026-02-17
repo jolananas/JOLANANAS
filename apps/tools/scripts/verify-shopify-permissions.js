@@ -72,7 +72,7 @@ function checkEnvironmentVariables(envVars) {
 
   const required = {
     SHOPIFY_STORE_DOMAIN: "Domaine de votre boutique Shopify",
-    SHOPIFY_ADMIN_TOKEN: "Token Admin API (OBLIGATOIRE pour le checkout)",
+    SHOPIFY_STOREFRONT_TOKEN: "Token Admin API (OBLIGATOIRE pour le checkout)",
     SHOPIFY_API_VERSION: "Version de l'API Shopify",
   };
 
@@ -99,7 +99,7 @@ function checkEnvironmentVariables(envVars) {
           `${COLORS.yellow}⚠️  ${key}${COLORS.reset} - Format invalide: ${value}`,
         );
       } else if (
-        key === "SHOPIFY_ADMIN_TOKEN" &&
+        key === "SHOPIFY_STOREFRONT_TOKEN" &&
         !value.startsWith("shpat_") &&
         !value.startsWith("shpca_")
       ) {
@@ -113,7 +113,7 @@ function checkEnvironmentVariables(envVars) {
         );
       } else {
         const preview =
-          key === "SHOPIFY_ADMIN_TOKEN"
+          key === "SHOPIFY_STOREFRONT_TOKEN"
             ? `${value.substring(0, 10)}...`
             : value;
         console.log(`${COLORS.green}✅ ${key}${COLORS.reset} - ${preview}`);
@@ -395,7 +395,7 @@ function displayFixInstructions(missingScopes) {
     `${COLORS.bold}6. Ajoutez le token dans .env.local${COLORS.reset}`,
   );
   console.log("   → Ouvrez apps/frontend/.env.local");
-  console.log("   → Ajoutez ou modifiez : SHOPIFY_ADMIN_TOKEN=votre_token_ici");
+  console.log("   → Ajoutez ou modifiez : SHOPIFY_STOREFRONT_TOKEN=votre_token_ici");
   console.log("   → Sauvegardez le fichier");
   console.log("");
 
@@ -458,7 +458,7 @@ async function main() {
   const storeDomain =
     envVars.SHOPIFY_STORE_DOMAIN || process.env.SHOPIFY_STORE_DOMAIN;
   const adminToken =
-    envVars.SHOPIFY_ADMIN_TOKEN || process.env.SHOPIFY_ADMIN_TOKEN;
+    envVars.SHOPIFY_STOREFRONT_TOKEN || process.env.SHOPIFY_STOREFRONT_TOKEN;
   const apiVersion =
     envVars.SHOPIFY_API_VERSION || process.env.SHOPIFY_API_VERSION;
 
@@ -502,7 +502,7 @@ async function main() {
       console.log(
         "   → API credentials → Admin API access token → Reveal token once",
       );
-      console.log("   → Mettez à jour SHOPIFY_ADMIN_TOKEN dans .env.local\n");
+      console.log("   → Mettez à jour SHOPIFY_STOREFRONT_TOKEN dans .env.local\n");
     } else {
       // Afficher les instructions par défaut si aucun scope spécifique n'est identifié
       displayFixInstructions(REQUIRED_SCOPES);

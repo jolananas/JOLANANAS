@@ -23,7 +23,9 @@
       }
     ],
     "baseUrl": ".",
+    "types": ["node", "jest"],
     "paths": {
+      "@storybook/react": ["node_modules/@storybook/react/dist/index"],
       "@/*": [
         "./src/*"
       ]

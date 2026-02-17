@@ -48,6 +48,33 @@ async function shopifyFetch<T>({
   }
 }
 
+function reshapeProduct(product: any) {
+  if (!product) return null;
+
+  const { images, variants, priceRange, featuredImage, ...rest } = product;
+
+  return {
+    ...rest,
+    images: images?.edges?.map((edge: any) => edge.node) || [],
+    price: parseFloat(priceRange?.minVariantPrice?.amount || "0"),
+    compareAtPrice: variants?.edges?.[0]?.node?.compareAtPrice
+      ? parseFloat(variants.edges[0].node.compareAtPrice.amount)
+      : undefined,
+    currency: priceRange?.minVariantPrice?.currencyCode || "EUR",
+    variants: variants?.edges?.map((edge: any) => {
+      const node = edge.node;
+      return {
+        ...node,
+        price: parseFloat(node.price?.amount || "0"),
+        compareAtPrice: node.compareAtPrice
+          ? parseFloat(node.compareAtPrice.amount)
+          : undefined,
+      };
+    }) || [],
+    featuredImage: featuredImage?.url || images?.edges?.[0]?.node?.url || "",
+  };
+}
+
 export async function getAllProducts() {
   const query = `
     query AllProducts {
@@ -89,8 +116,10 @@ export async function getAllProducts() {
       }
     }
   `;
-  const data = await shopifyFetch<any>({ query, cache: "no-store" });
-  return data?.products?.edges.map((edge: any) => edge.node) || [];
+  const data = await shopifyFetch<any>({ query, tags: ["products"] });
+  return (
+    data?.products?.edges.map((edge: any) => reshapeProduct(edge.node)) || []
+  );
 }
 
 export async function getProductByHandle(handle: string) {
@@ -134,6 +163,12 @@ export async function getProductByHandle(handle: string) {
             }
           }
         }
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
         variants(first: 20) {
           edges {
             node {
@@ -152,8 +187,17 @@ export async function getProductByHandle(handle: string) {
                 url
                 altText
               }
+              selectedOptions {
+                name
+                value
+              }
             }
           }
+        }
+        options {
+          id
+          name
+          values
         }
       }
     }
@@ -163,7 +207,7 @@ export async function getProductByHandle(handle: string) {
     variables: { handle },
     cache: "no-store",
   });
-  return data?.product;
+  return reshapeProduct(data?.product);
 }
 
 export async function getAllCollections() {
@@ -202,14 +246,26 @@ export async function getCollectionByHandle(handle: string) {
               id
               title
               handle
+              description
+              availableForSale
               featuredImage {
                 url
                 altText
+              }
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
               }
               variants(first: 1) {
                 edges {
                   node {
                     price {
+                      amount
+                      currencyCode
+                    }
+                    compareAtPrice {
                       amount
                       currencyCode
                     }
@@ -223,7 +279,18 @@ export async function getCollectionByHandle(handle: string) {
     }
   `;
   const data = await shopifyFetch<any>({ query, variables: { handle } });
-  return data?.collection;
+
+  if (data?.collection) {
+    return {
+      ...data.collection,
+      products:
+        data.collection.products?.edges.map((edge: any) =>
+          reshapeProduct(edge.node),
+        ) || [],
+    };
+  }
+
+  return null;
 }
 
 export async function getShopInfo() {

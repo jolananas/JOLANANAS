@@ -115,7 +115,7 @@ Le cache `.next` a été supprimé pour forcer la recompilation avec les nouvell
 Si vous avez besoin de `email` et `description`, vous devrez :
 
 1. Créer une route API séparée utilisant l'API Admin
-2. Utiliser `SHOPIFY_ADMIN_TOKEN` au lieu de `SHOPIFY_STOREFRONT_TOKEN`
+2. Utiliser `SHOPIFY_STOREFRONT_TOKEN` au lieu de `SHOPIFY_STOREFRONT_TOKEN`
 3. Utiliser l'endpoint Admin : `https://{domain}/admin/api/{version}/graphql.json`
 
 ---

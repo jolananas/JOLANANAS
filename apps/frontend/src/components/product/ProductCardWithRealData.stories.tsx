@@ -6,7 +6,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProductCard } from './ProductCard';
-import { useShopifyContext } from '../../../../.storybook/decorators/ShopifyDataDecorator';
+import { useShopifyContext } from '../../../.storybook/decorators/ShopifyDataDecorator';
 
 const meta: Meta<typeof ProductCard> = {
   title: 'JOLANANAS/Product/ProductCard-RealData',

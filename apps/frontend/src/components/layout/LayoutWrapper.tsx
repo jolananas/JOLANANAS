@@ -3,6 +3,7 @@
 import React, { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import { BannerProvider, useBanner } from "@/components/layout/BannerContext";
+import { NavbarProvider } from "./NavbarContext";
 import dynamic from "next/dynamic";
 import { InfoBanner } from "@/components/layout/InfoBanner";
 import { Navigation } from "@/components/layout/Navigation";
@@ -57,11 +58,14 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   );
 }
 
+
 export function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
-    <BannerProvider>
-      <Preloader />
-      <LayoutContent>{children}</LayoutContent>
-    </BannerProvider>
+    <NavbarProvider>
+      <BannerProvider>
+        <Preloader />
+        <LayoutContent>{children}</LayoutContent>
+      </BannerProvider>
+    </NavbarProvider>
   );
 }

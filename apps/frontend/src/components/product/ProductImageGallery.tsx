@@ -10,7 +10,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { AspectRatio } from "@/components/ui/aspectratio";
 
 interface ProductImageGalleryProps {
@@ -45,6 +51,12 @@ export function ProductImageGallery({
           </div>
         </DialogTrigger>
         <DialogContent className="max-w-4xl w-full p-0">
+          <DialogTitle className="sr-only">
+            Galerie d'images : {title}
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            Vue agrandie des images du produit. Utilisez les flèches pour naviguer.
+          </DialogDescription>
           <Carousel className="w-full">
             <CarouselContent>
               {images.map((image, index) => (

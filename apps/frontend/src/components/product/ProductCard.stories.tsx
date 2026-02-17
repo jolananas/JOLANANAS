@@ -7,7 +7,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProductCard } from './ProductCard';
-import { withShopifyData } from '../../../../.storybook/decorators/ShopifyDataDecorator';
+import { withShopifyData, MOCK_PRODUCT } from '../../../.storybook/decorators/ShopifyDataDecorator';
 
 const meta: Meta<typeof ProductCard> = {
   title: 'JOLANANAS/Product/ProductCard',
@@ -28,6 +28,9 @@ const meta: Meta<typeof ProductCard> = {
       control: { type: 'object' }
     },
   },
+  args: {
+    product: MOCK_PRODUCT as any
+  }
 };
 
 export default meta;

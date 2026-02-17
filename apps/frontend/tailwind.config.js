@@ -19,7 +19,6 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        "text-foreground": "hsl(var(--foreground))",
 
         // Système JOLANANAS (Importé de apps/config)
         "jolananas-peach-light": "#F4C0AC",
@@ -82,6 +81,10 @@ export default {
         "bounce-slow": "bounce 2s infinite",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite alternate",
         float: "float 6s ease-in-out infinite",
+        glitch: "glitch 0.3s cubic-bezier(.25,.46,.45,.94) infinite",
+        "laser-flicker": "laser-flicker 2s ease-in-out infinite",
+        "laser-sweep": "laser-sweep 8s ease-in-out infinite",
+        "banner-scroll": "banner-scroll 5s linear infinite",
       },
       keyframes: {
         grid: {
@@ -117,6 +120,27 @@ export default {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
         },
+        glitch: {
+          "0%, 100%": { transform: "translate(0)", clipPath: "inset(0 0 0 0)" },
+          "10%": { transform: "translate(-2px, -1px)", clipPath: "inset(20% 0 10% 0)" },
+          "30%": { transform: "translate(2px, 1px)", clipPath: "inset(40% 0 50% 0)" },
+          "50%": { transform: "translate(-1px, 2px)", clipPath: "inset(60% 0 10% 0)" },
+          "70%": { transform: "translate(1px, -2px)", clipPath: "inset(80% 0 30% 0)" },
+          "90%": { transform: "translate(-2px, 1px)", clipPath: "inset(10% 0 70% 0)" },
+        },
+        "banner-scroll": {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(110vh)" },
+        },
+        "laser-flicker": {
+          "0%, 100%": { opacity: "0.8", filter: "drop-shadow(0 0 5px #ff0000)" },
+          "50%": { opacity: "0.4", filter: "drop-shadow(0 0 2px #ff0000)" },
+          "25%, 75%": { opacity: "0.9", filter: "drop-shadow(0 0 8px #ff0000)" },
+        },
+        "laser-sweep": {
+          "0%, 100%": { transform: "translateX(-10%) rotate(var(--rotation))" },
+          "50%": { transform: "translateX(10%) rotate(var(--rotation))" },
+        },
       },
       backgroundImage: {
         // LE LIQUID METAL JOLANANAS (Chrome teinté de rose pâle)
@@ -143,6 +167,7 @@ export default {
         smooth: "cubic-bezier(0.4, 0, 0.2, 1)",
         swiss: "cubic-bezier(0.32, 0.72, 0, 1)",
         curtain: "cubic-bezier(0.87, 0, 0.13, 1)",
+        full: "cubic-bezier(0.32,0.72,0,1)", // Transition fluide
       },
       screens: {
         // Screens JOLANANAS (Importé de apps/config) - Extensions

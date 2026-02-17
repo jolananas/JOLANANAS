@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { SlidersHorizontal, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from "@/components/ui/sheet"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
@@ -94,6 +94,9 @@ export function ProductFilters({
                 </Button>
               )}
             </SheetTitle>
+            <SheetDescription className="sr-only">
+              Filtres de produits et options de tri
+            </SheetDescription>
           </SheetHeader>
 
           <Accordion type="multiple" className="mt-6">

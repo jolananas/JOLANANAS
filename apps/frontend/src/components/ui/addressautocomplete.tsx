@@ -275,7 +275,7 @@ export function AddressAutocomplete({
                           // Afficher le numéro séparément seulement s'il n'est pas déjà dans le label
                           return (
                             <>
-                              <span className="font-semibold text-foreground mr-1">
+                              <span className="font-semibold text-primary mr-1">
                                 {suggestion.housenumber}
                               </span>
                               <span>
@@ -295,7 +295,7 @@ export function AddressAutocomplete({
                               <span
                                 className={
                                   isPlaceOrLocality
-                                    ? "font-semibold text-foreground"
+                                    ? "font-semibold text-primary"
                                     : suggestion.housenumber
                                       ? ""
                                       : "italic text-muted-foreground"

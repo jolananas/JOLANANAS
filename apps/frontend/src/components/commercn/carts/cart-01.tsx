@@ -50,7 +50,7 @@ export function ShoppingCartOne() {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center bg-background text-foreground rounded-lg border border-gray-200">
+          <div className="flex items-center bg-background text-primary rounded-lg border border-gray-200">
             <Button
               variant="ghost"
               size="icon"

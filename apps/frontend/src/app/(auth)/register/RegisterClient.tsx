@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SignupForm } from "@/components/auth/SignupForm";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function RegisterClient() {
   const router = useRouter();
@@ -29,17 +30,17 @@ export function RegisterClient() {
 
   if (status === "loading") {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <div className="flex flex-col items-center justify-center py-60">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
           <p className="text-muted-foreground">Chargement...</p>
         </div>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-md mx-auto">
         <Card>
           <CardHeader className="text-center space-y-4">
@@ -70,6 +71,6 @@ export function RegisterClient() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

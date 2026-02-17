@@ -17,6 +17,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -140,6 +141,9 @@ export function ProductQuickView({
           <div className={`product-quick-view ${className}`}>
             <DialogHeader>
               <DialogTitle className="sr-only">{product.title}</DialogTitle>
+              <DialogDescription className="sr-only">
+                Aperçu rapide et options d'achat pour {product.title}
+              </DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-6 md:grid-cols-2">

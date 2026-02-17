@@ -136,11 +136,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!ENV.SHOPIFY_ADMIN_TOKEN) {
+    if (!ENV.SHOPIFY_STOREFRONT_TOKEN) {
       return NextResponse.json(
         {
           error:
-            "SHOPIFY_ADMIN_TOKEN n'est pas configuré. Le paiement sécurisé nécessite l'Admin API.",
+            "SHOPIFY_STOREFRONT_TOKEN n'est pas configuré. Le paiement sécurisé nécessite l'Admin API.",
         },
         { status: 500 },
       );

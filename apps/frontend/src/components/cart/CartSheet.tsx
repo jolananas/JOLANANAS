@@ -10,6 +10,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
@@ -31,8 +32,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useCart } from "@/components/providers/CartProvider";
+import { useCurrency } from "@/hooks/useCurrency";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { safeJsonParse } from "@/lib/api-client";
+import { EmptyCartContent } from "@/components/error";
 
 interface ShippingInfo {
   freeShippingThreshold: number;
@@ -46,6 +49,7 @@ interface ShippingInfo {
 export function CartSheet() {
   const { items, removeItem, updateQuantity, totalItems, totalPrice } =
     useCart();
+  const { formatPrice } = useCurrency();
   const [open, setOpen] = useState(false);
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo | null>(null);
   // État local pour gérer les valeurs en cours de saisie pour chaque item
@@ -271,6 +275,7 @@ export function CartSheet() {
           size="icon"
           className="relative h-11 w-11 sm:h-9 sm:w-9 touch-manipulation text-jolananas-pink-medium hover:text-white"
           aria-label={`Panier (${totalItems})`}
+          suppressHydrationWarning
         >
           <ShoppingBag className="h-5 w-5" />
           {totalItems > 0 && (
@@ -282,39 +287,26 @@ export function CartSheet() {
         </Button>
       </SheetTrigger>
       <SheetContent
-        className="w-full sm:max-w-lg flex flex-col p-4 sm:p-6"
-        showOverlay={false}
+        className="w-full sm:max-w-xl lg:max-w-4xl flex flex-col p-4 sm:p-6"
       >
         <SheetHeader className="mb-4 sm:mb-6">
           <SheetTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <ShoppingBag className="h-5 w-5" />
             Panier ({totalItems})
           </SheetTitle>
+          <SheetDescription className="sr-only">
+            Votre panier actuel avec les articles sélectionnés
+          </SheetDescription>
         </SheetHeader>
 
         {items.length === 0 ? (
           <div className="flex-1 flex items-center justify-center">
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <ShoppingBag className="h-12 w-12 text-muted-foreground/50" />
-                </EmptyMedia>
-                <EmptyTitle>Votre panier est vide</EmptyTitle>
-                <EmptyDescription>
-                  Ajoutez des produits pour commencer vos achats
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button asChild>
-                  <Link href="/">Découvrir nos produits</Link>
-                </Button>
-              </EmptyContent>
-            </Empty>
+            <EmptyCartContent fullScreen={false} />
           </div>
         ) : (
-          <>
+          <div className="flex-1 flex flex-col lg:flex-row gap-6 lg:gap-10 overflow-hidden h-full">
             {/* Cart Items */}
-            <div className="flex-1 overflow-auto py-2 sm:py-4 space-y-3 sm:space-y-4">
+            <div className="flex-1 overflow-y-auto py-2 sm:py-4 space-y-3 sm:space-y-4 pr-1 lg:pr-4">
               {items.map((item) => (
                 <div key={item.id} className="flex gap-3 sm:gap-4">
                   <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-md overflow-hidden bg-muted shrink-0">
@@ -414,7 +406,7 @@ export function CartSheet() {
                         </Button>
                       </div>
                       <span className="font-semibold text-sm">
-                        {(item.price * item.quantity).toFixed(2)} EUR
+                        {formatPrice(item.price * item.quantity)}
                       </span>
                     </div>
                   </div>
@@ -423,7 +415,7 @@ export function CartSheet() {
             </div>
 
             {/* Cart Summary */}
-            <div className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col gap-3 sm:gap-4 lg:w-[350px] shrink-0 lg:justify-center lg:border-l lg:pl-10 lg:-my-6 lg:py-6 lg:bg-muted/10">
               <div className="space-y-2">
                 <Alert
                   variant="default"
@@ -438,21 +430,20 @@ export function CartSheet() {
                 <Separator />
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">Sous-total</span>
-                  <span className="font-bold text-lg text-primary">
-                    {totalPrice.toFixed(2)} EUR
-                  </span>
+                    {formatPrice(totalPrice)}
                 </div>
               </div>
-
-              <Button
-                size="lg"
-                className="w-full h-12 sm:h-10 touch-manipulation bg-gradient-to-r from-jolananas-pink-medium to-jolananas-pink-deep hover:from-jolananas-pink-deep hover:to-jolananas-pink-medium !text-white [&_svg]:!text-white shadow-glow-pink font-semibold transition-all duration-300"
-                onClick={handleCheckout}
-              >
-                Passer la commande
-              </Button>
+              <div className="flex flex-col gap-2">
+                <Button
+                  size="lg"
+                  className="w-full h-12 sm:h-10 touch-manipulation bg-gradient-to-r from-jolananas-pink-medium to-jolananas-pink-deep hover:from-jolananas-pink-deep hover:to-jolananas-pink-medium !text-white [&_svg]:!text-white shadow-glow-pink font-semibold transition-all duration-300"
+                  onClick={handleCheckout}
+                >
+                  Passer la commande
+                </Button>
+              </div>
             </div>
-          </>
+          </div>
         )}
       </SheetContent>
     </Sheet>

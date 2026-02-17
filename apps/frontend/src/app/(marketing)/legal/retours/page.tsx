@@ -19,6 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export const metadata: Metadata = {
   title: "Politique de Retours et Remboursements - JOLANANAS",
@@ -36,9 +37,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RetoursPage() {
-  // Normaliser le chemin AVANT de l'utiliser pour éviter les erreurs ByteString dans le cache Next.js
   const fileName = "Retours et Remboursements — JOLANANAS.md";
-  // Remplacer le tiret cadratin par un tiret simple pour les opérations de cache Next.js
   const normalizedFileName = fileName.replace(/—/g, "-");
   const filePath = join(
     process.cwd(),
@@ -48,11 +47,8 @@ export default async function RetoursPage() {
 
   let fileContent: string;
   try {
-    // readFileWithUnicode gère automatiquement la résolution Unicode en interne
-    // mais on normalise d'abord le chemin pour éviter les problèmes de cache Next.js
     fileContent = await readFileWithUnicode(filePath);
   } catch (error) {
-    // Si le fichier normalisé n'existe pas, essayer avec le nom original
     try {
       const originalPath = join(
         process.cwd(),
@@ -69,7 +65,7 @@ export default async function RetoursPage() {
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-4xl mx-auto space-y-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -104,6 +100,6 @@ export default async function RetoursPage() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

@@ -1,0 +1,22 @@
+diff --git a/config.js b/config.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..13d047fd5a76468bb36fe3f3ca1583d988d14224
+--- /dev/null
++++ b/config.js
+@@ -0,0 +1,2 @@
++// patched for storybook
++module.exports = function() { return {}; };
+diff --git a/package.json b/package.json
+index 4e2e2c0a2de83466c6347f9eb55b41ef2e87c373..754370338612c6c0f617e575509337e90e295db4 100644
+--- a/package.json
++++ b/package.json
+@@ -72,7 +72,8 @@
+     "experimental/testmode/playwright/msw.js",
+     "experimental/testmode/playwright/msw.d.ts",
+     "experimental/testmode/proxy.js",
+-    "experimental/testmode/proxy.d.ts"
++    "experimental/testmode/proxy.d.ts",
++    "config.js"
+   ],
+   "bin": {
+     "next": "./dist/bin/next"

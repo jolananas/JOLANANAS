@@ -14,19 +14,21 @@ type CartContextType = {
   cart: any | null;
   cartOpen: boolean;
   toggleCart: () => void;
-  addItem: (variantId: string) => Promise<void>;
+  addItem: (variantId: string, quantity?: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
   loading: boolean;
   // Legacy Adapter Properties for Checkout
   items: any[];
   totalPrice: number;
+  totalItems: number;
   clearCart: () => void;
   updateQuantity: (id: string, qty: number) => void;
 };
 
-const CartContext = createContext<CartContextType>({
+export const CartContext = createContext<CartContextType>({
   items: [],
   totalPrice: 0,
+  totalItems: 0,
   clearCart: () => {},
   updateQuantity: () => {},
   cart: null,
@@ -64,7 +66,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const toggleCart = () => setCartOpen(!cartOpen);
 
-  const addItem = async (variantId: string) => {
+  const addItem = async (variantId: string, quantity: number = 1) => {
     setLoading(true);
     setCartOpen(true);
     try {
@@ -75,7 +77,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("jolananas_cart_id", currentCartId);
       }
       const updatedCart = await addToCart(currentCartId, [
-        { merchandiseId: variantId, quantity: 1 },
+        { merchandiseId: variantId, quantity },
       ]);
       setCart(updatedCart);
     } catch (e) {
@@ -113,6 +115,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart]);
 
   const totalPrice = parseFloat(cart?.cost?.totalAmount?.amount || "0");
+  const totalItems = items.reduce((acc: number, item: any) => acc + item.quantity, 0);
 
   const clearCart = () => {
     // Not really possible to 'clear' easy without removing all lines, maybe create new cart
@@ -148,6 +151,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         loading,
         items,
         totalPrice,
+        totalItems,
         clearCart,
         updateQuantity,
       }}

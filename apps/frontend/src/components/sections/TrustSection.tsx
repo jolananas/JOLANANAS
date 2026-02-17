@@ -29,7 +29,7 @@ export function TrustSection() {
   const badges = [
     {
       icon: <Truck className="h-8 w-8 text-white" />,
-      title: "Livraison Rapide & Sécurisée",
+      title: "Livraison Soignée",
       description:
         "Recevez vos créations en toute confiance, directement chez vous.",
     },
@@ -41,7 +41,7 @@ export function TrustSection() {
     },
     {
       icon: <Gem className="h-8 w-8 text-white" />,
-      title: "Qualité Artisanale Garantie",
+      title: "Fait Main / Artisanat",
       description:
         "Chaque pièce est unique, façonnée avec des matériaux nobles.",
     },

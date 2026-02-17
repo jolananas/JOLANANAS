@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 export default {
-  siteUrl: process.env.DOMAIN_URL || "https://jolananas.com",
+  siteUrl: process.env.DOMAIN_URL,
   generateRobotsTxt: true,
   exclude: ["/server-sitemap.xml", "/account/*", "/checkout/*", "/cart"],
   robotsTxtOptions: {

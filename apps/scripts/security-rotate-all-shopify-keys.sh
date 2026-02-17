@@ -50,7 +50,7 @@ echo -e "${GREEN}🔍 Étape 2 : Analyse des clés compromises...${NC}"
 
 # Extraire les clés Shopify du .env.local
 SHOPIFY_STORE_DOMAIN=$(grep "^SHOPIFY_STORE_DOMAIN=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
-SHOPIFY_ADMIN_TOKEN=$(grep "^SHOPIFY_ADMIN_TOKEN=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
+SHOPIFY_STOREFRONT_TOKEN=$(grep "^SHOPIFY_STOREFRONT_TOKEN=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
 SHOPIFY_STOREFRONT_TOKEN=$(grep "^SHOPIFY_STOREFRONT_TOKEN=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
 SHOPIFY_CLIENT_ID=$(grep "^SHOPIFY_CLIENT_ID=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
 SHOPIFY_CLIENT_SECRET=$(grep "^SHOPIFY_CLIENT_SECRET=" "${ENV_FILE}" | cut -d'=' -f2 | tr -d '"' | tr -d "'")
@@ -59,7 +59,7 @@ SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET=$(grep "^SHOPIFY_CUSTOMER_ACCOUNT_API
 
 echo "Clés identifiées :"
 echo "  - Store Domain: ${SHOPIFY_STORE_DOMAIN}"
-echo "  - Admin Token: ${SHOPIFY_ADMIN_TOKEN:0:20}..."
+echo "  - Admin Token: ${SHOPIFY_STOREFRONT_TOKEN:0:20}..."
 echo "  - Storefront Token: ${SHOPIFY_STOREFRONT_TOKEN:0:20}..."
 echo "  - Client ID: ${SHOPIFY_CLIENT_ID}"
 echo "  - Client Secret: ${SHOPIFY_CLIENT_SECRET:0:20}..."
@@ -131,13 +131,13 @@ ENV_FILE="apps/frontend/.env.local"
 
 echo "🔧 Mise à jour de .env.local avec les nouveaux tokens"
 echo ""
-read -p "Nouveau SHOPIFY_ADMIN_TOKEN: " NEW_ADMIN_TOKEN
+read -p "Nouveau SHOPIFY_STOREFRONT_TOKEN: " NEW_ADMIN_TOKEN
 read -p "Nouveau SHOPIFY_STOREFRONT_TOKEN: " NEW_STOREFRONT_TOKEN
 read -p "Nouveau SHOPIFY_CLIENT_SECRET: " NEW_CLIENT_SECRET
 read -p "Nouveau SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET: " NEW_CUSTOMER_SECRET
 
 # Mettre à jour les tokens dans .env.local
-sed -i.bak "s/^SHOPIFY_ADMIN_TOKEN=.*/SHOPIFY_ADMIN_TOKEN=${NEW_ADMIN_TOKEN}/" "${ENV_FILE}"
+sed -i.bak "s/^SHOPIFY_STOREFRONT_TOKEN=.*/SHOPIFY_STOREFRONT_TOKEN=${NEW_ADMIN_TOKEN}/" "${ENV_FILE}"
 sed -i.bak "s/^SHOPIFY_STOREFRONT_TOKEN=.*/SHOPIFY_STOREFRONT_TOKEN=${NEW_STOREFRONT_TOKEN}/" "${ENV_FILE}"
 sed -i.bak "s/^SHOPIFY_STOREFRONT_ACCESS_TOKEN=.*/SHOPIFY_STOREFRONT_ACCESS_TOKEN=${NEW_STOREFRONT_TOKEN}/" "${ENV_FILE}"
 sed -i.bak "s/^SHOPIFY_CLIENT_SECRET=.*/SHOPIFY_CLIENT_SECRET=${NEW_CLIENT_SECRET}/" "${ENV_FILE}"

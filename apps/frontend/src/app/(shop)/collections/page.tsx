@@ -2,6 +2,7 @@ import { getAllCollections } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export const metadata = {
   title: "Nos Collections | JOLANANAS",
@@ -15,7 +16,7 @@ export default async function CollectionsIndexPage() {
   // const filteredCollections = collections.filter(c => c.handle !== 'frontpage')
 
   return (
-    <div className="container mx-auto px-4 py-60">
+    <PageContainer className="container mx-auto px-4 py-32">
       <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-16">
         Nos Univers
       </h1>
@@ -58,6 +59,6 @@ export default async function CollectionsIndexPage() {
           </Link>
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

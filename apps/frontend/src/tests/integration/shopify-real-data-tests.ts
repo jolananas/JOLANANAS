@@ -196,7 +196,7 @@ describe('Shopify Real Data Integration Tests', () => {
       }
 
       // Vérifier la cohérence des IDs Shopify
-      const allIds = [];
+      const allIds: string[] = [];
       
       productsData.products.edges.forEach((edge: any) => {
         allIds.push(edge.node.id);

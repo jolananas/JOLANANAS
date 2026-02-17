@@ -418,7 +418,7 @@ export function AddressAutocompleteWithNumber({
                         <div className="font-medium text-sm truncate">
                           {suggestion.housenumber ? (
                             <>
-                              <span className="font-semibold text-foreground mr-1">
+                              <span className="font-semibold text-primary mr-1">
                                 {suggestion.housenumber}
                               </span>
                               <span>

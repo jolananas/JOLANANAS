@@ -223,7 +223,7 @@ SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID=votre_client_id
 SHOPIFY_CUSTOMER_ACCOUNT_API_VERSION=2024-01
 
 # Shopify Admin API (requis pour envoi d'invitations)
-SHOPIFY_ADMIN_TOKEN=shpat_...
+SHOPIFY_STOREFRONT_TOKEN=shpat_...
 ```
 
 ### Où trouver les credentials
@@ -231,7 +231,7 @@ SHOPIFY_ADMIN_TOKEN=shpat_...
 1. **SHOPIFY_STOREFRONT_TOKEN** :
    - Admin Shopify → Apps → Develop apps → Storefront API → Access token
 
-2. **SHOPIFY_ADMIN_TOKEN** :
+2. **SHOPIFY_STOREFRONT_TOKEN** :
    - Admin Shopify → Apps → Develop apps → Admin API → Access token
 
 3. **SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID** :

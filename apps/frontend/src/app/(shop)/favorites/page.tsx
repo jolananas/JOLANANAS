@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export default function FavoritesPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -55,7 +56,7 @@ export default function FavoritesPage() {
 
   if (isLoading) {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <Card className="border-0 shadow-none bg-transparent">
           <CardContent className="flex flex-col items-center justify-center py-60">
             <Skeleton className="h-12 w-12 rounded-full mb-4" />
@@ -63,13 +64,13 @@ export default function FavoritesPage() {
             <Skeleton className="h-4 w-32" />
           </CardContent>
         </Card>
-      </main>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <Card className="border-0 shadow-none bg-transparent">
           <CardContent className="flex flex-col items-center justify-center py-60 text-center">
             <Alert variant="destructive" className="mb-4">
@@ -78,12 +79,12 @@ export default function FavoritesPage() {
             <Button onClick={() => window.location.reload()}>Réessayer</Button>
           </CardContent>
         </Card>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* En-tête avec Card */}
         <Card className="border-0 shadow-none bg-transparent">
@@ -108,6 +109,6 @@ export default function FavoritesPage() {
         {/* Grille de favoris */}
         <FavoritesGrid products={products} />
       </div>
-    </main>
+    </PageContainer>
   );
 }

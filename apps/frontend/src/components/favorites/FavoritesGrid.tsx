@@ -29,6 +29,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useCart } from "@/components/providers/CartProvider";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Product } from "@/lib/shopify/types";
 
 interface FavoritesGridProps {
@@ -39,6 +40,7 @@ export function FavoritesGrid({ products }: FavoritesGridProps) {
   const { favoriteProducts, isFavorite, toggleFavorite } =
     useFavorites(products);
   const { addItem } = useCart();
+  const { formatPrice } = useCurrency();
 
   if (favoriteProducts.length === 0) {
     return (
@@ -72,22 +74,15 @@ export function FavoritesGrid({ products }: FavoritesGridProps) {
     const firstImage =
       product.images?.[0] || "/assets/images/collections/placeholder.svg";
 
-    addItem({
-      variantId,
-      productId: product.id,
-      title: product.title,
-      price: product.price,
-      quantity: 1,
-      image: firstImage,
-      handle: product.handle,
-    });
+    addItem(variantId);
   };
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {favoriteProducts.map((product) => {
         const firstImage =
-          product.images?.[0] || "/assets/images/collections/placeholder.svg";
+          (typeof product.images?.[0] === 'string' ? product.images[0] : (product.images?.[0] as any)?.url) || 
+          "/assets/images/collections/placeholder.svg";
         const isFav = isFavorite(product.id);
 
         return (
@@ -145,12 +140,12 @@ export function FavoritesGrid({ products }: FavoritesGridProps) {
               {/* Prix */}
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xl font-bold text-primary">
-                  {product.price.toFixed(2)} {product.currency}
+                  {formatPrice(product.price)}
                 </span>
                 {product.compareAtPrice &&
                   product.compareAtPrice > product.price && (
                     <span className="text-sm text-muted-foreground line-through">
-                      {product.compareAtPrice.toFixed(2)} {product.currency}
+                      {formatPrice(product.compareAtPrice)}
                     </span>
                   )}
               </div>

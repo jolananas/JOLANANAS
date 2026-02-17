@@ -5,23 +5,12 @@
  */
 
 import { extractCurrencyFromShopifyResponse } from './currencyExtractor';
-import type { ShopifyProduct, ShopifyVariant, ShopifyCart, ShopifyCartLine } from '../shopify/types';
+import type { ShopifyProduct, ShopifyVariant, ShopifyCart, ShopifyCartLine, PriceRange, Price } from '../shopify/types';
 
 /**
  * Type pour les objets Money de Shopify
  */
-interface Money {
-  amount: string;
-  currencyCode: string;
-}
-
-/**
- * Type pour les PriceRange de Shopify
- */
-interface PriceRange {
-  minVariantPrice?: Money;
-  maxVariantPrice?: Money;
-}
+type Money = Price;
 
 /**
  * Extrait le currencyCode depuis un produit Shopify
@@ -203,7 +192,7 @@ export function extractCurrencyFromPriceRange(
  * ```
  */
 export function extractCurrencyFromMoney(
-  money: Money | null | undefined
+  money: Price | null | undefined
 ): string | undefined {
   if (!money) {
     return undefined;
@@ -232,7 +221,7 @@ export function extractCurrency(
     | ShopifyCart 
     | ShopifyCartLine
     | PriceRange
-    | Money
+    | Price
     | null 
     | undefined
 ): string | undefined {
@@ -262,7 +251,7 @@ export function extractCurrency(
   }
 
   if ('currencyCode' in data && 'amount' in data) {
-    return extractCurrencyFromMoney(data as Money);
+    return extractCurrencyFromMoney(data as Price);
   }
 
   // Fallback vers la fonction générique du service

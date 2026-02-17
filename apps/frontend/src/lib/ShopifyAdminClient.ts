@@ -19,7 +19,7 @@ import {
 // Configuration Admin API (privée)
 const ADMIN_CONFIG = {
   domain: ENV.SHOPIFY_STORE_DOMAIN,
-  adminToken: ENV.SHOPIFY_ADMIN_TOKEN!,
+  adminToken: ENV.SHOPIFY_STOREFRONT_TOKEN!,
   apiVersion: ENV.SHOPIFY_API_VERSION,
 };
 
@@ -27,7 +27,7 @@ const ADMIN_CONFIG = {
 if (ENV.NODE_ENV === "development") {
   if (!ADMIN_CONFIG.adminToken || ADMIN_CONFIG.adminToken.length < 20) {
     console.warn(
-      "⚠️ SHOPIFY_ADMIN_TOKEN semble invalide ou manquant. Vérifiez votre fichier .env.local",
+      "⚠️ SHOPIFY_STOREFRONT_TOKEN semble invalide ou manquant. Vérifiez votre fichier .env.local",
     );
   } else {
     // Masquer le token pour la sécurité (afficher seulement les 10 premiers caractères)
@@ -273,7 +273,7 @@ export class ShopifyAdminClient {
 
         if (response.status === 401) {
           errorMessage +=
-            "Token d'accès invalide ou expiré. Vérifiez SHOPIFY_ADMIN_TOKEN.";
+            "Token d'accès invalide ou expiré. Vérifiez SHOPIFY_STOREFRONT_TOKEN.";
         } else if (response.status === 403) {
           errorMessage +=
             "Accès refusé. Vérifiez les permissions de l'app Shopify (scopes Admin API).";
@@ -311,7 +311,7 @@ export class ShopifyAdminClient {
           );
           console.error("   7. Générez un nouveau token Admin si nécessaire");
           console.error(
-            "   8. Ajoutez le token dans .env.local comme SHOPIFY_ADMIN_TOKEN",
+            "   8. Ajoutez le token dans .env.local comme SHOPIFY_STOREFRONT_TOKEN",
           );
           console.error("   9. Redémarrez le serveur");
           console.error("");
@@ -343,6 +343,14 @@ export class ShopifyAdminClient {
       const errors = [{ message: error.message || "Erreur Admin API" }];
       return { errors };
     }
+  }
+
+  async getShopInfo(): Promise<AdminResponse<{ shop: any }>> {
+    return this.request<{ shop: any }>("/shop.json");
+  }
+
+  async getCurrencies(): Promise<AdminResponse<{ currencies: any[] }>> {
+    return this.request<{ currencies: any[] }>("/currencies.json");
   }
 
   // ===============================================

@@ -9,6 +9,14 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { CurrencyServiceState, CurrencyInfo } from '@/lib/currency/types';
+import { 
+  getCurrencySymbol, 
+  mapShopifyCurrencyFromApi, 
+  getCurrencyFromCountry, 
+  getShopifyStyleMoneyForIp,
+  type ShopifyMoney,
+  type NormalizedMoney
+} from '@/lib/currency/utils';
 
 interface UseCurrencyReturn {
   /** Code de la devise actuelle */
@@ -75,7 +83,7 @@ export function useCurrency(shopifyCurrencyCode?: string): UseCurrencyReturn {
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
-          'Accept-Language': navigator.language || 'fr-FR',
+          'Accept-Language': typeof window !== 'undefined' ? navigator.language : 'fr-FR',
         },
         cache: 'default',
       });
@@ -126,11 +134,17 @@ export function useCurrency(shopifyCurrencyCode?: string): UseCurrencyReturn {
         return new Intl.NumberFormat(locale, {
           style: 'currency',
           currency: currency,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
         }).format(value);
       } catch (error) {
         // Fallback simple
         const symbol = getCurrencySymbol(currency);
-        return `${value.toFixed(2)} ${symbol}`;
+        const formattedValue = value.toLocaleString(locale, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+        return `${formattedValue} ${symbol}`;
       }
     },
     [state.currentCurrency]
@@ -191,29 +205,19 @@ export function useCurrency(shopifyCurrencyCode?: string): UseCurrencyReturn {
 }
 
 /**
- * Récupère le symbole d'une devise
+ * Récupère le symbole d'une devise (style Shopify)
+ * Source d'inspiration : mapping ISO 4217 + conventions Shopify (CA$, A$, kr, etc.)
  */
-function getCurrencySymbol(currencyCode: string): string {
-  const symbols: Record<string, string> = {
-    EUR: '€',
-    USD: '$',
-    GBP: '£',
-    JPY: '¥',
-    CNY: '¥',
-    CAD: 'C$',
-    AUD: 'A$',
-    CHF: 'CHF',
-    SEK: 'kr',
-    NOK: 'kr',
-    DKK: 'kr',
-    PLN: 'zł',
-    BRL: 'R$',
-    INR: '₹',
-    KRW: '₩',
-  };
+export { getCurrencySymbol };
 
-  return symbols[currencyCode] || currencyCode;
-}
+/**
+ * Exemple de "traduction" de données venant de l'API Shopify.
+ * Tu peux adapter selon ce que tu utilises (Storefront API, Admin API, etc.).
+ */
+export type { ShopifyMoney, NormalizedMoney };
+export { mapShopifyCurrencyFromApi, getCurrencyFromCountry, getShopifyStyleMoneyForIp };
+
+
 
 
 

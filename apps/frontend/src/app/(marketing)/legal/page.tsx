@@ -19,6 +19,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export const metadata: Metadata = {
   title: "Mentions Légales - JOLANANAS",
@@ -36,9 +37,6 @@ export const metadata: Metadata = {
 };
 
 export default async function LegalPage() {
-  // Lire le fichier Markdown depuis public/assets/documents/
-  // process.cwd() pointe vers apps/frontend/, donc on utilise le chemin relatif depuis public/
-  // readFileWithUnicode utilise automatiquement resolveUnicodePath() en interne pour gérer les caractères Unicode
   const filePath = join(
     process.cwd(),
     "public/assets/documents/Mentions Légales — JOLANANAS.md",
@@ -58,7 +56,7 @@ export default async function LegalPage() {
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-4xl mx-auto space-y-8">
         <Breadcrumb>
           <BreadcrumbList>
@@ -93,6 +91,6 @@ export default async function LegalPage() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

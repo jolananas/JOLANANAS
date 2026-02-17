@@ -3,11 +3,11 @@ import { ProductsPageClient } from "@/components/ecommerce/products/ProductsPage
 // Generate metadata for SEO
 export async function generateMetadata() {
   return {
-    title: "Tous nos produits - JOLANANAS",
+    title: "Toutes nos créations - JOLANANAS",
     description:
       "Découvrez notre collection complète de créations artisanales girly et utiles. Bijoux, accessoires, porte-clés et bien plus encore.",
     openGraph: {
-      title: "Tous nos produits - JOLANANAS",
+      title: "Toutes nos créations - JOLANANAS",
       description:
         "Découvrez notre collection complète de créations artisanales.",
     },

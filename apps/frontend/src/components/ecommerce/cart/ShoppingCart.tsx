@@ -19,8 +19,10 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useCart } from "@/components/providers/CartProvider";
+import { useCurrency } from "@/hooks/useCurrency";
 import { safeJsonParse } from "@/lib/api-client";
 import type { BaseEcommerceProps } from "@/types/ecommerce";
+import { EmptyCartContent } from "@/components/error";
 
 interface ShoppingCartProps {
   isOpen: boolean;
@@ -52,6 +54,7 @@ export function ShoppingCart({
     totalPrice,
     clearCart,
   } = useCart();
+  const { formatPrice, currency } = useCurrency();
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo | null>(null);
   // État local pour gérer les valeurs en cours de saisie pour chaque item
   const [quantityInputs, setQuantityInputs] = useState<Record<string, string>>(
@@ -343,56 +346,7 @@ export function ShoppingCart({
         className={`flex-1 ${variant === "page" ? "overflow-visible p-4 md:p-6" : "overflow-y-auto p-6"}`}
       >
         {items.length === 0 ? (
-          // État vide amélioré avec design JOLANANAS
-          <div className="flex flex-col items-center justify-center text-center px-4 py-12">
-            {/* Icône */}
-            <div className="relative mb-6">
-              <div
-                className={`${variant === "page" ? "bg-jolananas-peach-light/20" : "bg-gradient-to-br from-jolananas-gold/20 to-jolananas-pink-medium/20"} rounded-full blur-xl animate-pulse absolute inset-0`}
-              />
-              <div
-                className={`relative ${variant === "page" ? "bg-white border border-gray-200" : "bg-white/10 backdrop-blur-md border-white/20"} rounded-full p-6 ${variant === "page" ? "shadow-md" : "shadow-glow-pink"}`}
-              >
-                <ShoppingBag
-                  className={`h-16 w-16 ${variant === "page" ? "text-jolananas-pink-medium" : "text-white/90"}`}
-                />
-              </div>
-            </div>
-
-            {/* Message principal avec Card */}
-            <Card
-              className={`${variant === "page" ? "bg-white border border-gray-200 shadow-md" : "bg-white/10 backdrop-blur-md border-white/20 shadow-lg"} mb-6 max-w-md w-full`}
-            >
-              <CardContent className="p-6">
-                <h3
-                  className={`text-2xl font-serif font-bold mb-3 ${variant === "page" ? "text-gray-900" : "text-white"}`}
-                >
-                  Votre panier est vide
-                </h3>
-                <p
-                  className={`leading-relaxed mb-6 ${variant === "page" ? "text-gray-600" : "text-white/80"}`}
-                >
-                  Découvrez nos créations artisanales faites main et ajoutez vos
-                  favoris à votre panier.
-                </p>
-
-                {/* Call-to-action amélioré */}
-                <Button
-                  onClick={
-                    variant === "page"
-                      ? () => (window.location.href = "/")
-                      : onClose
-                  }
-                  size="lg"
-                  className="w-full bg-gradient-to-r from-jolananas-pink-medium to-jolananas-pink-deep text-white hover:from-jolananas-pink-deep hover:to-jolananas-pink-medium shadow-glow-pink font-semibold transition-all duration-300 hover:scale-105"
-                >
-                  <ShoppingBag className="mr-2 h-5 w-5" />
-                  Continuer mes achats
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          <EmptyCartContent fullScreen={variant === "page"} />
         ) : (
           <div className="space-y-4">
             {items.map((item) => (
@@ -434,7 +388,7 @@ export function ShoppingCart({
                         </h3>
                       </Link>
                       <p className="text-sm font-bold text-jolananas-pink-deep mt-1">
-                        {item.price.toFixed(2)} €
+                        {formatPrice(item.price)}
                       </p>
 
                       {/* Contrôles quantité */}
@@ -544,7 +498,7 @@ export function ShoppingCart({
                 Sous-total
               </span>
               <span className="font-bold text-xl">
-                {totalPrice.toFixed(2)} €
+                {formatPrice(totalPrice)}
               </span>
             </div>
           </div>

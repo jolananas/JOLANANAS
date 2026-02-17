@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,26 +10,21 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { useBanner } from "@/components/layout/BannerContext";
 import { cn } from "@/lib/utils";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 interface HomePageClientProps {
   products: any[];
 }
 
-export function HomePageClient({ products = [] }: HomePageClientProps) {
+export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] }) => {
   const safeProducts = Array.isArray(products) ? products : [];
   const featuredProducts = safeProducts.slice(0, 4);
-  const { isBannerVisible } = useBanner();
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FEF7F0] overflow-x-hidden">
       {/* --- HERO SECTION PRO --- */}
-      <section
-        className={cn(
-          "relative w-full flex flex-col justify-center overflow-hidden",
-          // LA LOGIQUE DE DÉCOLLEMENT (ESSENTIELLE)
-          "transition-transform duration-500 ease-swiss",
-          isBannerVisible ? "translate-y-12" : "translate-y-0",
-        )}
+      <PageContainer
+        className="relative w-full flex flex-col justify-center overflow-hidden"
       >
         {/* ARRIÈRE-PLAN : RETRO GRID */}
         <RetroGrid
@@ -39,15 +36,12 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
           darkLineColor="#F4C0AC"
         />
 
-        <div className="container flex items-center justify-center mt-24 px-4 md:px-6 py-12 lg:py-24">
+        <div className="container flex items-center justify-center px-4 md:px-6 py-12 lg:py-24">
           {/* J'ai corrigé "justify-left" (invalide) par "justify-start" et ajouté gap-12 pour l'espace */}
           <div className="flex flex-row items-center justify-start gap-6 lg:gap-12">
             {/* 1. COLONNE VISUELLE */}
             {/* CORRECTION : On retire flex-1. On met flex-none pour qu'il ne prenne que la taille de l'image */}
             <div className="hidden md:flex flex-none relative shrink-0">
-              {/* Cercle décoratif derrière le logo pour l'ancrer visuellement */}
-              <div className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full scale-150 -z-10" />
-
               <Image
                 src="/assets/images/logo/logo-jolananas-gradient.png"
                 alt="Logo – JOLANANAS"
@@ -81,18 +75,20 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
 
               {/* Titre Principal */}
               <div className="space-y-2 w-full">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-foreground">
-                  L'ART DE <br />
+                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-secondary uppercase">
+                  L'ARTISANAT <br />
                   <span className="text-primary italic font-serif pr-2">
-                    l'audace
+                    au cœur.
                   </span>
-                  DOUCE.
                 </h1>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
-                  Une collection pensée pour celles qui osent. Des pièces
-                  uniques, faites main, qui révèlent votre personnalité sans
-                  dire un mot.
-                </p>
+                <div className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed space-y-4 font-medium">
+                  <p>
+                    Tout a commencé par une envie simple : créer des pièces uniques qui ont une âme.
+                  </p>
+                  <p>
+                    Je réalise chaque création à la main, avec soin et passion, en portant une attention particulière aux détails. Je privilégie les petites séries et les pièces uniques pour proposer des créations authentiques et personnelles.
+                  </p>
+                </div>
               </div>
 
               {/* Actions & CTA */}
@@ -118,7 +114,7 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
                       }}
                     />
                     <span className="relative flex items-center justify-center gap-3 z-10">
-                      DÉCOUVRIR LA COLLECTION
+                      DÉCOUVRIR LES CRÉATIONS
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </span>
                   </Button>
@@ -139,16 +135,16 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
             </div>
           </div>
         </div>
-      </section>
+      </PageContainer>
 
       {/* BEST SELLERS */}
       <section className="py-24 container mx-auto px-4 relative z-10 bg-[#FEF7F0]">
         <div className="flex justify-between items-end mb-12 border-b border-black/5 pb-4">
           <h2 className="text-4xl font-serif font-black tracking-tighter uppercase">
-            Nos Favoris
+            Nos Créations
           </h2>
           <Link
-            href="/collections"
+            href="/products"
             className="text-primary hover:underline flex items-center gap-1 font-bold tracking-widest uppercase text-sm"
           >
             Voir tout <ArrowRight className="w-4 h-4" />
@@ -171,4 +167,4 @@ export function HomePageClient({ products = [] }: HomePageClientProps) {
       </section>
     </div>
   );
-}
+};

@@ -38,6 +38,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -253,6 +254,11 @@ export function AddressList() {
               <DialogTitle>
                 {editingAddress ? "Modifier l'adresse" : "Nouvelle adresse"}
               </DialogTitle>
+              <DialogDescription className="text-muted-foreground text-sm">
+                {editingAddress 
+                  ? "Modifiez les informations de votre adresse ci-dessous." 
+                  : "Remplissez le formulaire pour ajouter une nouvelle adresse."}
+              </DialogDescription>
             </DialogHeader>
             <AddressForm
               address={editingAddress}

@@ -40,7 +40,7 @@ const GATEKEEPER_MODES: any = {
 
 export function SiteGatekeeper() {
   const { shouldBlock, activeMode } = useGatekeeperLogic();
-  const content = GATEKEEPER_MODES[activeMode || "live"];
+  const content = GATEKEEPER_MODES[activeMode];
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<
@@ -126,7 +126,7 @@ export function SiteGatekeeper() {
             </span>
           </div>
 
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-foreground uppercase leading-[0.9]">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-primary uppercase leading-[0.9]">
             {content.title}
           </h1>
 

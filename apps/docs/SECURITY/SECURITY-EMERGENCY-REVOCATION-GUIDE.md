@@ -13,7 +13,7 @@
 **Credentials compromis identifiés** :
 
 - ✅ `SHOPIFY_STOREFRONT_TOKEN=[STOREFRONT_TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ** (Storefront API)
-- ✅ `SHOPIFY_ADMIN_TOKEN=shpat_[TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ** (Admin API)
+- ✅ `SHOPIFY_STOREFRONT_TOKEN=shpat_[TOKEN_COMPROMISED]` ⚠️ **RÉVOQUÉ** (Admin API)
 - ✅ `RESEND_API_KEY=re_9tnawTCv_K3Pm6HQZ5bN4uTCppgNyHH92` (Service email Resend)
 - ✅ `DATABASE_URL=file:./app/src/prisma/dev.db` (Base de données locale)
 
@@ -124,7 +124,7 @@ SHOPIFY_STORE_DOMAIN=u6ydbb-sx.myshopify.com
 SHOPIFY_API_VERSION=2026-01
 
 # Shopify Admin API (si utilisé)
-SHOPIFY_ADMIN_TOKEN=votre_nouveau_admin_token_ici
+SHOPIFY_STOREFRONT_TOKEN=votre_nouveau_admin_token_ici
 
 # Resend API (NOUVELLE CLÉ)
 RESEND_API_KEY=votre_nouvelle_resend_key_ici
@@ -150,7 +150,7 @@ NODE_ENV=production
 
 3. **Mettez à jour chaque variable** :
    - `SHOPIFY_STOREFRONT_TOKEN` → Nouveau token
-   - `SHOPIFY_ADMIN_TOKEN` → Nouveau token (si utilisé)
+   - `SHOPIFY_STOREFRONT_TOKEN` → Nouveau token (si utilisé)
    - `RESEND_API_KEY` → Nouvelle clé
 
 4. **Redeploy l'application**

@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useCart } from "@/components/providers/CartProvider";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Offer, BaseEcommerceProps } from "@/types/ecommerce";
 
 interface OfferModalProps extends BaseEcommerceProps {
@@ -39,6 +40,7 @@ export function OfferModal({
   className,
 }: OfferModalProps) {
   const { totalPrice } = useCart();
+  const { formatPrice } = useCurrency();
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [hasAccepted, setHasAccepted] = useState(false);
 
@@ -182,7 +184,7 @@ export function OfferModal({
                   {offer.conditions.minCartValue && (
                     <p>
                       Valable pour les commandes de{" "}
-                      {offer.conditions.minCartValue}€ minimum
+                      {formatPrice(offer.conditions.minCartValue)} minimum
                     </p>
                   )}
                   {offer.validUntil && (
@@ -201,7 +203,7 @@ export function OfferModal({
             <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
                 Ajoutez encore{" "}
-                {(offer.conditions.minCartValue - totalPrice).toFixed(2)}€ à
+                {formatPrice(offer.conditions.minCartValue - totalPrice)} à
                 votre panier pour bénéficier de cette offre.
               </p>
             </div>

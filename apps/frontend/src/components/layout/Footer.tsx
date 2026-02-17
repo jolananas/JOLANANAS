@@ -48,7 +48,7 @@ export function Footer() {
   return (
     <footer
       id="footer"
-      className="relative bg-[#FEF7F0] border-t pt-20 pb-10 overflow-hidden"
+      className="relative pt-20 pb-10 overflow-hidden"
       style={{
         backgroundImage: "url(/assets/images/background/bg-jolananas-fast.gif)",
         backgroundSize: "cover",
@@ -87,7 +87,7 @@ export function Footer() {
                 className="h-12 w-auto"
               />
             </Link>
-            <p className="text-lg text-foreground/80 leading-relaxed max-w-md font-medium mx-auto lg:mx-0">
+            <p className="text-lg text-white leading-relaxed max-w-md font-medium mx-auto lg:mx-0">
               L'art de la fantaisie. <br />
               Des créations artisanales uniques, pensées pour révéler votre
               personnalité avec élégance et audace.
@@ -103,7 +103,7 @@ export function Footer() {
                 <Link
                   key={i}
                   href={item.href}
-                  className="w-10 h-10 rounded-full border border-black/10 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group bg-white/50"
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-white/50 backdrop-blur-xl hover:bg-primary text-primary hover:text-white transition-all duration-300 group"
                 >
                   <BrandIcon
                     icon={item.icon}
@@ -116,10 +116,10 @@ export function Footer() {
 
           {/* Colonne Newsletter (Mise en avant) */}
           <div className="lg:col-span-7 bg-white/40 backdrop-blur-sm border border-white/50 p-8 rounded-3xl text-center lg:text-left">
-            <h3 className="text-2xl font-serif font-bold mb-2">
+            <h3 className="text-2xl text-primary font-serif font-bold mb-2">
               Rejoignez le club
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-primary/80 mb-6">
               Recevez nos exclusivités et -10% sur votre première commande.
             </p>
 
@@ -130,14 +130,15 @@ export function Footer() {
               <Input
                 type="email"
                 placeholder="votre@email.com"
-                className="bg-white/80 border-transparent h-12 rounded-xl focus:ring-primary/20"
+                className="bg-white/80 text-primary placeholder:text-primary border-transparent h-12 rounded-xl focus:ring-primary/20"
               />
               <Button
                 type="submit"
                 size="lg"
-                className="h-12 rounded-xl bg-black text-white hover:bg-primary px-8"
+                className="h-12 rounded-xl bg-primary text-white hover:bg-primary/80 px-8 transition-all duration-300 group"
               >
-                S'inscrire <ArrowRight className="ml-2 w-4 h-4" />
+                S'inscrire{" "}
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-all duration-300" />
               </Button>
             </form>
             <p className="text-xs text-muted-foreground mt-4 opacity-70">
@@ -166,7 +167,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href="/collections"
-                    className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                    className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                   >
                     {item}
                   </Link>
@@ -184,7 +185,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Notre Histoire
                 </Link>
@@ -192,7 +193,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/presse"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Presse
                 </Link>
@@ -209,7 +210,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Service Client
                 </Link>
@@ -217,7 +218,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/livraison"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Livraison & Retours
                 </Link>
@@ -225,7 +226,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   FAQ
                 </Link>
@@ -242,7 +243,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/cgv"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   CGV
                 </Link>
@@ -250,7 +251,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Confidentialité
                 </Link>
@@ -258,7 +259,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/mentions-legales"
-                  className="text-foreground hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
                 >
                   Mentions Légales
                 </Link>
@@ -271,7 +272,9 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
           <p className="text-xs font-medium  text-black uppercase tracking-wider opacity-40">
-            © {currentYear} SARL JOLANANAS
+            © {currentYear} SARL JOLANANAS.
+            <br />
+            Fait avec 🩷 en 🇫🇷
           </p>
 
           {/* LOGOS PAIEMENT (Simple Icons) */}

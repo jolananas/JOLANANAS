@@ -236,18 +236,7 @@ export function ProductOverview({
 
     setIsAddingToCart(true);
     try {
-      addItem({
-        variantId: selectedVariant,
-        productId: product.id,
-        title: product.title,
-        price: displayPrice,
-        quantity,
-        image:
-          currentVariant?.image ||
-          product.images[0] ||
-          "/assets/images/collections/placeholder.svg",
-        handle: product.handle,
-      });
+      addItem(selectedVariant, quantity);
 
       // Feedback visuel
       setTimeout(() => setIsAddingToCart(false), 500);
@@ -294,8 +283,8 @@ export function ProductOverview({
                       className="overflow-hidden rounded-xl"
                     >
                       <Image
-                        src={image}
-                        alt={`${product.title} ${index + 1}`}
+                        src={image.url}
+                        alt={image.altText || `${product.title} ${index + 1}`}
                         fill
                         className="object-cover"
                         priority={index === 0}
@@ -333,8 +322,8 @@ export function ProductOverview({
               {product.images.slice(0, 4).map((image, index) => (
                 <ProductThumbnailCard
                   key={index}
-                  image={image}
-                  alt={`${product.title} miniature ${index + 1}`}
+                  image={image.url}
+                  alt={image.altText || `${product.title} miniature ${index + 1}`}
                   isActive={selectedImageIndex === index}
                   onClick={() => setSelectedImageIndex(index)}
                   index={index}
@@ -404,7 +393,7 @@ export function ProductOverview({
                         {/* Nom du groupe de variantes - toujours affiché */}
                         <label
                           htmlFor={`option-${option.name}`}
-                          className="text-base font-semibold text-foreground block"
+                          className="text-base font-semibold text-primary block"
                         >
                           {displayName}
                         </label>
@@ -549,7 +538,7 @@ export function ProductOverview({
             <Separator />
 
             {/* Tags */}
-            {product.tags.length > 0 && (
+            {product.tags && product.tags.length > 0 && (
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold">Tags</h3>
                 <div className="flex flex-wrap gap-2">
@@ -702,11 +691,11 @@ export function ProductOverview({
                     <Link href={`/products/${relatedProduct.handle}`}>
                       <AspectRatio ratio={1}>
                         <Image
-                          src={
-                            relatedProduct.images[0] ||
+                            src={
+                            relatedProduct.images?.[0]?.url ||
                             "/assets/images/collections/placeholder.svg"
                           }
-                          alt={relatedProduct.title}
+                          alt={relatedProduct.images?.[0]?.altText || relatedProduct.title}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

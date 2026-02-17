@@ -9,6 +9,7 @@ import {
   getProductByHandle,
   getAllProducts,
 } from "@/lib/shopify/index";
+import type { Product } from "@/lib/shopify/types";
 
 export const dynamic = "force-dynamic";
 
@@ -61,10 +62,11 @@ export async function GET(
     const allProducts = await getAllProducts();
     const relatedProducts = allProducts
       .filter(
-        (p) =>
+        (p: Product) =>
           p.id !== product.id &&
-          (p.tags.some((tag) => product.tags.includes(tag)) ||
-            p.collections.some((col) => product.collections.includes(col))),
+          ((p.tags && p.tags.some((tag: string) => product.tags?.includes(tag))) ||
+            (p.collections &&
+              p.collections.some((col: string) => product.collections?.includes(col)))),
       )
       .slice(0, 4);
 

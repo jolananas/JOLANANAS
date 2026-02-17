@@ -29,17 +29,17 @@ export interface BannerMessage {
  */
 const bannerMessages: BannerMessage[] = [
   {
-    id: 'free-shipping-50',
+    id: 'free-shipping-60',
     type: 'promotion',
-    title: 'Livraison gratuite dès 50€ d\'achat !',
-    description: 'Profitez de la livraison offerte sur toutes vos commandes',
+    title: 'Livraison offerte dès 60€',
+    description: 'Pour toute commande en France métropolitaine',
     link: {
-      href: '/products',
-      label: 'Découvrir'
+      href: '/collections',
+      label: 'En profiter'
     },
     dismissible: true,
     priority: 3,
-    icon: '🎉'
+    icon: '🎁'
   },
   {
     id: 'express-delivery',
@@ -99,15 +99,15 @@ export function getBannerMessage(context?: {
 
   // 3. Messages contextuels selon l'utilisateur et le panier
   const cartTotal = context?.cartTotal || 0;
-  const freeShippingThreshold = 50;
+  const freeShippingThreshold = 60;
 
-  // Si le panier est proche du seuil de livraison gratuite (entre 30€ et 50€)
-  if (cartTotal >= 30 && cartTotal < freeShippingThreshold) {
+  // Si le panier est proche du seuil de livraison gratuite (entre 40€ et 60€)
+  if (cartTotal >= 40 && cartTotal < freeShippingThreshold) {
     const remaining = freeShippingThreshold - cartTotal;
     return {
       id: 'free-shipping-close',
       type: 'promotion',
-      title: `Plus que ${remaining.toFixed(0)}€ pour la livraison gratuite !`,
+      title: `Plus que ${remaining.toFixed(2)}€ pour la livraison gratuite !`,
       description: 'Ajoutez des articles à votre panier',
       link: {
         href: '/products',

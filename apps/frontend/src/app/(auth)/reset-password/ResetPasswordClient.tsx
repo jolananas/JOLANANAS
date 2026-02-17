@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { apiPost } from "@/lib/api-client";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function ResetPasswordClient() {
   const searchParams = useSearchParams();
@@ -138,7 +139,7 @@ export function ResetPasswordClient() {
 
   if (success) {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <div className="max-w-md mx-auto">
           <Card>
             <CardHeader className="text-center space-y-4">
@@ -162,12 +163,12 @@ export function ResetPasswordClient() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-md mx-auto">
         <Card>
           <CardHeader className="text-center space-y-4">
@@ -251,7 +252,7 @@ export function ResetPasswordClient() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-primary"
                     tabIndex={-1}
                   >
                     {showPassword ? (
@@ -289,7 +290,7 @@ export function ResetPasswordClient() {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-primary"
                     tabIndex={-1}
                   >
                     {showConfirmPassword ? (
@@ -322,6 +323,6 @@ export function ResetPasswordClient() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

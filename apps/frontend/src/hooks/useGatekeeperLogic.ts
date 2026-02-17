@@ -9,8 +9,7 @@ export function useGatekeeperLogic() {
   // 1. Initialiser directement avec la valeur env pour éviter le flash blanc
   // Utilisation de NEXT_PUBLIC_ pour l'accès client
   const [shouldBlock, setShouldBlock] = useState(() => {
-    if (typeof window === "undefined") return false; // Serveur : ne pas bloquer par défaut
-    const mode = process.env.NEXT_PUBLIC_SITE_MODE || "live";
+    const mode = process.env.NEXT_PUBLIC_SITE_MODE;
     return mode !== "live";
   });
 
@@ -18,7 +17,7 @@ export function useGatekeeperLogic() {
 
   useEffect(() => {
     // 2. Vérification Client
-    const mode = process.env.NEXT_PUBLIC_SITE_MODE || "live";
+    const mode = process.env.NEXT_PUBLIC_SITE_MODE;
 
     // Si on est en "live", on ne bloque jamais
     if (mode === "live") {

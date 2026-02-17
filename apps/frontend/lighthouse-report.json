@@ -3350,7 +3350,7 @@
                 "width": 40,
                 "height": 40
               },
-              "snippet": "<button class=\"p-2 -ml-2 text-foreground\">",
+              "snippet": "<button class=\"p-2 -ml-2 text-primary\">",
               "nodeLabel": "div.relative > header.sticky > div.container > button.p-2",
               "explanation": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -5129,7 +5129,7 @@
                 "width": 412,
                 "height": 4073
               },
-              "snippet": "<body class=\"antialiased min-h-screen flex flex-col bg-background text-foreground selec…\">",
+              "snippet": "<body class=\"antialiased min-h-screen flex flex-col bg-background text-primary selec…\">",
               "nodeLabel": "body.antialiased"
             },
             "value": {

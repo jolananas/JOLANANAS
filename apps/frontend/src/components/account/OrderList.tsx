@@ -77,6 +77,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { OrderListSkeleton } from "./OrderListSkeleton";
 import { apiGet } from "@/lib/api-client";
@@ -486,6 +487,9 @@ export function OrderList() {
                 ? `#${selectedOrder.shopifyOrderId}`
                 : `#${selectedOrder?.id.slice(0, 8)}`}
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Détails complets de la commande incluant les produits, l'adresse de livraison et le statut.
+            </DialogDescription>
           </DialogHeader>
           {selectedOrder && <OrderDetails order={selectedOrder} />}
         </DialogContent>

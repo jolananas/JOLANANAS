@@ -1,19 +1,28 @@
-import React, { Suspense } from "react";
-import { CustomCheckoutPage } from "@/components/ecommerce/checkout/CustomCheckoutPage";
-import { Loader2 } from "lucide-react";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { useCart } from "@/components/providers/CartProvider";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export default function CheckoutPage() {
+  const { cart, loading } = useCart();
+
+  useEffect(() => {
+    if (cart?.checkoutUrl) {
+      window.location.href = cart.checkoutUrl;
+    }
+  }, [cart]);
+
   return (
-    <Suspense
-      fallback={
-        <div className="container py-40 flex items-center justify-center">
-          <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        </div>
-      }
-    >
-      <CustomCheckoutPage />
-    </Suspense>
+    <PageContainer className="container py-32 flex flex-col items-center justify-center min-h-[60vh]">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <h1 className="text-xl font-medium">Redirection vers le paiement...</h1>
+        <p className="text-muted-foreground text-center max-w-md">
+          Nous vous transférons vers notre partenaire de paiement sécurisé Shopify.
+        </p>
+      </div>
+    </PageContainer>
   );
 }

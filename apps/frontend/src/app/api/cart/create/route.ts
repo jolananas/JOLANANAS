@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     // Créer ou mettre à jour le client dans Shopify si les informations sont fournies
     let customerId: string | null = null;
-    if (shippingInfo && ENV.SHOPIFY_ADMIN_TOKEN) {
+    if (shippingInfo && ENV.SHOPIFY_STOREFRONT_TOKEN) {
       try {
         const adminClient = getShopifyAdminClient();
 
@@ -190,9 +190,9 @@ export async function POST(request: NextRequest) {
           error,
         );
       }
-    } else if (shippingInfo && !ENV.SHOPIFY_ADMIN_TOKEN) {
+    } else if (shippingInfo && !ENV.SHOPIFY_STOREFRONT_TOKEN) {
       console.warn(
-        "⚠️ SHOPIFY_ADMIN_TOKEN non configuré - le client ne sera pas créé dans Shopify",
+        "⚠️ SHOPIFY_STOREFRONT_TOKEN non configuré - le client ne sera pas créé dans Shopify",
       );
     }
 

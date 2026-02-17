@@ -34,6 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiGet, apiDelete } from "@/lib/api-client";
 import { signOut } from "next-auth/react";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function PrivacyClient() {
   const { data: session } = useSession();
@@ -81,7 +82,6 @@ export function PrivacyClient() {
     setDeleteError(null);
 
     try {
-      // Envoyer les données dans le body
       const deleteResponse = await fetch("/api/user/delete-account", {
         method: "DELETE",
         headers: {
@@ -99,7 +99,6 @@ export function PrivacyClient() {
         throw new Error(deleteData.error || "Erreur lors de la suppression");
       }
 
-      // Déconnecter l'utilisateur
       await signOut({ redirect: true, callbackUrl: "/" });
     } catch (err) {
       const errorMessage =
@@ -112,7 +111,7 @@ export function PrivacyClient() {
 
   if (!session) {
     return (
-      <main className="container py-40 md:py-60">
+      <PageContainer className="container py-32 md:py-48">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
@@ -125,12 +124,12 @@ export function PrivacyClient() {
             </CardContent>
           </Card>
         </div>
-      </main>
+      </PageContainer>
     );
   }
 
   return (
-    <main className="container py-40 md:py-60">
+    <PageContainer className="container py-32 md:py-48">
       <div className="max-w-4xl mx-auto space-y-8">
         <div>
           <h1 className="font-serif text-3xl font-bold mb-2">
@@ -327,6 +326,6 @@ export function PrivacyClient() {
           </CardContent>
         </Card>
       </div>
-    </main>
+    </PageContainer>
   );
 }

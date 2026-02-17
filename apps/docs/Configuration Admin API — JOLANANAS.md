@@ -114,11 +114,11 @@ Pour que le système de checkout personnalisé fonctionne correctement, votre ap
 ### Étape 7 : Ajouter le Token dans `.env.local`
 
 1. Ouvrez le fichier `.env.local` à la racine de `apps/frontend/`
-2. Ajoutez ou modifiez la variable `SHOPIFY_ADMIN_TOKEN` :
+2. Ajoutez ou modifiez la variable `SHOPIFY_STOREFRONT_TOKEN` :
 
 ```env
 # Token Admin API (OBLIGATOIRE pour le checkout personnalisé)
-SHOPIFY_ADMIN_TOKEN=shpat_votre_token_admin_ici
+SHOPIFY_STOREFRONT_TOKEN=shpat_votre_token_admin_ici
 ```
 
 3. Sauvegardez le fichier
@@ -145,7 +145,7 @@ Vérifiez que les variables suivantes sont définies dans `.env.local` :
 ```env
 SHOPIFY_STORE_DOMAIN=votre-boutique.myshopify.com
 SHOPIFY_STOREFRONT_TOKEN=votre_token_storefront
-SHOPIFY_ADMIN_TOKEN=votre_token_admin
+SHOPIFY_STOREFRONT_TOKEN=votre_token_admin
 SHOPIFY_API_VERSION=2024-10
 ```
 
@@ -198,7 +198,7 @@ curl -X GET \
 1. Vérifiez que les scopes sont bien cochés dans "Configure Admin API scopes"
 2. **Réinstallez l'app** (Uninstall → Install) pour obtenir l'approbation du marchand
 3. Vérifiez que vous utilisez le bon token (Admin API, pas Storefront API)
-4. Vérifiez que le token est bien défini dans `.env.local` comme `SHOPIFY_ADMIN_TOKEN`
+4. Vérifiez que le token est bien défini dans `.env.local` comme `SHOPIFY_STOREFRONT_TOKEN`
 
 ### Erreur 401 : "Token d'accès invalide ou expiré"
 
@@ -274,7 +274,7 @@ curl -X GET \
    - L'approbation est automatique pour les apps de développement
 
 3. **Tokens** :
-   - Le token Admin (`SHOPIFY_ADMIN_TOKEN`) est différent du token Storefront (`SHOPIFY_STOREFRONT_TOKEN`)
+   - Le token Admin (`SHOPIFY_STOREFRONT_TOKEN`) est différent du token Storefront (`SHOPIFY_STOREFRONT_TOKEN`)
    - Les deux tokens sont nécessaires pour le fonctionnement complet du système
 
 4. **Version API** :
@@ -290,7 +290,7 @@ Avant de tester le checkout, vérifiez que :
 - [ ] Les scopes Admin API sont configurés dans Shopify Admin
 - [ ] L'app est installée/réinstallée avec les nouvelles permissions
 - [ ] Le token Admin est généré et copié
-- [ ] `SHOPIFY_ADMIN_TOKEN` est défini dans `.env.local`
+- [ ] `SHOPIFY_STOREFRONT_TOKEN` est défini dans `.env.local`
 - [ ] Le serveur a été redémarré après modification de `.env.local`
 - [ ] Les logs de démarrage affichent "✅ Shopify Admin Client initialisé"
 - [ ] Le test de création de draft order fonctionne sans erreur 403

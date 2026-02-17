@@ -48,10 +48,10 @@ echo ""
 
 # Test 2 : Admin API
 echo -e "${YELLOW}Test 2 : Admin API...${NC}"
-if [ -n "${SHOPIFY_ADMIN_TOKEN}" ]; then
+if [ -n "${SHOPIFY_STOREFRONT_TOKEN}" ]; then
   RESPONSE=$(curl -s -X POST "https://${STORE_DOMAIN}/admin/api/${API_VERSION}/graphql.json" \
     -H "Content-Type: application/json" \
-    -H "X-Shopify-Access-Token: ${SHOPIFY_ADMIN_TOKEN}" \
+    -H "X-Shopify-Access-Token: ${SHOPIFY_STOREFRONT_TOKEN}" \
     -d '{"query": "{ shop { name } }"}')
   
   if echo "${RESPONSE}" | grep -q "errors"; then
@@ -61,7 +61,7 @@ if [ -n "${SHOPIFY_ADMIN_TOKEN}" ]; then
     echo -e "${GREEN}✅ Admin API Token valide${NC}"
   fi
 else
-  echo -e "${YELLOW}⚠️  SHOPIFY_ADMIN_TOKEN non défini${NC}"
+  echo -e "${YELLOW}⚠️  SHOPIFY_STOREFRONT_TOKEN non défini${NC}"
 fi
 echo ""
 

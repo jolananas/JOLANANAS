@@ -49,7 +49,7 @@ export function MarkdownContent({ content, className = '' }: MarkdownContentProp
             />
           ),
           strong: ({ node, ...props }) => (
-            <strong className="font-semibold text-foreground" {...props} />
+            <strong className="font-semibold text-primary" {...props} />
           ),
           em: ({ node, ...props }) => (
             <em className="italic" {...props} />

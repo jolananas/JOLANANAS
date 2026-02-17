@@ -20,43 +20,9 @@ import {
 } from "lucide-react";
 import { cn, formatPrice } from "@/lib/utils";
 
-// Types pour la structure Shopify
-interface ProductOption {
-  id: string;
-  name: string;
-  values: string[];
-}
-
-interface ProductVariant {
-  id: string;
-  title: string;
-  availableForSale: boolean;
-  selectedOptions: { name: string; value: string }[];
-  price: { amount: string; currencyCode: string };
-  compareAtPrice?: { amount: string; currencyCode: string };
-  image?: { url: string; altText?: string };
-}
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  descriptionHtml?: string; // Si dispo
-  options: ProductOption[];
-  variants: { edges: { node: ProductVariant }[] };
-  images: { edges: { node: { url: string; altText?: string } }[] };
-  featuredImage?: { url: string; altText?: string };
-  media?: {
-    edges: {
-      node: {
-        mediaContentType: "VIDEO" | "IMAGE";
-        sources?: { url: string; mimeType: string }[];
-        previewImage?: { url: string; altText?: string };
-        image?: { url: string; altText?: string };
-      };
-    }[];
-  };
-}
+import type { Product, Variant as ProductVariant } from "@/lib/shopify/types";
+import { useBanner } from "@/components/layout/BannerContext";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function ProductPageClient({ product }: { product: Product }) {
   const { addItem } = useCart();
@@ -74,8 +40,8 @@ export function ProductPageClient({ product }: { product: Product }) {
 
   // Initialisation des options par défaut (première variante dispo)
   useEffect(() => {
-    if (product?.variants?.edges && product.variants.edges.length > 0) {
-      const firstVariant = product.variants.edges[0].node;
+    if (product?.variants && product.variants.length > 0) {
+      const firstVariant = product.variants[0];
       const initialOptions: Record<string, string> = {};
       firstVariant.selectedOptions?.forEach((opt) => {
         initialOptions[opt.name] = opt.value;
@@ -89,11 +55,11 @@ export function ProductPageClient({ product }: { product: Product }) {
   useEffect(() => {
     if (Object.keys(selectedOptions).length === 0) return;
 
-    const matchedVariant = product?.variants?.edges?.find(({ node }) => {
-      return node.selectedOptions?.every(
+    const matchedVariant = product?.variants?.find((variant) => {
+      return variant.selectedOptions?.every(
         (opt) => selectedOptions[opt.name] === opt.value,
       );
-    })?.node;
+    });
 
     setSelectedVariant(matchedVariant || null);
   }, [selectedOptions, product]);
@@ -101,21 +67,20 @@ export function ProductPageClient({ product }: { product: Product }) {
   // 2. GESTION DES IMAGES
   // L'image affichée est celle de la variante, sinon la principale, sinon la première de la galerie
   const [activeImage, setActiveImage] = useState<string | null>(null);
-
   useEffect(() => {
     if (selectedVariant?.image?.url) {
       setActiveImage(selectedVariant.image.url);
     } else {
       // Check for video first
       const firstVideo = product?.media?.edges.find(
-        (e) => e.node.mediaContentType === "VIDEO",
+        (e: any) => e.node.mediaContentType === "VIDEO",
       );
       if (firstVideo && firstVideo.node.previewImage) {
         setActiveImage(firstVideo.node.previewImage.url);
-      } else if (product?.featuredImage?.url) {
-        setActiveImage(product.featuredImage.url);
-      } else if (product?.images?.edges && product.images.edges.length > 0) {
-        setActiveImage(product.images.edges[0].node.url);
+      } else if (product?.featuredImage) {
+        setActiveImage(product.featuredImage);
+      } else if (product?.images && product.images.length > 0) {
+        setActiveImage(product.images[0].url);
       }
     }
   }, [selectedVariant, product]);
@@ -124,7 +89,6 @@ export function ProductPageClient({ product }: { product: Product }) {
   const handleOptionChange = (optionName: string, value: string) => {
     setSelectedOptions((prev) => ({ ...prev, [optionName]: value }));
   };
-
   const handleAddToCart = async () => {
     if (!selectedVariant) return;
     setIsAdding(true);
@@ -136,16 +100,15 @@ export function ProductPageClient({ product }: { product: Product }) {
     // Petit délai pour l'UX
     setTimeout(() => setIsAdding(false), 500);
   };
-
   const price = selectedVariant?.price;
   const compareAtPrice = selectedVariant?.compareAtPrice;
   const isSale =
     compareAtPrice &&
-    parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || "0");
+    compareAtPrice > (price || 0);
 
   return (
     <div className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
-      <div className="container mx-auto px-4 md:px-8">
+      <PageContainer className="container mx-auto px-4 md:px-8">
         {/* LAYOUT GRID : 2 COLONNES (Style Suisse: Grille stricte) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           {/* COLONNE GAUCHE : GALERIE (Sticky) */}
@@ -157,7 +120,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                   (() => {
                     // Check if activeImage corresponds to a video preview
                     const videoMedia = product.media?.edges.find(
-                      (e) =>
+                      (e: any) =>
                         e.node.mediaContentType === "VIDEO" &&
                         e.node.previewImage?.url === activeImage,
                     )?.node;
@@ -210,10 +173,10 @@ export function ProductPageClient({ product }: { product: Product }) {
               </div>
 
               {/* Galerie Thumbnails (Défilement horizontal propre) */}
-              {product?.images?.edges && product.images.edges.length > 1 && (
+              {product?.images && product.images.length > 1 && (
                 <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                   {/* Images existantes */}
-                  {product?.images?.edges?.map(({ node }, i) => (
+                  {product?.images?.map((node, i) => (
                     <button
                       key={`img-${i}`}
                       onClick={() => setActiveImage(node.url)}
@@ -236,8 +199,8 @@ export function ProductPageClient({ product }: { product: Product }) {
 
                   {/* Vidéos (Ajoutées à la fin de la galerie) */}
                   {product?.media?.edges
-                    .filter((e) => e.node.mediaContentType === "VIDEO")
-                    .map(({ node }, i) => (
+                    .filter((e: any) => e.node.mediaContentType === "VIDEO")
+                    .map(({ node }: any, i: number) => (
                       <button
                         key={`vid-${i}`}
                         onClick={() =>
@@ -276,19 +239,19 @@ export function ProductPageClient({ product }: { product: Product }) {
           <div className="lg:col-span-5 flex flex-col pt-4 lg:pt-0">
             {/* Header Produit */}
             <div className="mb-8 border-b border-black/10 pb-8">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase text-foreground mb-4 leading-[0.9]">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase text-primary mb-4 leading-[0.9]">
                 {product.title}
               </h1>
 
               <div className="flex items-baseline gap-4">
                 <span className="text-3xl font-bold text-primary tracking-tight">
-                  {price && formatPrice(price.amount, price.currencyCode)}
+                  {price && formatPrice(price, product.currency)}
                 </span>
                 {isSale && (
                   <span className="text-xl text-muted-foreground line-through decoration-red-500/50">
                     {formatPrice(
-                      compareAtPrice.amount,
-                      compareAtPrice.currencyCode,
+                      compareAtPrice,
+                      product.currency,
                     )}
                   </span>
                 )}
@@ -300,8 +263,8 @@ export function ProductPageClient({ product }: { product: Product }) {
               {product?.options?.map((option) => (
                 <div key={option.id} className="space-y-3">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    {option.name}:{" "}
-                    <span className="text-foreground">
+                    {option.name}{" "}:{" "}
+                    <span className="text-primary">
                       {selectedOptions[option.name]}
                     </span>
                   </h3>
@@ -315,8 +278,8 @@ export function ProductPageClient({ product }: { product: Product }) {
                           className={cn(
                             "px-6 py-3 rounded-full text-sm font-bold border transition-all duration-200 min-w-[3rem]",
                             isSelected
-                              ? "bg-black text-white border-black shadow-lg scale-105"
-                              : "bg-white text-foreground border-black/10 hover:border-black/30 hover:bg-white/50",
+                              ? "bg-primary text-white border-primary shadow-lg scale-105"
+                              : "bg-white text-primary border-primary/10 hover:border-primary/30 hover:bg-white/50",
                           )}
                         >
                           {value}
@@ -391,7 +354,7 @@ export function ProductPageClient({ product }: { product: Product }) {
               </Button>
 
               <p className="text-xs text-center text-muted-foreground mt-2">
-                Livraison gratuite dès 100€ • Retours sous 30 jours
+                Livraison offerte dès 60€ • Fait main avec passion
               </p>
             </div>
 
@@ -399,7 +362,7 @@ export function ProductPageClient({ product }: { product: Product }) {
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="description" className="border-black/10">
                 <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
-                  Description
+                  L'Âme de la Pièce
                 </AccordionTrigger>
                 <AccordionContent>
                   <div
@@ -413,63 +376,46 @@ export function ProductPageClient({ product }: { product: Product }) {
 
               <AccordionItem value="shipping" className="border-black/10">
                 <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
-                  Livraison & Retours
+                  Livraison & Authenticité
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground space-y-4 pb-4">
                   <div className="flex gap-3 items-start">
                     <Truck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-bold text-foreground">
-                        Expédition Rapide
+                      <p className="font-bold text-primary">
+                        Expédition Soignée
                       </p>
                       <p className="text-sm">
-                        Toutes les commandes sont expédiées sous 24/48h depuis
-                        notre atelier en France.
+                        Chaque création est emballée avec soin et expédiée sous 24/48h depuis mon atelier en France.
                       </p>
                     </div>
                   </div>
                   <div className="flex gap-3 items-start">
-                    <RotateCcw className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-bold text-foreground">
-                        Retours Simples
+                      <p className="font-bold text-primary">
+                        Satisfait ou Échangé
                       </p>
                       <p className="text-sm">
-                        Vous avez 30 jours pour changer d'avis. Les retours sont
-                        gratuits en France métropolitaine.
+                        Chaque pièce est unique. Si elle ne vous transporte pas, contactez-moi sous 14 jours pour un échange ou un retour.
                       </p>
                     </div>
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="details"
-                className="border-black/10 border-b-0"
-              >
-                <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
-                  Composition & Entretien
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-4">
-                  <p className="text-sm">
-                    Bijoux fantaisie haut de gamme. Pour préserver l'éclat de
-                    votre bijou, évitez le contact avec l'eau et les parfums.
-                  </p>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
         </div>
-      </div>
+      </PageContainer>
       {/* STICKY MOBILE BAR (Fixé en bas sur mobile) */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-black/5 z-40 md:hidden flex items-center gap-4 animate-in slide-in-from-bottom-full duration-500 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
         <div className="flex-1">
-          <p className="text-xs font-bold text-foreground truncate max-w-[150px]">
+          <p className="text-xs font-bold text-primary truncate max-w-[150px]">
             {product.title}
           </p>
           <div className="flex items-center gap-2">
             <p className="text-xs text-muted-foreground">
-              {price && formatPrice(price.amount, price.currencyCode)}
+              {price && formatPrice(price, product.currency)}
             </p>
             {isSale && (
               <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full">

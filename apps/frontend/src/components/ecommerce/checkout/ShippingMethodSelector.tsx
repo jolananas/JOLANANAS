@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Truck, Zap } from "lucide-react";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { BaseEcommerceProps } from "@/types/ecommerce";
 
 export type ShippingMethodType = "standard" | "express";
@@ -47,6 +48,7 @@ export function ShippingMethodSelector({
   shippingInfo,
   subtotal,
 }: ShippingMethodSelectorProps) {
+  const { formatPrice } = useCurrency();
   // Calculer les coûts de livraison
   const isFreeShipping =
     subtotal >= (shippingInfo?.freeShippingThreshold || 50);
@@ -99,7 +101,7 @@ export function ShippingMethodSelector({
                       </Badge>
                     ) : (
                       <span className="font-bold text-lg text-jolananas-pink-deep whitespace-nowrap">
-                        {standardCost.toFixed(2)} €
+                        {formatPrice(standardCost)}
                       </span>
                     )}
                   </div>
@@ -136,7 +138,7 @@ export function ShippingMethodSelector({
                       </Badge>
                     ) : (
                       <span className="font-bold text-lg text-jolananas-pink-deep whitespace-nowrap">
-                        {expressCost.toFixed(2)} €
+                        {formatPrice(expressCost)}
                       </span>
                     )}
                   </div>
@@ -151,7 +153,7 @@ export function ShippingMethodSelector({
           <div className="mt-4 p-3 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800">
             <p className="text-sm text-green-800 dark:text-green-200">
               🎉 Livraison gratuite ! Votre commande dépasse{" "}
-              {shippingInfo?.freeShippingThreshold || 50}€
+              {formatPrice(shippingInfo?.freeShippingThreshold || 50)}
             </p>
           </div>
         )}

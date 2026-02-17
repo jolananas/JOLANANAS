@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Instagram } from "lucide-react";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export const metadata = {
   title: "Contactez-nous | JOLANANAS",
@@ -9,7 +10,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container mx-auto px-4 py-60 max-w-5xl">
+    <PageContainer className="container mx-auto px-4 py-32 max-w-5xl">
       <h1 className="text-4xl font-serif font-bold text-center mb-12">
         Contactez-nous
       </h1>
@@ -109,6 +110,6 @@ export default function ContactPage() {
           </form>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

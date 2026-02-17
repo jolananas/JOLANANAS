@@ -22,6 +22,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspectratio";
 import Link from "next/link";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 // Types simplifiés pour l'API
 interface Product {
@@ -111,14 +112,14 @@ export default function MVPPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-jolananas-peach-light via-jolananas-pink-medium to-jolananas-pink-deep">
-        <div className="container mx-auto px-4 py-60">
+        <PageContainer className="container mx-auto px-4 py-32">
           <Card className="border-0 shadow-none bg-transparent">
             <CardContent className="text-center">
               <Skeleton className="h-12 w-12 rounded-full mx-auto mb-4" />
               <Skeleton className="h-6 w-64 mx-auto" />
             </CardContent>
           </Card>
-        </div>
+        </PageContainer>
       </div>
     );
   }
@@ -127,7 +128,7 @@ export default function MVPPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-100 to-red-200">
-        <div className="container mx-auto px-4 py-60">
+        <PageContainer className="container mx-auto px-4 py-32">
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-red-800 mb-4 text-center">
@@ -141,7 +142,7 @@ export default function MVPPage() {
               <Button onClick={fetchData}>Réessayer</Button>
             </CardContent>
           </Card>
-        </div>
+        </PageContainer>
       </div>
     );
   }
@@ -150,7 +151,7 @@ export default function MVPPage() {
     <div className="min-h-screen bg-gradient-to-br from-jolananas-peach-light via-jolananas-pink-medium to-jolananas-pink-deep">
       {/* Header MVP avec Card */}
       <div className="bg-jolananas-white-soft bg-opacity-90 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-8">
+        <PageContainer className="container mx-auto px-4 py-8">
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
@@ -188,7 +189,7 @@ export default function MVPPage() {
               </Tabs>
             </CardHeader>
           </Card>
-        </div>
+        </PageContainer>
       </div>
 
       {/* Contenu Principal avec Cards */}

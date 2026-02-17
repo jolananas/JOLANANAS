@@ -68,7 +68,7 @@ Le système de checkout personnalisé nécessite l'Admin API pour créer des dra
 
 ```env
 # Token Admin API (OBLIGATOIRE pour le checkout personnalisé)
-SHOPIFY_ADMIN_TOKEN=votre_token_admin_ici
+SHOPIFY_STOREFRONT_TOKEN=votre_token_admin_ici
 ```
 
 ### Comment obtenir le token Admin API
@@ -100,7 +100,7 @@ SHOPIFY_ADMIN_TOKEN=votre_token_admin_ici
 6. **Ajoutez le token dans `.env.local`**
 
    ```env
-   SHOPIFY_ADMIN_TOKEN=shpat_votre_token_admin_ici
+   SHOPIFY_STOREFRONT_TOKEN=shpat_votre_token_admin_ici
    ```
 
 📖 **Guide détaillé** : Voir [Configuration Admin API — JOLANANAS.md](../../docs/Configuration%20Admin%20API%20—%20JOLANANAS.md) pour les instructions complètes et le troubleshooting.
@@ -242,7 +242,7 @@ Le fichier doit exister à la racine de `apps/frontend/`.
 
 ```bash
 # Vérifier que toutes les variables requises sont présentes
-cat .env.local | grep -E "SHOPIFY_STORE_DOMAIN|SHOPIFY_STOREFRONT_TOKEN|SHOPIFY_API_VERSION|SHOPIFY_ADMIN_TOKEN"
+cat .env.local | grep -E "SHOPIFY_STORE_DOMAIN|SHOPIFY_STOREFRONT_TOKEN|SHOPIFY_API_VERSION|SHOPIFY_STOREFRONT_TOKEN"
 ```
 
 Assurez-vous que toutes ces variables sont définies :
@@ -250,7 +250,7 @@ Assurez-vous que toutes ces variables sont définies :
 - `SHOPIFY_STORE_DOMAIN`
 - `SHOPIFY_STOREFRONT_TOKEN`
 - `SHOPIFY_API_VERSION`
-- `SHOPIFY_ADMIN_TOKEN`
+- `SHOPIFY_STOREFRONT_TOKEN`
 
 #### 3. ⚠️ **IMPORTANT : Redémarrer le serveur de développement**
 
@@ -299,7 +299,7 @@ Si vous ne voyez pas ce message, les variables ne sont pas chargées correctemen
 ❌ Incorrect: latest
 ```
 
-**SHOPIFY_ADMIN_TOKEN** et **SHOPIFY_STOREFRONT_TOKEN** ne doivent pas contenir de placeholders :
+**SHOPIFY_STOREFRONT_TOKEN** et **SHOPIFY_STOREFRONT_TOKEN** ne doivent pas contenir de placeholders :
 
 ```env
 ✅ Correct: shpat_[TOKEN_COMPROMISED]
@@ -341,7 +341,7 @@ console.log("Variables chargées:", {
     ? "✅ Défini"
     : "❌ Manquant",
   SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
-  SHOPIFY_ADMIN_TOKEN: process.env.SHOPIFY_ADMIN_TOKEN
+  SHOPIFY_STOREFRONT_TOKEN: process.env.SHOPIFY_STOREFRONT_TOKEN
     ? "✅ Défini"
     : "❌ Manquant",
 });

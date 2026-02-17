@@ -9,6 +9,7 @@ import { CartSheet } from "@/components/cart/CartSheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useBanner } from "@/components/layout/BannerContext";
+import { useNavbar } from "./NavbarContext";
 
 const navItems = [
   { name: "Accueil", href: "/" },
@@ -19,9 +20,9 @@ const navItems = [
 
 export function Navigation() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [shouldHideNav, setShouldHideNav] = React.useState(false);
   const pathname = usePathname();
   const { isBannerVisible } = useBanner();
+  const { isNavbarVisible, setIsNavbarVisible } = useNavbar();
 
   // Fermer le menu mobile au changement de page
   React.useEffect(() => setIsOpen(false), [pathname]);
@@ -39,7 +40,7 @@ export function Navigation() {
         (entries) => {
           entries.forEach((entry) => {
             // Masquer la navbar quand le footer est visible à 75% ou plus
-            setShouldHideNav(entry.intersectionRatio >= 0.75);
+            setIsNavbarVisible(entry.intersectionRatio < 0.75);
           });
         },
         {
@@ -75,27 +76,28 @@ export function Navigation() {
   return (
     <header
       className={cn(
-        "fixed border border-border/50 backdrop-blur-xl shadow-sm overflow-hidden bg-white/60",
-        // Z-Index : Nav au-dessus du banner (z-101) uniquement quand ouvert pour éviter le chevauchement
-        isOpen ? "z-[102]" : "z-50",
-        // ANIMATION DE MASQUAGE AU FOOTER
-        "transition-all duration-500 ease-swiss", // Transition fluide
-        shouldHideNav && "-translate-y-40 opacity-0 pointer-events-none", // Masquage
+        "fixed border border-border/50 backdrop-blur-xl shadow-sm overflow-hidden bg-white/75 z-[102]",
 
-        // LOGIQUE DE POSITIONNEMENT
-        isOpen
-          ? cn(
-              // MOBILE OUVERT : Plein écran, top-0 pour couvrir le banner
-              "top-0 w-full h-full rounded-none bg-white/95",
-              // DESKTOP OUVERT : Garde la position relative au banner et les styles desktop
-              "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl md:rounded-[2rem] md:h-fit",
-              isBannerVisible ? "md:top-24" : "md:top-6",
-            )
-          : cn(
-              // FERMÉ (Mobile & Desktop) : Position pillule
-              "left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-[34px] h-[68px]",
-              isBannerVisible ? "top-24" : "top-6",
-            ),
+        // ANIMATION DE MASQUAGE AU FOOTER (ou via context)
+        "transition-all duration-500 ease-full",
+        !isNavbarVisible &&
+          !isOpen &&
+          "-translate-y-40 opacity-0 pointer-events-none", // Ne pas masquer si ouvert
+
+        // --- MOBILE : FERMÉ ---
+        !isOpen &&
+          "left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-[34px] h-[68px]",
+        !isOpen && (isBannerVisible ? "top-24" : "top-6"),
+
+        // --- MOBILE : OUVERT ---
+        isOpen && "top-0 left-0 w-full h-full rounded-none backdrop-blur-3xl",
+
+        // --- DESKTOP : RESET ---
+        // Force styles desktop même si ouvert
+        "md:left-1/2 md:-translate-x-1/2 md:w-[95%] md:max-w-7xl",
+        // Si ouvert sur desktop : hauteur auto, arrondi, position relative au banner
+        isOpen && "md:rounded-[2rem] md:h-fit",
+        isOpen && (isBannerVisible ? "md:top-24" : "md:top-6"),
       )}
     >
       {/* BARRE DU HAUT (Toujours visible) */}
@@ -155,7 +157,8 @@ export function Navigation() {
         className={cn(
           "flex flex-col md:flex-row justify-between px-4 overflow-y-auto",
           // Mobile : Hauteur calculée pour remplir l'écran moins la barre du haut (66px)
-          isOpen ? "h-[calc(100dvh-66px)]" : "h-0",
+          // Correction : Espaces requis autour de l'opérateur '-' dans calc()
+          isOpen ? "h-[calc(100dvh_-_66px)]" : "h-0",
           // Desktop : Hauteur auto
           "md:h-auto",
         )}
@@ -170,50 +173,48 @@ export function Navigation() {
           {/* LIENS */}
           <div
             className={cn(
-              "flex flex-col gap-2 px-4 w-full transition-all duration-500 ease-swiss",
+              "flex flex-col mt-20 md:mt-0 gap-6 md:gap-2 px-4 w-full justify-start items-start",
               isOpen
-                ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
-                : "max-h-0 opacity-0", // Cache le contenu proprement
-              "md:max-h-full md:opacity-100 md:pb-0 md:pt-0", // Toujours visible sur desktop
+                ? "max-h-[600px] opacity-100 pb-6 pt-2" // Déroule le contenu
+                : "max-h-0 w-0 opacity-0", // Cache le contenu proprement
             )}
           >
             {navItems.map((item, index) => (
-              <Button
+              <div
                 key={item.href}
-                asChild
-                variant="ghost"
                 style={{ transitionDelay: isOpen ? `${index * 50}ms` : "0ms" }}
                 className={cn(
-                  "text-lg font-medium h-auto py-3 px-6 rounded-xl transition-all duration-300 transform justify-start",
+                  "text-3xl md:text-2xl text-left text-primary hover:text-primary/80 hover:translate-x-4 uppercase font-medium h-auto py-2 rounded-xl transition-all duration-300 transform",
                   pathname === item.href,
                   isOpen
                     ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
+                    : "translate-y-4 opacity-0",
                 )}
               >
                 <Link href={item.href}>{item.name}</Link>
-              </Button>
+              </div>
             ))}
           </div>
 
           {/* BOUTTON CONNEXION */}
           <div
             className={cn(
-              "flex flex-row gap-2 px-4 w-full transition-all duration-500 ease-swiss",
+              "flex flex-row gap-2 px-4 py-2 w-full justify-center transition-all duration-500 ease-swiss",
               isOpen
                 ? "max-h-[400px] opacity-100 pb-6 pt-2" // Déroule le contenu
                 : "max-h-0 opacity-0", // Cache le contenu proprement
-              "md:max-h-full md:opacity-100 md:pb-0 md:pt-0", // Toujours visible sur desktop
             )}
           >
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full"
-              onClick={() => setIsOpen(false)}
-            >
-              Connexion
-            </Button>
+            <Link href="/auth/login" className="w-auto md:w-full">
+              <Button
+                variant="default"
+                size="lg"
+                className="w-full uppercase text-xl md:text-lg"
+                onClick={() => setIsOpen(false)}
+              >
+                Connexion
+              </Button>
+            </Link>
           </div>
         </div>
         {/* CARTE ACTUALITÉS */}
@@ -229,97 +230,94 @@ export function Navigation() {
           <Link
             href="/collections/nouvelle-collection"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 p-6 transition-all duration-100",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-jolananas-white-soft to-jolananas-pink-medium/20 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
             )}
             style={{ transitionDelay: isOpen ? "200ms" : "0ms" }}
           >
-            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/20 to-purple-300/20 blur-2xl transition-transform group-hover:scale-150" />
-            <div className="relative">
-              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/30 to-jolananas-pink-medium/30 blur-2xl transition-transform group-hover:scale-150" />
+            <div className="relative text-primary">
+              <span className="inline-block rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold">
                 Nouveau
               </span>
-              <h3 className="mt-3 text-xl font-bold text-foreground">
+              <h3 className="mt-3 text-xl font-bold">
                 Collection Printemps
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm">
                 Découvrez nos dernières créations artisanales
               </p>
             </div>
           </Link>
-
           {/* Carte 2 - Offre Spéciale */}
           <Link
             href="/promo"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 transition-all duration-100",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-jolananas-white-soft to-jolananas-peach-bright/20 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
             )}
             style={{ transitionDelay: isOpen ? "250ms" : "0ms" }}
           >
-            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-amber-300/20 to-orange-300/20 blur-2xl transition-transform group-hover:scale-150" />
-            <div className="relative">
-              <span className="inline-block rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-700">
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-jolananas-peach-bright/30 to-orange-200/20 blur-2xl transition-transform group-hover:scale-150" />
+            <div className="relative text-[#D44D5C]">
+              <span className="inline-block rounded-full bg-jolananas-peach-bright/20 px-3 py-1 text-xs font-semibold">
                 -20%
               </span>
-              <h3 className="mt-3 text-xl font-bold text-foreground">
+              <h3 className="mt-3 text-xl font-bold">
                 Offre Limitée
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm">
                 Profitez de réductions exclusives
               </p>
             </div>
           </Link>
-
           {/* Carte 3 - Notre Histoire */}
           <Link
             href="/about"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-6 transition-all duration-100",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-jolananas-white-soft to-jolananas-peach-light/20 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
             )}
             style={{ transitionDelay: isOpen ? "300ms" : "0ms" }}
           >
-            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-blue-300/20 to-cyan-300/20 blur-2xl transition-transform group-hover:scale-150" />
-            <div className="relative">
-              <span className="inline-block rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-700">
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-jolananas-peach-pink/30 to-jolananas-peach-light/20 blur-2xl transition-transform group-hover:scale-150" />
+            <div className="relative text-[#8B4513]">
+              <span className="inline-block rounded-full bg-secondary/20 px-3 py-1 text-xs font-semibold">
                 À propos
               </span>
-              <h3 className="mt-3 text-xl font-bold text-foreground">
+              <h3 className="mt-3 text-xl font-bold">
                 Notre Savoir-Faire
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm">
                 L'art de la création artisanale
               </p>
             </div>
           </Link>
-
           {/* Carte 4 - Contact */}
           <Link
             href="/contact"
             className={cn(
-              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 p-6 transition-all duration-100",
+              "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-jolananas-white-soft to-jolananas-gray-warm/20 p-6 transition-all duration-100",
               isOpen
                 ? "translate-y-0 opacity-100"
                 : "translate-y-4 opacity-0 md:translate-y-0 md:opacity-100",
             )}
             style={{ transitionDelay: isOpen ? "350ms" : "0ms" }}
           >
-            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-emerald-300/20 to-teal-300/20 blur-2xl transition-transform group-hover:scale-150" />
-            <div className="relative">
-              <span className="inline-block rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
+            <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-jolananas-gray-warm/30 to-purple-200/20 blur-2xl transition-transform group-hover:scale-150" />
+            <div className="relative text-[#664E88]">
+              <span className="inline-block rounded-full bg-jolananas-gray-warm/20 px-3 py-1 text-xs font-semibold">
                 Support
               </span>
-              <h3 className="mt-3 text-xl font-bold text-foreground">
+              <h3 className="mt-3 text-xl font-bold">
                 Nous Contacter
               </h3>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="mt-2 text-sm">
                 Une question ? Notre équipe vous répond
               </p>
             </div>

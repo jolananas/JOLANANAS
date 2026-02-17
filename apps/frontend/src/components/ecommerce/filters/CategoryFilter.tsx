@@ -109,55 +109,59 @@ export function CategoryFilter({
   ].reduce((sum, count) => sum + count, 0);
 
   return (
-    <Card className={className}>
-      <CardHeader>
+    <Card className={`border-0 shadow-none bg-transparent ${className}`}>
+      <CardHeader className="px-0 pb-8">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Filter className="h-5 w-5" />
-            <CardTitle>Filtres</CardTitle>
+          <div className="flex items-center gap-3">
+            <Filter className="h-4 w-4 text-primary" />
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-jolananas-black-ink">Filtres</h2>
             {activeFiltersCount > 0 && (
-              <Badge variant="secondary">{activeFiltersCount}</Badge>
+              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                {activeFiltersCount}
+              </span>
             )}
           </div>
           {activeFiltersCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={resetFilters}>
-              <X className="h-4 w-4 mr-2" />
-              Réinitialiser
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={resetFilters}
+              className="h-auto p-0 text-[9px] uppercase font-bold tracking-[0.2em] text-jolananas-black-ink/40 hover:text-primary transition-colors"
+            >
+              Reset
             </Button>
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="px-0 space-y-10">
         {/* Filtre par collection */}
         {collections.length > 0 && (
-          <div className="space-y-2">
-            <Label>Collections</Label>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
+          <div className="space-y-4">
+            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Collections</h3>
+            <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
               {collections.map((collection) => {
                 const isSelected =
                   filters.collections?.includes(collection.handle) || false;
                 return (
                   <div
                     key={collection.handle}
-                    className="flex items-center space-x-2"
+                    className="flex items-center space-x-3 group cursor-pointer"
+                    onClick={() => {
+                      const current = filters.collections || [];
+                      const updated = isSelected
+                        ? current.filter((c) => c !== collection.handle)
+                        : [...current, collection.handle];
+                      updateFilter("collections", updated);
+                    }}
                   >
-                    <Checkbox
-                      id={`collection-${collection.handle}`}
-                      checked={isSelected}
-                      onCheckedChange={(checked) => {
-                        const current = filters.collections || [];
-                        const updated = checked
-                          ? [...current, collection.handle]
-                          : current.filter((c) => c !== collection.handle);
-                        updateFilter("collections", updated);
-                      }}
-                    />
-                    <Label
-                      htmlFor={`collection-${collection.handle}`}
-                      className="text-sm font-normal cursor-pointer"
-                    >
+                    <div className={`w-4 h-4 rounded-sm border transition-all duration-300 flex items-center justify-center
+                      ${isSelected ? "bg-primary border-primary" : "border-jolananas-peach-light group-hover:border-primary/50"}`}>
+                      {isSelected && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                    </div>
+                    <span className={`text-[11px] font-medium transition-colors duration-300
+                      ${isSelected ? "text-jolananas-black-ink" : "text-jolananas-black-ink/60 group-hover:text-jolananas-black-ink"}`}>
                       {collection.title}
-                    </Label>
+                    </span>
                   </div>
                 );
               })}
@@ -165,15 +169,15 @@ export function CategoryFilter({
           </div>
         )}
 
-        <Separator />
-
         {/* Filtre par prix */}
         {priceRange && (
-          <div className="space-y-2">
-            <Label>
-              Prix : {filters.priceRange?.min || priceRange.min}€ -{" "}
-              {filters.priceRange?.max || priceRange.max}€
-            </Label>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Prix</h3>
+              <span className="text-[10px] font-bold text-jolananas-black-ink">
+                {filters.priceRange?.min || priceRange.min}€ — {filters.priceRange?.max || priceRange.max}€
+              </span>
+            </div>
             <Slider
               value={[
                 filters.priceRange?.min || priceRange.min,
@@ -184,30 +188,40 @@ export function CategoryFilter({
               }}
               min={priceRange.min}
               max={priceRange.max}
-              step={5}
+              step={1}
               className="w-full"
             />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{priceRange.min}€</span>
-              <span>{priceRange.max}€</span>
-            </div>
           </div>
         )}
 
-        <Separator />
+        {/* Filtre par disponibilité */}
+        <div className="space-y-4">
+          <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Disponibilité</h3>
+          <Select
+            value={filters.availability || "all"}
+            onValueChange={(value) => updateFilter("availability", value)}
+          >
+            <SelectTrigger className="w-full bg-white/50 border-0 shadow-none text-[10px] uppercase font-bold tracking-widest h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="glass-strong border-0 shadow-jolananas">
+              <SelectItem value="all" className="text-[10px] uppercase font-bold tracking-widest">Tous</SelectItem>
+              <SelectItem value="in-stock" className="text-[10px] uppercase font-bold tracking-widest">En stock</SelectItem>
+              <SelectItem value="out-of-stock" className="text-[10px] uppercase font-bold tracking-widest">Épuisé</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        {/* Filtre par tags */}
+        {/* Tags */}
         {availableTags.length > 0 && (
-          <div className="space-y-2">
-            <Label>Tags</Label>
+          <div className="space-y-4">
+            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Thématiques</h3>
             <div className="flex flex-wrap gap-2">
-              {availableTags.slice(0, 20).map((tag) => {
+              {availableTags.slice(0, 15).map((tag) => {
                 const isSelected = filters.tags?.includes(tag) || false;
                 return (
-                  <Badge
+                  <button
                     key={tag}
-                    variant={isSelected ? "default" : "outline"}
-                    className="cursor-pointer"
                     onClick={() => {
                       const current = filters.tags || [];
                       const updated = isSelected
@@ -215,116 +229,17 @@ export function CategoryFilter({
                         : [...current, tag];
                       updateFilter("tags", updated);
                     }}
+                    className={`px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all duration-300
+                      ${isSelected 
+                        ? "bg-primary text-white shadow-jolananas" 
+                        : "bg-white/50 text-jolananas-black-ink/40 hover:bg-white hover:text-primary"}`}
                   >
                     {tag}
-                  </Badge>
+                  </button>
                 );
               })}
             </div>
           </div>
-        )}
-
-        <Separator />
-
-        {/* Filtre par disponibilité */}
-        <div className="space-y-2">
-          <Label>Disponibilité</Label>
-          <Select
-            value={filters.availability || "all"}
-            onValueChange={(value) => updateFilter("availability", value)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Tous les produits</SelectItem>
-              <SelectItem value="in-stock">En stock uniquement</SelectItem>
-              <SelectItem value="out-of-stock">Épuisés uniquement</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Separator />
-
-        {/* Tri */}
-        <div className="space-y-2">
-          <Label>Trier par</Label>
-          <Select
-            value={filters.sortBy || "newest"}
-            onValueChange={(value) => updateFilter("sortBy", value)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="newest">Plus récents</SelectItem>
-              <SelectItem value="oldest">Plus anciens</SelectItem>
-              <SelectItem value="price-asc">Prix croissant</SelectItem>
-              <SelectItem value="price-desc">Prix décroissant</SelectItem>
-              <SelectItem value="name-asc">Nom A-Z</SelectItem>
-              <SelectItem value="name-desc">Nom Z-A</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Filtres actifs */}
-        {activeFiltersCount > 0 && (
-          <>
-            <Separator />
-            <div className="space-y-2">
-              <Label className="text-sm font-semibold">Filtres actifs</Label>
-              <div className="flex flex-wrap gap-2">
-                {filters.collections?.map((handle) => {
-                  const collection = collections.find(
-                    (c) => c.handle === handle,
-                  );
-                  return collection ? (
-                    <Badge
-                      key={handle}
-                      variant="secondary"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const updated =
-                          filters.collections?.filter((c) => c !== handle) ||
-                          [];
-                        updateFilter("collections", updated);
-                      }}
-                    >
-                      {collection.title}
-                      <X className="ml-1 h-3 w-3" />
-                    </Badge>
-                  ) : null;
-                })}
-                {filters.tags?.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const updated =
-                        filters.tags?.filter((t) => t !== tag) || [];
-                      updateFilter("tags", updated);
-                    }}
-                  >
-                    {tag}
-                    <X className="ml-1 h-3 w-3" />
-                  </Badge>
-                ))}
-                {filters.availability !== "all" && (
-                  <Badge
-                    variant="secondary"
-                    className="cursor-pointer"
-                    onClick={() => updateFilter("availability", "all")}
-                  >
-                    {filters.availability === "in-stock"
-                      ? "En stock"
-                      : "Épuisé"}
-                    <X className="ml-1 h-3 w-3" />
-                  </Badge>
-                )}
-              </div>
-            </div>
-          </>
         )}
       </CardContent>
     </Card>
