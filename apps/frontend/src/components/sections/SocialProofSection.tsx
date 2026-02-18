@@ -59,7 +59,7 @@ export function SocialProofSection({ className }: { className?: string }) {
                 <svg
                   role="img"
                   viewBox="0 0 24 24"
-                  className="w-20 h-20 text-primary fill-current"
+                  className="w-5 h-5 text-primary fill-current"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <title>{siInstagram.title}</title>

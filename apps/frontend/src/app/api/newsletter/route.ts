@@ -1,48 +1,78 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-export async function POST(req: Request) {
+// Initialiser Resend avec la clé API
+const resend = new Resend(process.env.RESEND_API_KEY || 're_123456789');
+
+const AUDIENCE_ID = process.env.NEWSLETTER_AUDIENCE_ID;
+const FROM_EMAIL = process.env.CONTACT_FROM_EMAIL || 'noreply@jolananas.com';
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'contact@jolananas.com';
+
+export async function POST(request: Request) {
   try {
-    const { email } = await req.json();
+    const { email } = await request.json();
 
-    if (!email || !email.includes("@")) {
-      return NextResponse.json({ error: "Email invalide" }, { status: 400 });
+    // 1. Validation de l'email
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json(
+        { error: 'Adresse email invalide.' },
+        { status: 400 }
+      );
     }
 
-    // ICI : Connecter à Shopify, Klaviyo, Mailchimp ou Database
-    // Exemple Simulation (Log)
-    console.log("🔥 NEW LEAD CAPTURED:", email);
-
-    // TODO: Décommenter pour Shopify (Customer Subscribe)
-    /*
-    if (process.env.SHOPIFY_STORE_DOMAIN && process.env.SHOPIFY_STOREFRONT_TOKEN) {
-        try {
-            const response = await fetch(`https://${process.env.SHOPIFY_STORE_DOMAIN}/admin/api/${process.env.SHOPIFY_API_VERSION || '2024-01'}/customers.json`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Shopify-Access-Token': process.env.SHOPIFY_STOREFRONT_TOKEN
-                },
-                body: JSON.stringify({ 
-                    customer: { 
-                        email, 
-                        accepts_marketing: true,
-                        tags: "newsletter, gatekeeper_lead"
-                    } 
-                })
-            });
-            
-            if (!response.ok) {
-                 console.error("Shopify Customer Error", await response.text());
-            }
-        } catch (shopifyError) {
-             console.error("Shopify Connection Error", shopifyError);
-        }
+    // 2. Tenter d'ajouter à une audience Resend (si ID configuré)
+    if (AUDIENCE_ID && process.env.RESEND_API_KEY) {
+      try {
+        await resend.contacts.create({
+          email: email,
+          firstName: '',
+          lastName: '',
+          unsubscribed: false,
+          audienceId: AUDIENCE_ID,
+        });
+      } catch (audienceError) {
+        console.warn('Erreur lors de l\'ajout à l\'audience Resend:', audienceError);
+        // On continue même si l'ajout à l'audience échoue (peut-être déjà inscrit)
+      }
     }
-    */
 
-    return NextResponse.json({ success: true, message: "Inscription validée" });
+    // 3. Envoyer un email de notification à l'admin (Optionnel mais utile pour le MVP)
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: TO_EMAIL,
+          subject: '[JOLANANAS Newsletter] Nouvelle inscription',
+          html: `
+            <div style="font-family: sans-serif; padding: 20px;">
+              <h2>Nouvelle inscription à la newsletter ! 🍍</h2>
+              <p>Un nouvel utilisateur souhaite rejoindre le club :</p>
+              <p style="font-size: 18px; font-weight: bold; background: #eee; padding: 10px; border-radius: 5px;">
+                ${email}
+              </p>
+              <p style="color: #666; font-size: 12px; margin-top: 20px;">
+                Envoyé depuis le site JOLANANAS.
+              </p>
+            </div>
+          `
+        });
+      } catch (emailError) {
+         console.error('Erreur lors de l\'envoi de la notification:', emailError);
+      }
+    } else {
+        console.log('Simulation inscription newsletter:', email);
+    }
+
+    return NextResponse.json(
+      { success: true, message: 'Inscription réussie ! Bienvenue dans le club.' },
+      { status: 200 }
+    );
+
   } catch (error) {
-    console.error("Newsletter API Error:", error);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    console.error('Erreur API Newsletter:', error);
+    return NextResponse.json(
+      { error: 'Une erreur est survenue lors de l\'inscription.' },
+      { status: 500 }
+    );
   }
 }

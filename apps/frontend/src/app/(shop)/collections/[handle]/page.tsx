@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!collection) return { title: "Collection introuvable" };
 
   return {
-    title: `${collection.title} | JOLANANAS`,
+    title: collection.title,
     description: collection.description,
   };
 }

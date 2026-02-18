@@ -17,7 +17,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${product.title} | JOLANANAS`,
+    title: product.title,
     description: product.description.substring(0, 160),
     openGraph: {
       images: product.featuredImage?.url

@@ -21,11 +21,30 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.DOMAIN_URL || "https://jolananas.com"),
   title: {
     default: "JOLANANAS - L'Artisanat au cœur | Bijoux Fantaisie & Pièces Uniques",
     template: "%s | JOLANANAS"
   },
   description: "Des créations artisanales uniques, faites main avec passion, pour apporter une touche personnelle et originale à votre style.",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "JOLANANAS",
+    images: [
+      {
+        url: "/images/og-default.jpg", // Assurez-vous d'avoir cette image ou une similaire
+        width: 1200,
+        height: 630,
+        alt: "JOLANANAS - Bijoux et Accessoires Artisanaux",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@jolananas", // Ajuster si le compte existe
+    creator: "@jolananas",
+  },
   alternates: {
     languages: {
       "fr-FR": "/fr",
