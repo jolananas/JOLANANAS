@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Types eCommerce
- * ==============================
- * Types TypeScript pour les composants eCommerce
- * Étendus depuis les types Shopify existants
- */
-
 import type { Product, CartItem, Media } from "@/lib/shopify/types";
 
 /**

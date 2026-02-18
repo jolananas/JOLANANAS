@@ -1,26 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook Autocomplétion Adresse
- * ==========================================
- * Hook pour rechercher des adresses via plusieurs APIs open source :
- * - API Adresse de la France (data.gouv.fr) - Adresses françaises
- * - Photon (Komoot/OpenStreetMap) - Lieux et enseignes (POI)
- * - Nominatim (OpenStreetMap) - Lieux et enseignes (POI) - Source supplémentaire
- * 
- * APIs utilisées :
- * - https://api-adresse.data.gouv.fr/search/ (adresses)
- * - https://photon.komoot.io/api/ (lieux/enseignes)
- * - https://nominatim.openstreetmap.org/search (lieux/enseignes)
- * 
- * Fonctionnalités :
- * - Recherche avec variations de noms (multi-mots, sans espaces, mots individuels)
- * - Scoring de correspondance pour prioriser les résultats pertinents
- * - Recherche parallèle sur 3 APIs pour maximiser les résultats
- * 
- * ⚠️ IMPORTANT : Tous les appels API sont effectués depuis le client uniquement
- * Ce hook doit être utilisé dans un composant avec 'use client'
- * Les vérifications typeof window garantissent qu'aucun appel n'est fait côté serveur
- */
-
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 export interface AddressSuggestion {

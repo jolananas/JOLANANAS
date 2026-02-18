@@ -1,12 +1,3 @@
-/**
- * 🍍 JOLANANAS - Path Resolver avec support Unicode
- * =================================================
- * Résolution robuste des chemins de fichiers avec caractères Unicode
- * Utilise plusieurs méthodes en cascade pour garantir la compatibilité
- * 
- * ⚠️ SERVEUR-ONLY : Ce module utilise fs et ne peut pas être utilisé côté client
- */
-
 import 'server-only';
 
 import { normalize, resolve, dirname, basename, join } from 'path';

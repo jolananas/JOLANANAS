@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Gestion Adresses Utilisateur
- * ================================================
- * CRUD complet pour les adresses de livraison/facturation
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

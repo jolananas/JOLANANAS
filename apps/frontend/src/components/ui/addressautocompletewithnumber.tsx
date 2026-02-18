@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Composant Autocomplétion Adresse avec Système de Numéro
- * =======================================================================
- * Version améliorée avec système en deux étapes :
- * 1. Sélection de la rue (avec ou sans numéro)
- * 2. Ajout/modification du numéro après sélection
- */
-
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";

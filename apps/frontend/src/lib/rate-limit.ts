@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Rate Limiting
- * ============================
- * Système de rate limiting pour protéger contre les attaques brute force
- * Utilise rate-limiter-flexible (open source) pour une meilleure gestion
- */
-
 import { RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
 
 // Instance globale de rate limiter en mémoire

@@ -1,13 +1,3 @@
-/**
- * 🍍 JOLANANAS - Client Shopify Storefront API (Public)
- * ===================================================
- * Client GraphQL pour l'API publique Shopify Storefront
- * Accès limité aux données publiques (produits, collections, cartes)
- * 
- * Utilise graphql-request (open source) avec wrapper personnalisé
- * pour gérer correctement l'encodage UTF-8
- */
-
 import { GraphQLClient } from 'graphql-request';
 import { ENV } from './env';
 import { normalizeHeaderValue } from './utils/formatters';

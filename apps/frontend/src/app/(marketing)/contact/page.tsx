@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MapPin, Instagram } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { siInstagram } from "simple-icons";
 
 export const metadata = {
   title: "Contactez-nous | JOLANANAS",
@@ -46,7 +47,15 @@ export default function ContactPage() {
 
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Instagram className="w-5 h-5" />
+                <svg
+                  role="img"
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5 text-primary fill-current"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title>{siInstagram.title}</title>
+                  <path d={siInstagram.path} />
+                </svg>
               </div>
               <div>
                 <p className="font-medium">Instagram</p>

@@ -2,12 +2,6 @@
 
 import { useEffect } from 'react';
 
-/**
- * 🍍 FacebookMetaTags - Injection des balises meta Facebook
- * ===========================================================
- * Injecte les balises meta Facebook supplémentaires dans le <head>
- * pour une meilleure intégration avec Facebook et les réseaux sociaux
- */
 export function FacebookMetaTags() {
   useEffect(() => {
     // Fonction pour créer ou mettre à jour une balise meta
@@ -46,7 +40,7 @@ export function FacebookMetaTags() {
       'og:image:height': '630',
       
       // Locale alternatif
-      'og:locale:alternate': 'en_US',
+      'og:locale:alternate': 'fr_FR',
     };
 
     // Injecter toutes les balises meta

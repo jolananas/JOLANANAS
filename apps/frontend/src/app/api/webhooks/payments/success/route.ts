@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Webhook Paiement Réussi (Consolidé)
- * ==================================================
- * Traite les notifications de paiement réussi depuis Shopify
- * Convertit le draft order en commande finale
- * Plus de stockage DB - utilise uniquement les logs serveur
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";
 import { ENV } from "@/lib/env";

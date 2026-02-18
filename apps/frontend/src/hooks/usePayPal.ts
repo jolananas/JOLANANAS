@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook usePayPal
- * ==============================
- * Hook personnalisé pour intégrer le SDK PayPal avec gestion des callbacks et états
- * Intégration directe PayPal SDK (pas de redirection)
- */
-
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { safeFetchJSON } from '@/lib/utils/safe-fetch';

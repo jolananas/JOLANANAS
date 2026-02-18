@@ -6,7 +6,7 @@ import Link from "next/link";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Instagram, ArrowRight, Lock } from "lucide-react";
+import { siInstagram } from "simple-icons";
 import { cn } from "@/lib/utils";
 import { useGatekeeperLogic } from "@/hooks/useGatekeeperLogic"; // <--- Nouveau Hook
 
@@ -195,7 +195,15 @@ export function SiteGatekeeper() {
               href="#"
               className="p-3 rounded-full border border-black/5 hover:bg-black hover:text-white transition-all hover:scale-110"
             >
-              <Instagram size={20} />
+              <svg
+                role="img"
+                viewBox="0 0 24 24"
+                className="w-20 h-20 text-primary fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>{siInstagram.title}</title>
+                <path d={siInstagram.path} />
+              </svg>
             </Link>
             <div className="h-auto w-px bg-black/10 mx-2" />
             <p className="text-xs font-medium flex items-center text-muted-foreground">

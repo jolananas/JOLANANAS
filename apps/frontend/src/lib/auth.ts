@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Configuration NextAuth.js avec Shopify Customer Accounts
- * =======================================================================
- * Configuration de l'authentification utilisant Shopify Customer Account API
- * Utilise OAuth 2.0 via account.jolananas.com pour l'authentification sécurisée
- */
-
 import { NextAuthOptions } from 'next-auth';
 import type { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';

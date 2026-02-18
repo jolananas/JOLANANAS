@@ -33,7 +33,7 @@ export function ProductsPageClient() {
       <PageContainer className="min-h-screen bg-jolananas-white-soft">
         <div className="container py-24 flex flex-col items-center justify-center space-y-4">
           <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <div className="text-jolananas-black-ink/40 font-bold uppercase tracking-[0.3em] text-[10px]">
+          <div className="text-primary/40 font-bold uppercase tracking-[0.3em] text-[10px]">
             Collection en cours...
           </div>
         </div>
@@ -47,10 +47,10 @@ export function ProductsPageClient() {
       <section className="relative py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-jolananas-gradient opacity-5 skew-y-3 -translate-y-24" />
         <div className="container relative z-10 max-w-4xl mx-auto text-center space-y-6">
-          <h1 className="text-4xl md:text-7xl font-sans font-bold tracking-tight text-jolananas-black-ink">
+          <h1 className="text-4xl md:text-7xl font-sans font-bold tracking-tight text-primary">
             Toutes nos <span className="text-gradient">créations</span>
           </h1>
-          <p className="text-lg md:text-xl text-jolananas-black-ink/60 max-w-2xl mx-auto leading-relaxed font-medium">
+          <p className="text-lg md:text-xl text-primary max-w-2xl mx-auto leading-relaxed font-medium">
             Une sélection unique de créations artisanales, conçues avec passion pour illuminer votre quotidien.
           </p>
         </div>

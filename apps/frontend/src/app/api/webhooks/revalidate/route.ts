@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Webhook Revalidation Next.js ISR
- * ===============================================
- * Traitement des webhooks Shopify pour invalider le cache ISR
- * Plus de stockage DB - utilise uniquement les logs serveur
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { verifyWebhookSignature } from "@/lib/shopify/verify-webhook";

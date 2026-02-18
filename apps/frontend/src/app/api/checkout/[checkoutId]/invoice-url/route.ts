@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Invoice URL pour Checkout
- * =============================================
- * Route API pour récupérer l'invoice URL d'un draft order
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getShopifyAdminClient } from '@/lib/ShopifyAdminClient';
 

@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Product Category Component
- * =========================================
- * Composant d'affichage de catégorie/collection de produits
- * Intègre les variantes Shadcn Studio avec design system JOLANANAS
- * Utilise uniquement les données Shopify réelles (fetch API)
- */
-
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -159,7 +151,7 @@ export function ProductCategory({
       {/* View Controls - More subtle and modern */}
       <div className="flex flex-col sm:flex-row gap-6 mb-12 items-start sm:items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/40">
             {filteredAndSortedProducts.length} Produit{filteredAndSortedProducts.length > 1 ? "s" : ""}
           </span>
           <div className="h-px w-8 bg-jolananas-peach-light" />
@@ -187,7 +179,7 @@ export function ProductCategory({
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-full h-7 w-7 ${viewMode === "grid" ? "bg-white shadow-sm text-primary" : "text-jolananas-black-ink/40"}`}
+              className={`rounded-full h-7 w-7 ${viewMode === "grid" ? "bg-white shadow-sm text-primary" : "text-primary/40"}`}
               onClick={() => setViewMode("grid")}
               aria-label="Vue grille"
             >
@@ -196,7 +188,7 @@ export function ProductCategory({
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-full h-7 w-7 ${viewMode === "list" ? "bg-white shadow-sm text-primary" : "text-jolananas-black-ink/40"}`}
+              className={`rounded-full h-7 w-7 ${viewMode === "list" ? "bg-white shadow-sm text-primary" : "text-primary/40"}`}
               onClick={() => setViewMode("list")}
               aria-label="Vue liste"
             >
@@ -209,7 +201,7 @@ export function ProductCategory({
       {/* Résultats - Modern Grid with staggered feel */}
       {filteredAndSortedProducts.length === 0 ? (
         <div className="py-24 text-center glass rounded-3xl border-dashed border-2 border-primary/20">
-          <p className="text-jolananas-black-ink/60 font-medium mb-6">
+          <p className="text-primary font-medium mb-6">
             Aucune création ne correspond à votre recherche.
           </p>
           <Button

@@ -19,6 +19,7 @@ import {
 import { AddToCartButton } from "@/components/product/AddToCartButton";
 import { useProductCurrency } from "@/hooks/useProductCurrency";
 import type { Product } from "@/lib/shopify/types";
+import { PageContainer } from "../layout/PageContainer";
 
 interface ProductInfoProps {
   product: Product;
@@ -41,7 +42,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const variantId = product.firstVariantId;
 
   return (
-    <div className="space-y-6">
+    <PageContainer className="space-y-6">
       {/* Title and Price */}
       <div className="space-y-2">
         <h1 className="font-serif text-3xl font-bold tracking-tight md:text-4xl text-balance">
@@ -119,6 +120,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
       </div>
 
       <Separator />
-    </div>
+    </PageContainer>
   );
 }

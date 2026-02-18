@@ -1,13 +1,3 @@
-/**
- * 🍍 JOLANANAS - Jest Setup
- * =====================================
- * Configuration Jest simplifiée pour les tests
- *
- * Note: Les variables d'environnement ci-dessous sont des valeurs de test
- * pour configurer l'environnement de test. Elles ne sont PAS des données mock.
- * Les tests utilisent les vraies APIs Shopify quand disponibles.
- */
-
 import "@testing-library/jest-dom";
 
 // Configuration des variables d'environnement pour les tests

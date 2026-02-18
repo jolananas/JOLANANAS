@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Callback PayPal
- * ===================================
- * Gère les callbacks PayPal pour validation des transactions
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";
 import { ENV } from "@/lib/env";

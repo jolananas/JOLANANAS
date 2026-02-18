@@ -16,7 +16,6 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-primary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Spécial Jolananas : Le bouton "Acheter" vibrant
         cta: "bg-black text-white hover:bg-primary hover:scale-[1.02] transition-all duration-300 shadow-lg",
       },
       size: {

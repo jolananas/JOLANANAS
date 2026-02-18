@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Collection par Handle
- * =========================================
- * Route API pour récupérer une collection spécifique par son handle avec ses produits
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import {
   getCollectionByHandle,

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Stories ProductCard avec VRAIES Données Shopify
- * ==============================================================
- * Stories qui chargement directement depuis votre API Shopify réelle
- */
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProductCard } from './ProductCard';
 import { useShopifyContext } from '../../../.storybook/decorators/ShopifyDataDecorator';
@@ -222,14 +216,14 @@ export const DebugProductData: Story = {
 
     return (
       <div className="space-y-6 bg-gradient-to-br from-jolananas-gray-warm to-jolananas-white-soft p-8 rounded-lg">
-        <h3 className="text-2xl font-bold text-jolananas-black-ink mb-6">
+        <h3 className="text-2xl font-bold text-primary mb-6">
           Debug - Données Produit Shopify Réelles
         </h3>
         
         {/* Affichage du produit */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-lg font-semibold text-jolananas-black-ink mb-4">
+            <h4 className="text-lg font-semibold text-primary mb-4">
               Composant ProductCard
             </h4>
             <ProductCard 
@@ -239,7 +233,7 @@ export const DebugProductData: Story = {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold text-jolananas-black-ink mb-4">
+            <h4 className="text-lg font-semibold text-primary mb-4">
               Données Shopify JSON
             </h4>
             <div className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96">
@@ -252,7 +246,7 @@ export const DebugProductData: Story = {
         
         {/* Statistiques */}
         <div className="bg-white/50 p-4 rounded-lg">
-          <h4 className="font-semibold text-jolananas-black-ink mb-2">Statistiques Boutique</h4>
+          <h4 className="font-semibold text-primary mb-2">Statistiques Boutique</h4>
           <ul className="text-sm text-gray-700 space-y-1">
             <li>• Total produits: {realShopifyData.productsCount}</li>
             <li>• Disponible: {debugProduct.availableForSale ? 'Oui' : 'Non'}</li>

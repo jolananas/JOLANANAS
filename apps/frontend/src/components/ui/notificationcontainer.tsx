@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Notification Container
- * =====================================
- * Container pour les notifications toast
- */
-
 'use client';
 
 import React from 'react';

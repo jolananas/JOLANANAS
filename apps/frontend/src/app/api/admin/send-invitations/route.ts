@@ -1,13 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Envoi Invitations en Masse
- * ==============================================
- * Endpoint pour envoyer des invitations de réinitialisation de mot de passe
- * aux clients Shopify en masse
- *
- * PROTECTION: Nécessite une authentification admin (session NextAuth avec rôle admin)
- * Plus de base de données locale - utilise uniquement Shopify Admin API
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";

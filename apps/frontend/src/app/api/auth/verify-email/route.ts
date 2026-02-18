@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Vérification Email
- * =====================================
- * Endpoint pour vérifier les emails
- * Note: Shopify gère nativement la vérification d'email lors de l'inscription.
- * Cette route est conservée pour compatibilité mais utilise Shopify Customer Accounts.
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

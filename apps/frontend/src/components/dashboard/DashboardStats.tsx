@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Widgets de Statistiques Dashboard
- * ================================================
- * Composants de statistiques pour le dashboard utilisateur
- */
-
 'use client';
 
 import React from 'react';

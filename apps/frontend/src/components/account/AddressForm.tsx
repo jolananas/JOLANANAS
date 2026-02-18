@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formulaire Adresse
- * =================================
- * Composant réutilisable pour créer/modifier une adresse
- */
-
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";

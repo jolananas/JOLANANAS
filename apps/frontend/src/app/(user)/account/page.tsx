@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Page Compte
- * ==========================
- * Page de gestion du compte utilisateur avec authentification NextAuth
- */
-
 "use client";
 
 import React, {

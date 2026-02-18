@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Utilitaires Statuts de Commande
- * ===============================================
- * Fichier centralisé pour la gestion des statuts de commande
- * Couleurs, labels et icônes alignés avec le thème JOLANANAS
- */
-
 import { 
   Clock, 
   CheckCircle, 

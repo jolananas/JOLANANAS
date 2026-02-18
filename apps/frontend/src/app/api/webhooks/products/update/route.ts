@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Webhook Produits Shopify
- * ==================================================
- * Traitement des mises à jour produits Shopify
- * Utilise uniquement Next.js ISR pour le cache - plus de base de données locale
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { ENV } from "@/lib/env";
 import { validateWebhookHMAC } from "@/lib/utils/formatters.server";

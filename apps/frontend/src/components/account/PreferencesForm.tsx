@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formulaire Préférences Utilisateur
- * ==================================================
- * Composant pour gérer les préférences utilisateur
- * Note: Les préférences sont stockées uniquement dans localStorage car Shopify ne gère pas nativement les préférences utilisateur.
- */
-
 'use client';
 
 import React, { useState, useEffect } from 'react';

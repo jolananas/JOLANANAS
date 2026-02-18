@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Product Thumbnail Card Component
- * ===============================================
- * Composant de miniature premium avec style Card inspiré de shadcnstudio.com
- * Effets hover sophistiqués, ombres et indicateurs visuels pour l'image active
- */
-
 "use client";
 
 import React from "react";

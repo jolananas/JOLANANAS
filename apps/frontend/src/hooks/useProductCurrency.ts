@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook useProductCurrency
- * =======================================
- * Hook spécialisé pour extraire automatiquement le currencyCode depuis les produits Shopify
- * et utiliser le système de devises centralisé
- */
-
 'use client';
 
 import { useCurrency } from './useCurrency';

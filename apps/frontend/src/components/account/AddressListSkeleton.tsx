@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Skeleton Loader pour Liste Adresses
- * ===================================================
- * Composant skeleton pour l'affichage pendant le chargement des adresses
- */
-
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 

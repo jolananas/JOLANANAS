@@ -1,13 +1,7 @@
-/**
- * 🍍 JOLANANAS - Jolananas Product Card
- * ======================================
- * Carte produit spécifique JOLANANAS
- */
-
 'use client';
 
 import React from 'react';
-import { ProductCard } from './product/ProductCard';
+import { ProductCard } from './ProductCard';
 
 interface JolananasProductCardProps {
   product: {

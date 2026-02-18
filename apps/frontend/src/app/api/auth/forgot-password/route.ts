@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Mot de Passe Oublié
- * ======================================
- * Endpoint pour demander une réinitialisation de mot de passe
- * Utilise Shopify Admin API pour envoyer une invitation de réinitialisation
- * Plus de base de données locale - utilise uniquement Shopify APIs
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { checkRateLimit } from "@/lib/rate-limit";

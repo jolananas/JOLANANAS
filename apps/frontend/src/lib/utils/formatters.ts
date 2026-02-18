@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formatters utils (Client-Safe)
- * ==============================================
- * Fonctions de formatage réutilisables qui peuvent être utilisées côté client
- * 
- * ⚠️ NOTE : Les fonctions qui utilisent fs ou crypto sont dans formatters.server.ts
- */
-
 import { slugify } from './slugify';
 
 /**

@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Extracteur de Devise (Client-Safe)
- * ===================================================
- * Fonctions pour extraire le currencyCode depuis les réponses Shopify
- * Version client-safe qui ne dépend pas de modules Node.js
- */
-
 import type {
   ShopifyProduct,
   ShopifyVariant,

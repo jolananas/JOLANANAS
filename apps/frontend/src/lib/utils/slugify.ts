@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Slugify utility
- * ===============================
- * Fonction de slugification réutilisable
- * Peut être utilisée côté client et serveur
- */
-
 import slugifyLib from 'slugify';
 
 /**

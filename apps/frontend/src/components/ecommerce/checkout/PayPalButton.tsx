@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - PayPal Button Component
- * ======================================
- * Composant bouton PayPal avec design shadcn/ui et intégration SDK PayPal
- * Intégration directe PayPal SDK (pas de redirection)
- */
-
 "use client";
 
 import React, { useEffect, useRef } from "react";

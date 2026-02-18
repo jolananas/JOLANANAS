@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Liste des Adresses
- * ==================================
- * Composant pour afficher et gérer la liste des adresses de l'utilisateur
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";

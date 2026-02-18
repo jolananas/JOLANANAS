@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Dashboard Utilisateur
- * =========================================
- * Endpoint pour récupérer les statistiques et données du dashboard utilisateur
- * Utilise uniquement Shopify APIs - plus de base de données locale
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

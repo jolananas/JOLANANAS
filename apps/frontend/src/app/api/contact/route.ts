@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Route Contact
- * =================================
- * Route API pour traiter les formulaires de contact
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 

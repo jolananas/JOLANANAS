@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Export Données Utilisateur (RGPD)
- * ====================================================
- * Endpoint pour exporter toutes les données d'un utilisateur au format JSON
- * Utilise uniquement Shopify APIs - plus de base de données locale
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

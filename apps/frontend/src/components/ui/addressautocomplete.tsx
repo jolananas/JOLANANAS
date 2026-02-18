@@ -1,15 +1,3 @@
-/**
- * 🍍 JOLANANAS - Composant Autocomplétion Adresse
- * ==============================================
- * Composant d'autocomplétion pour les adresses françaises
- * Utilise plusieurs APIs open source :
- * - API Adresse de la France (data.gouv.fr)
- * - Photon (Komoot/OpenStreetMap) pour les lieux et enseignes
- *
- * ⚠️ IMPORTANT : Tous les appels API sont effectués depuis le client uniquement
- * Ce composant utilise 'use client' et tous les fetch() sont côté navigateur
- */
-
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";

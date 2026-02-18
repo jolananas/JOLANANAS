@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Helpers d'Extraction de CurrencyCode
- * ====================================================
- * Fonctions utilitaires pour extraire le currencyCode depuis différents types de réponses Shopify
- */
-
 import { extractCurrencyFromShopifyResponse } from './currencyExtractor';
 import type { ShopifyProduct, ShopifyVariant, ShopifyCart, ShopifyCartLine, PriceRange, Price } from '../shopify/types';
 

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Composant Upload Avatar
- * =====================================
- * Composant pour uploader et gérer l'avatar de l'utilisateur
- */
-
 "use client";
 
 import React, { useState, useRef } from "react";

@@ -167,7 +167,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href="/collections"
-                    className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                    className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                   >
                     {item}
                   </Link>
@@ -185,7 +185,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Notre Histoire
                 </Link>
@@ -193,7 +193,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/presse"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Presse
                 </Link>
@@ -210,7 +210,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Service Client
                 </Link>
@@ -218,7 +218,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/livraison"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Livraison & Retours
                 </Link>
@@ -226,7 +226,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   FAQ
                 </Link>
@@ -243,7 +243,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/cgv"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   CGV
                 </Link>
@@ -251,7 +251,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Confidentialité
                 </Link>
@@ -259,7 +259,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/mentions-legales"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200"
+                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Mentions Légales
                 </Link>
@@ -271,34 +271,34 @@ export function Footer() {
         {/* --- FOOTER BOTTOM --- */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
-          <p className="text-xs font-medium  text-black uppercase tracking-wider opacity-40">
-            © {currentYear} SARL JOLANANAS.
+          <p className="text-xs text-center md:text-left font-medium text-black uppercase tracking-wider opacity-40">
+            © {currentYear} SARL JOLANANAS. Fait avec 🩷 en 🇫🇷
             <br />
-            Fait avec 🩷 en 🇫🇷
+            <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA</span>
           </p>
 
           {/* LOGOS PAIEMENT (Simple Icons) */}
           <div className="flex items-center gap-5">
-            {[
-              siVisa,
-              siMastercard,
-              siPaypal,
-              siStripe,
-              siApplepay,
-              siGooglepay,
-            ].map((icon) => (
-              <div
-                key={icon.slug}
-                className="group relative flex items-center justify-center opacity-40"
-                title={`Paiement sécurisé via ${icon.title}`}
-              >
-                {/* Icône en mode "CurrentColor" pour le gris, mais on applique la vraie couleur hex au survol via style */}
-                <BrandIcon
-                  icon={icon}
-                  className="h-6 w-auto transition-colors duration-300 text-black"
-                />
-              </div>
-            ))}
+              {[
+                siVisa,
+                siMastercard,
+                siPaypal,
+                siStripe,
+                siApplepay,
+                siGooglepay,
+              ].map((icon) => (
+                <div
+                  key={icon.slug}
+                  className="group relative flex items-center justify-center opacity-40"
+                  title={`Paiement sécurisé via ${icon.title}`}
+                >
+                  {/* Icône en mode "CurrentColor" pour le gris, mais on applique la vraie couleur hex au survol via style */}
+                  <BrandIcon
+                    icon={icon}
+                    className="h-6 w-auto transition-colors duration-300 text-black"
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>

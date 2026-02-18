@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - PayPal Configuration API
- * =======================================
- * Route API pour exposer le client ID PayPal de manière sécurisée
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';

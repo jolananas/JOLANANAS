@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Skeleton Loader pour Liste Commandes
- * ===================================================
- * Composant skeleton pour l'affichage pendant le chargement des commandes
- */
-
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 

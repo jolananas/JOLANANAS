@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Composant Sessions Actives
- * =========================================
- * Composant pour afficher et gérer les sessions actives de l'utilisateur
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";

@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook useShopPay
- * ===============================
- * Hook personnalisé pour gérer Shop Pay avec intégration complète
- * Utilise l'API Shopify et le Shop Pay Component pour paiement direct
- */
-
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';

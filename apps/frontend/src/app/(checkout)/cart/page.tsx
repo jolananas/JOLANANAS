@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Page Panier
- * ===========================
- * Page dédiée pour afficher le panier en mode page normale
- */
-
 import { Metadata } from 'next';
 import { CartPageClient } from './CartPageClient';
 

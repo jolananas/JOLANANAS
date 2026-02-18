@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Activité Récente Dashboard
- * =========================================
- * Affichage de l'activité récente et des commandes récentes
- */
-
 'use client';
 
 import React from 'react';

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Création Ordre PayPal
- * ==========================================
- * Crée un ordre PayPal côté serveur
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";
 import { ENV } from "@/lib/env";

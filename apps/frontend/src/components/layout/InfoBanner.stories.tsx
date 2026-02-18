@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Stories InfoBanner
- * =================================
- * Stories Storybook pour visualiser tous les états du InfoBanner
- */
-
 import type { Meta, StoryObj } from "@storybook/react/dist/index";
 import { InfoBanner } from "./InfoBanner";
 import { MockCartProvider } from "../../../.storybook/decorators/CartProviderDecorator";

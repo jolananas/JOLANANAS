@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Category Filter Component
- * =========================================
- * Système de filtres avancés pour les produits
- * Intègre les variantes Shadcn Studio avec design system JOLANANAS
- * Utilise uniquement les collections réelles de Shopify (fetch API)
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -114,7 +106,7 @@ export function CategoryFilter({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Filter className="h-4 w-4 text-primary" />
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-jolananas-black-ink">Filtres</h2>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Filtres</h2>
             {activeFiltersCount > 0 && (
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
                 {activeFiltersCount}
@@ -126,7 +118,7 @@ export function CategoryFilter({
               variant="ghost" 
               size="sm" 
               onClick={resetFilters}
-              className="h-auto p-0 text-[9px] uppercase font-bold tracking-[0.2em] text-jolananas-black-ink/40 hover:text-primary transition-colors"
+              className="h-auto p-0 text-[9px] uppercase font-bold tracking-[0.2em] text-primary/40 hover:text-primary transition-colors"
             >
               Reset
             </Button>
@@ -137,7 +129,7 @@ export function CategoryFilter({
         {/* Filtre par collection */}
         {collections.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Collections</h3>
+            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Collections</h3>
             <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
               {collections.map((collection) => {
                 const isSelected =
@@ -159,7 +151,7 @@ export function CategoryFilter({
                       {isSelected && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
                     </div>
                     <span className={`text-[11px] font-medium transition-colors duration-300
-                      ${isSelected ? "text-jolananas-black-ink" : "text-jolananas-black-ink/60 group-hover:text-jolananas-black-ink"}`}>
+                      ${isSelected ? "text-primary" : "text-primary group-hover:text-primary"}`}>
                       {collection.title}
                     </span>
                   </div>
@@ -173,8 +165,8 @@ export function CategoryFilter({
         {priceRange && (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Prix</h3>
-              <span className="text-[10px] font-bold text-jolananas-black-ink">
+              <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Prix</h3>
+              <span className="text-[10px] font-bold text-primary">
                 {filters.priceRange?.min || priceRange.min}€ — {filters.priceRange?.max || priceRange.max}€
               </span>
             </div>
@@ -196,7 +188,7 @@ export function CategoryFilter({
 
         {/* Filtre par disponibilité */}
         <div className="space-y-4">
-          <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Disponibilité</h3>
+          <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Disponibilité</h3>
           <Select
             value={filters.availability || "all"}
             onValueChange={(value) => updateFilter("availability", value)}
@@ -215,7 +207,7 @@ export function CategoryFilter({
         {/* Tags */}
         {availableTags.length > 0 && (
           <div className="space-y-4">
-            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-jolananas-black-ink/40">Thématiques</h3>
+            <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Thématiques</h3>
             <div className="flex flex-wrap gap-2">
               {availableTags.slice(0, 15).map((tag) => {
                 const isSelected = filters.tags?.includes(tag) || false;
@@ -232,7 +224,7 @@ export function CategoryFilter({
                     className={`px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest transition-all duration-300
                       ${isSelected 
                         ? "bg-primary text-white shadow-jolananas" 
-                        : "bg-white/50 text-jolananas-black-ink/40 hover:bg-white hover:text-primary"}`}
+                        : "bg-white/50 text-primary/40 hover:bg-white hover:text-primary"}`}
                   >
                     {tag}
                   </button>

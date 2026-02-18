@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Configuration SWR
- * ==================================
- * Configuration SWR pour le cache intelligent
- * Utilise SWR (open source) avec configuration avancée
- */
-
 import { SWRConfiguration } from 'swr';
 import { apiGet } from '../api-client';
 

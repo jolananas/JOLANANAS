@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - MVP STRICT PAGE
- * ==============================
- * Version minimale pour tester rapidement le marché
- */
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -29,27 +23,22 @@ interface Product {
   id: string;
   title: string;
   handle: string;
-  description?: string;
-  images?: {
-    edges: Array<{
-      node: {
-        url: string;
-        altText?: string;
-      };
-    }>;
-  };
-  variants?: {
-    edges: Array<{
-      node: {
-        id: string;
-        price: {
-          amount: string;
-          currencyCode: string;
-        };
-        availableForSale: boolean;
-      };
-    }>;
-  };
+  description: string;
+  currency: string;
+  featuredImage?: string;
+  images: Array<{
+    url: string;
+    altText?: string;
+  }>;
+  variants: Array<{
+    id: string;
+    title: string;
+    price: number;
+    availableForSale: boolean;
+    selectedOptions: Array<{ name: string; value: string }>;
+  }>;
+  availableForSale: boolean;
+  price: number;
 }
 
 interface Collections {
@@ -95,7 +84,27 @@ export default function MVPPage() {
       const collectionsData = await collectionsResponse.json();
 
       setProducts(
-        productsData.products?.edges?.map((edge: any) => edge.node) || [],
+        productsData.products?.edges?.map((edge: any) => {
+          const node = edge.node;
+          return {
+            id: node.id,
+            title: node.title,
+            handle: node.handle,
+            description: node.description || "",
+            currency: node.variants?.edges?.[0]?.node?.price?.currencyCode || "EUR",
+            featuredImage: node.images?.edges?.[0]?.node?.url,
+            images: node.images?.edges?.map((imgEdge: any) => imgEdge.node) || [],
+            variants: node.variants?.edges?.map((varEdge: any) => ({
+              id: varEdge.node.id,
+              title: varEdge.node.title,
+              price: parseFloat(varEdge.node.price?.amount || "0"),
+              availableForSale: varEdge.node.availableForSale,
+              selectedOptions: varEdge.node.selectedOptions || []
+            })) || [],
+            availableForSale: node.availableForSale,
+            price: parseFloat(node.variants?.edges?.[0]?.node?.price?.amount || "0")
+          };
+        }) || [],
       );
       setCollections(
         collectionsData.collections?.edges?.map((edge: any) => edge.node) || [],
@@ -155,7 +164,7 @@ export default function MVPPage() {
           <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
-                <CardTitle className="text-4xl font-bold text-jolananas-black-ink">
+                <CardTitle className="text-4xl font-bold text-primary">
                   JOLANANAS MVP
                 </CardTitle>
                 <Badge variant="secondary">Version simplifiée</Badge>
@@ -266,7 +275,7 @@ export default function MVPPage() {
       </div>
 
       {/* Footer MVP avec Card */}
-      <footer className="bg-jolananas-black-ink text-jolananas-white-soft">
+      <footer className="bg-primary text-jolananas-white-soft">
         <div className="container mx-auto px-4 py-8">
           <Card className="border-0 shadow-none bg-transparent text-center">
             <CardContent>
@@ -311,7 +320,7 @@ function CollectionCard({ collection }: { collection: Collections }) {
       </AspectRatio>
 
       <CardHeader>
-        <CardTitle className="font-bold text-lg text-jolananas-black-ink mb-2">
+        <CardTitle className="font-bold text-lg text-primary mb-2">
           {collection.title}
         </CardTitle>
         <CardDescription className="text-sm mb-4">

@@ -51,7 +51,7 @@ export default async function CollectionsIndexPage() {
                 {collection.title}
               </h2>
               <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0 delay-75">
-                <Button variant="secondary" size="sm">
+                <Button className="bg-primary" size="sm">
                   Explorer
                 </Button>
               </div>

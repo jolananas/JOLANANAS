@@ -17,7 +17,10 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
+  X,
+  Maximize2,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn, formatPrice } from "@/lib/utils";
 
 import type { Product, Variant as ProductVariant } from "@/lib/shopify/types";
@@ -37,6 +40,9 @@ export function ProductPageClient({ product }: { product: Product }) {
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
     null,
   );
+
+  // Lightbox State
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Initialisation des options par défaut (première variante dispo)
   useEffect(() => {
@@ -107,7 +113,7 @@ export function ProductPageClient({ product }: { product: Product }) {
     compareAtPrice > (price || 0);
 
   return (
-    <div className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
+    <PageContainer className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
       <PageContainer className="container mx-auto px-4 md:px-8">
         {/* LAYOUT GRID : 2 COLONNES (Style Suisse: Grille stricte) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
@@ -115,7 +121,10 @@ export function ProductPageClient({ product }: { product: Product }) {
           <div className="lg:col-span-7 space-y-6">
             <div className="sticky top-24 space-y-6">
               {/* Image Principale (Cadre arrondi "Soft") */}
-              <div className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden rounded-[2rem] bg-white border border-black/5 shadow-sm group">
+              <div 
+                className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden rounded-[2rem] bg-white border border-black/5 shadow-sm group cursor-zoom-in"
+                onClick={() => activeImage && setIsLightboxOpen(true)}
+              >
                 {activeImage ? (
                   (() => {
                     // Check if activeImage corresponds to a video preview
@@ -148,14 +157,23 @@ export function ProductPageClient({ product }: { product: Product }) {
                     }
 
                     return (
-                      <Image
-                        src={activeImage}
-                        alt={product.title}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 60vw"
-                        className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                        priority
-                      />
+                      <>
+                        <Image
+                          src={activeImage}
+                          alt={product.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 60vw"
+                          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                          priority
+                        />
+                        {/* Overlay Hint */}
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                          <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                             <Maximize2 className="w-4 h-4 text-primary" />
+                             <span className="text-xs font-bold uppercase tracking-widest text-primary">Agrandir</span>
+                          </div>
+                        </div>
+                      </>
                     );
                   })()
                 ) : (
@@ -166,7 +184,7 @@ export function ProductPageClient({ product }: { product: Product }) {
 
                 {/* Badge Promo */}
                 {isSale && (
-                  <div className="absolute top-6 left-6 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest">
+                  <div className="absolute top-6 left-6 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest z-10">
                     Soldes
                   </div>
                 )}
@@ -433,6 +451,54 @@ export function ProductPageClient({ product }: { product: Product }) {
           {isAdding ? "..." : "Ajouter"}
         </Button>
       </div>
-    </div>
+      <AnimatePresence>
+        {isLightboxOpen && activeImage && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center isolate">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-black/90 backdrop-blur-md"
+              onClick={() => setIsLightboxOpen(false)}
+            />
+            
+            {/* Close Button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ delay: 0.1 }}
+              className="absolute top-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <X className="w-6 h-6" />
+            </motion.button>
+
+            {/* Image Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full h-full max-w-7xl max-h-[90vh] p-4 flex items-center justify-center pointer-events-none"
+            >
+              <div className="relative w-full h-full pointer-events-auto">
+                 {/* Video handling inside lightbox could be added here if needed, keeping it simple for now as per request "image" */}
+                 <Image
+                    src={activeImage}
+                    alt={product.title}
+                    fill
+                    className="object-contain"
+                    priority
+                    quality={100}
+                 />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </PageContainer>
   );
 }

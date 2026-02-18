@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Types NextAuth étendus
- * ======================================
- * Déclaration des types NextAuth personnalisés
- */
-
 import NextAuth from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 

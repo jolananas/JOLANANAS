@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Graphiques Dashboard
- * ====================================
- * Graphiques pour visualiser l'activité utilisateur avec Recharts
- */
-
 'use client';
 
 import React from 'react';

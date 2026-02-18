@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Panier Shopify
- * =====================================
- * CRUD complet pour les paniers utilisant uniquement Shopify Cart API
- * Plus de base de données locale - tout est géré par Shopify
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

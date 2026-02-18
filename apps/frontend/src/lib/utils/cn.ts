@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Utilitaire cn (className helper)
- * =============================================
- * Helper pour la concaténation conditionnelle des classes CSS
- */
-
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

@@ -9,6 +9,7 @@ import { InfoBanner } from "@/components/layout/InfoBanner";
 import { Navigation } from "@/components/layout/Navigation";
 import { Preloader } from "@/components/preloader/Preloader";
 import { Toaster } from "@/components/ui/sonner";
+import { BetaVersionPopup } from "./BetaVersionPopup";
 
 const Footer = dynamic(() =>
   import("@/components/layout/Footer").then((mod) => mod.Footer),
@@ -43,8 +44,7 @@ function LayoutContent({ children }: LayoutWrapperProps) {
 
       <main
         className={cn(
-          "flex-1 bg-transparent transition-[padding-top] duration-500 ease-smooth",
-          isBannerVisible ? "pt-[112px] md:pt-[116px]" : "pt-[84px] md:pt-[92px]"
+          "flex-1 bg-transparent transition-[padding-top] duration-500 ease-smooth"
         )}
       >
         {children}
@@ -57,6 +57,9 @@ function LayoutContent({ children }: LayoutWrapperProps) {
 
       {/* Toast Notifications */}
       <Toaster position="top-center" richColors />
+
+      {/* Beta Version Notification */}
+      <BetaVersionPopup />
     </div>
   );
 }

@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Badge de Statut de Commande
- * ===========================================
- * Composant réutilisable pour afficher les statuts de commande
- * avec icônes et animations alignés avec le thème JOLANANAS
- */
-
 "use client";
 
 import React from "react";

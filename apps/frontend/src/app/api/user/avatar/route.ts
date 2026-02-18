@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Upload Avatar Utilisateur
- * ============================================
- * Endpoint pour uploader et gérer l'avatar de l'utilisateur
- * Stockage local uniquement - peut être migré vers Shopify Metafields si nécessaire
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Produit par Handle
- * =====================================
- * Route API pour récupérer un produit spécifique par son handle
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import {
   getProductByHandle,

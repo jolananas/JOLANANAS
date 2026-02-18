@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Tests pour CurrencyService
- * =========================================
- * Tests unitaires et d'intégration pour le service de gestion des devises
- */
-
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { currencyService } from '../currencyService';
 import type { CurrencyDetectionResult } from '../types';

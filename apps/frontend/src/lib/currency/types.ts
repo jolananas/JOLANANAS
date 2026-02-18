@@ -1,10 +1,4 @@
 /**
- * 🍍 JOLANANAS - Types pour le Service de Gestion des Devises
- * ============================================================
- * Types TypeScript pour le système de gestion prédictive des devises Shopify
- */
-
-/**
  * Informations complètes sur une devise
  */
 export interface CurrencyInfo {

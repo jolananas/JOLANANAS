@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - ProductCard Stories
- * ==================================
- * Stories pour le composant ProductCard utilisant les vraies données Shopify
- * AUCUNE donnée mockée autorisée - seules les vraies données de production
- */
-
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProductCard } from './ProductCard';
 import { withShopifyData, MOCK_PRODUCT } from '../../../.storybook/decorators/ShopifyDataDecorator';

@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Shop Pay Button Component
- * =========================================
- * Composant bouton Shop Pay avec design shadcn/ui et intégration Shop Pay Payment Request API
- * Interface de paiement entièrement personnalisée (pas de redirection)
- */
-
 "use client";
 
 import React from "react";

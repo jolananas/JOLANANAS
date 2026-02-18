@@ -1,15 +1,3 @@
-/**
- * 🍍 JOLANANAS - Safe Fetch Wrapper
- * ===================================
- * Wrapper pour fetch() qui normalise automatiquement les données pour éviter
- * l'erreur "Cannot convert argument to a ByteString"
- * 
- * Normalise automatiquement :
- * - Le body JSON avant JSON.stringify()
- * - Les headers HTTP
- * - Les URLs si nécessaire
- */
-
 import { normalizeDataForAPI, normalizeHeaderValue } from './formatters';
 
 /**

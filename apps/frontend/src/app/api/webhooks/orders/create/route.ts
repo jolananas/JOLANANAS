@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Webhook Commandes Shopify
- * ====================================================
- * Traitement des nouvelles commandes Shopify sans stockage DB
- * Les commandes sont déjà stockées dans Shopify - pas besoin de duplication locale
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { ENV } from "@/lib/env";
 import { validateWebhookHMAC } from "@/lib/utils/formatters.server";

@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Préférences Utilisateur
- * ===========================================
- * Gestion des préférences utilisateur via Shopify Customer Metafields
- * Namespace: preferences
- * Keys: language, timezone, emailNotifications, orderNotifications, marketingEmails
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

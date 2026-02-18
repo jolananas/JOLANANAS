@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Réinitialisation Mot de Passe
- * ================================================
- * NOTE: Cette route est désactivée car la réinitialisation de mot de passe
- * est maintenant gérée par Shopify Customer Accounts via les invitations.
- * Les clients reçoivent un email d'invitation Shopify avec un lien de réinitialisation.
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';

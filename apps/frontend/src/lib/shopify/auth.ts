@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Authentification Shopify Customer Accounts
- * ==========================================================
- * Fonctions d'authentification utilisant Shopify Customer Account API
- * Remplace l'authentification locale avec NextAuth Credentials
- */
-
 import { 
   createCustomerAccessToken, 
   createCustomerAccessTokenFrontend,

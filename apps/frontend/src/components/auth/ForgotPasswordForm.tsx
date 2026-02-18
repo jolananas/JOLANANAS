@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formulaire Mot de Passe Oublié
- * ============================================
- * Composant pour demander une réinitialisation de mot de passe
- */
-
 "use client";
 
 import React, { useState } from "react";

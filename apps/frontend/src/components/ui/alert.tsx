@@ -12,7 +12,7 @@ const alertVariants = cva(
         destructive:
           "border-destructive text-destructive bg-card [&>svg]:text-destructive [&_*[data-slot=alert-description]]:!text-destructive",
         promotion:
-          "bg-gradient-to-r from-jolananas-pink-medium/10 via-jolananas-peach-pink/10 to-jolananas-pink-deep/10 border-jolananas-pink-medium/20 text-jolananas-black-ink dark:from-jolananas-pink-medium/20 dark:via-jolananas-peach-pink/20 dark:to-jolananas-pink-deep/20 dark:border-jolananas-pink-medium/30 dark:text-jolananas-white-soft [&>svg]:text-jolananas-pink-medium dark:[&>svg]:text-jolananas-pink-soft",
+          "bg-gradient-to-r from-jolananas-pink-medium/10 via-jolananas-peach-pink/10 to-jolananas-pink-deep/10 border-jolananas-pink-medium/20 text-primary dark:from-jolananas-pink-medium/20 dark:via-jolananas-peach-pink/20 dark:to-jolananas-pink-deep/20 dark:border-jolananas-pink-medium/30 dark:text-jolananas-white-soft [&>svg]:text-jolananas-pink-medium dark:[&>svg]:text-jolananas-pink-soft",
         info: "bg-blue-50/90 dark:bg-blue-950/30 border-blue-200/60 dark:border-blue-800/60 text-blue-900 dark:text-blue-100 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400",
         warning:
           "bg-amber-50/90 dark:bg-amber-950/30 border-amber-200/60 dark:border-amber-800/60 text-amber-900 dark:text-amber-100 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400",

@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Gestion du Stockage du Cart ID
- * =============================================
- * Utilitaires pour stocker et récupérer le cartId Shopify depuis les cookies/session
- * Remplace le stockage en base de données
- */
-
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formulaire Vérification Email
- * ============================================
- * Composant pour envoyer et vérifier l'email
- */
-
 "use client";
 
 import React, { useState } from "react";

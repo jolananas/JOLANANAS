@@ -1,14 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Événements Webhooks
- * =======================================
- * Endpoint pour consulter les événements webhooks récents
- * Plus de stockage DB - utilise uniquement les logs serveur
- * 
- * Note: Cet endpoint retourne un message indiquant que les webhooks
- * ne sont plus stockés en DB. Pour consulter les logs, utilisez
- * les logs serveur (Vercel Logs, CloudWatch, etc.)
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 
 /**

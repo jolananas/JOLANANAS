@@ -1,11 +1,4 @@
 /**
- * 🍍 JOLANANAS - Gestionnaire d'erreurs Shopify
- * ==============================================
- * Transforme les erreurs techniques Shopify en messages utilisateur-friendly
- * et log les erreurs originales pour le debugging
- */
-
-/**
  * Patterns d'erreurs Shopify à détecter et transformer
  */
 const ERROR_PATTERNS = {

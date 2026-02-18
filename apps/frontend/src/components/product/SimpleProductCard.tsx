@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Simple Product Card MVP
- * =====================================
- * Version SIMPLIFIÉE avec cart PERSISTÉ UNIFIÉ
- */
-
 "use client";
 
 import React from "react";
@@ -193,7 +187,7 @@ export function SimpleProductCardList({ product }: SimpleProductCardProps) {
 
       {/* Infos */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-jolananas-black-ink line-clamp-1 mb-1">
+        <h3 className="font-bold text-primary line-clamp-1 mb-1">
           {product.title}
         </h3>
         <p className="text-sm text-gray-600 mb-2">{price}</p>

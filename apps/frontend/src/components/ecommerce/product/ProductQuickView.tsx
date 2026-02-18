@@ -188,12 +188,12 @@ export function ProductQuickView({
                     Série Limitée
                   </span>
                   
-                  <h2 className="text-4xl md:text-5xl font-brand text-jolananas-black-ink leading-[1.1]">
+                  <h2 className="text-4xl md:text-5xl font-brand text-primary leading-[1.1]">
                     {product.title}
                   </h2>
 
                   <div className="flex items-center gap-4 pt-2">
-                    <span className="text-3xl font-bold tracking-tight text-jolananas-black-ink">
+                    <span className="text-3xl font-bold tracking-tight text-primary">
                       {formatPrice(product.price, currency)}
                     </span>
                     {product.compareAtPrice && (

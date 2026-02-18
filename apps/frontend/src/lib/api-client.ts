@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Client API avec Retry et Timeout
- * ===============================================
- * Utilitaire pour les requêtes API avec gestion d'erreurs, retry automatique et timeout
- * Utilise ky (open source) pour une meilleure gestion des erreurs et retry automatique
- */
-
 import ky, { type KyInstance, type Options as KyOptions, HTTPError } from 'ky';
 
 interface FetchOptions extends RequestInit {

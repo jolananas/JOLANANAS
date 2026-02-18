@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook React pour la Gestion des Devises
- * ======================================================
- * Hook React pour accéder à la devise actuelle avec cache et détection automatique
- * Compatible SSR/SSG Next.js
- */
-
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';

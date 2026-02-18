@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formatters utils (Server-Only)
- * =============================================
- * Fonctions de formatage qui nécessitent fs ou crypto (serveur uniquement)
- * 
- * ⚠️ SERVEUR-ONLY : Ce module utilise fs/promises et crypto et ne peut pas être utilisé côté client
- */
-
 import 'server-only';
 import crypto from 'crypto';
 import { sanitizeStringForByteString } from './formatters';

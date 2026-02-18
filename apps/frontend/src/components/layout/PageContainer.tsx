@@ -25,7 +25,9 @@ export function PageContainer({ children, className, id }: PageContainerProps) {
       id={id}
       className={cn(
         "w-full",
-        className
+        className,
+        isBannerVisible ? "mt-24" : "mt-16",
+        isNavbarVisible ? "mt-24" : "mt-16"
       )}
     >
       {children}

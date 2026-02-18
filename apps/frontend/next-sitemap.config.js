@@ -2,7 +2,7 @@
 export default {
   siteUrl: process.env.DOMAIN_URL,
   generateRobotsTxt: true,
-  exclude: ["/server-sitemap.xml", "/account/*", "/checkout/*", "/cart"],
+  exclude: ["/sitemap.xml", "/account/*", "/checkout/*", "/cart"],
   robotsTxtOptions: {
     policies: [
       {
@@ -12,7 +12,7 @@ export default {
       },
     ],
     additionalSitemaps: [
-      // `${process.env.DOMAIN_URL}/server-sitemap.xml`, // Si besoin de sitemap dynamique serveur
+      // `${process.env.DOMAIN_URL}/sitemap.xml`, // Si besoin de sitemap dynamique serveur
     ],
   },
 };

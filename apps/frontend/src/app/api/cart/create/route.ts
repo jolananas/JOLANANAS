@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Création Panier avec Informations Client
- * =====================================
- * API route pour créer un nouveau panier Shopify et créer/mettre à jour le client
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyClient, CartLineInput } from "@/lib/ShopifyStorefrontClient";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";

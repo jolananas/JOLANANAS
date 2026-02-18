@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Détails d'une Commande
- * ======================================
- * Composant pour afficher les détails complets d'une commande
- */
-
 'use client';
 
 import React from 'react';

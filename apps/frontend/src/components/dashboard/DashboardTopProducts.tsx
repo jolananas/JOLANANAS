@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Produits les Plus Commandés
- * ===========================================
- * Affichage des produits les plus commandés par l'utilisateur
- */
-
 'use client';
 
 import React from 'react';

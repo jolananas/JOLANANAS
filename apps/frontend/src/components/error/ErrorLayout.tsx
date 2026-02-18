@@ -35,8 +35,8 @@ export function ErrorLayout({
 
   return (
     <div className={cn(
-      "relative w-full flex flex-col items-center justify-center overflow-hidden bg-[#FEF7F0] font-sans",
-      fullScreen ? "min-h-screen" : "min-h-[400px] py-12"
+      "relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-[#FEF7F0] font-sans",
+      fullScreen ? "min-h-screen" : "min-h-[400px]"
     )}>
       {/* 1. AMBIANCE */}
       <RetroGrid

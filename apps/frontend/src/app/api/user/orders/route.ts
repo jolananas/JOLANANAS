@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Récupération Commandes Utilisateur
- * ======================================================
- * Endpoint pour récupérer toutes les commandes de l'utilisateur connecté
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

@@ -1,12 +1,3 @@
-/**
- * 🍍 JOLANANAS - Tests de Consolidation du Système de Devises
- * ============================================================
- * Tests pour valider la consolidation du système de devises
- * - Extraction des currencyCode depuis différents types Shopify
- * - Priorité de détection (Shopify > User > Geo > Browser > Shop > Fallback)
- * - Formatage avec différentes devises
- */
-
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import {
   extractCurrencyFromProduct,

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Méthodes de Paiement Disponibles
- * ====================================================
- * Retourne les méthodes de paiement disponibles (Shop Pay, PayPal, etc.)
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { ENV } from "@/lib/env";
 

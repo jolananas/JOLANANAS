@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Order Summary Component
- * =======================================
- * Composant récapitulatif de commande
- * Intègre les variantes Shadcn Studio avec design system JOLANANAS
- * Utilise uniquement les données réelles du CartContext
- */
-
 "use client";
 
 import React, { useEffect, useState } from "react";

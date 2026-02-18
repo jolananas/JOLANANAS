@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Shopify Real Data Integration Tests
- * ===================================================
- * Tests d'intégration STRICTS utilisant uniquement les vraies données Shopify
- * AUCUNE données mockées, fake data, ou placeholder autorisée
- */
-
 import { describe, it, expect, beforeAll } from '@jest/globals';
 
 describe('Shopify Real Data Integration Tests', () => {

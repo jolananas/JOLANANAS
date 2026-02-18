@@ -1,12 +1,3 @@
-/**
- * 🍍 JOLANANAS - Client Shopify Admin API (Privé)
- * ================================================
- * Client REST pour l'API privée Shopify Admin
- * Accès complet aux commandes, clients, inventaire, webhooks
- *
- * ⚠️ SERVER-ONLY : Ce fichier ne peut être utilisé que côté serveur
- */
-
 import "server-only";
 
 import { ENV } from "./env";
@@ -993,9 +984,9 @@ export class ShopifyAdminClient {
   /**
    * Récupérer un draft order par ID
    */
-  async getDraftOrder(draftOrderId: string) {
+  async getDraftOrder(draftOrderId: string): Promise<AdminResponse<{ draft_order?: any }>> {
     const endpoint = `/draft_orders/${draftOrderId}.json`;
-    return this.request(endpoint);
+    return this.request<{ draft_order?: any }>(endpoint);
   }
 
   /**

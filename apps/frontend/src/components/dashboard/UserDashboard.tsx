@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Dashboard Utilisateur Principal
- * ===============================================
- * Dashboard complet avec statistiques, graphiques et activité
- */
-
 "use client";
 
 import React, { useEffect, useState } from "react";

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Shop Info API Route
- * ===================================
- * Route API pour récupérer les informations de la boutique Shopify
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopInfo } from "@/lib/shopify/index";
 import { getShopCurrency } from "@/lib/currency/currencyService";

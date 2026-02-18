@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Tests Cart Store
- * =====================================
- * Tests unitaires pour le store panier Zustand
- */
-
 import { useCartStore } from '@/lib/stores/cartStore';
 
 describe('Cart Store', () => {

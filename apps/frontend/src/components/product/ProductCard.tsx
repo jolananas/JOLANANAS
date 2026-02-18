@@ -64,44 +64,32 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
             
             {/* Overlay Gradient on Hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-jolananas-black-ink/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             {/* Badge Promo Optionnel */}
             {hasDiscount && (
-              <div className="absolute top-3 left-3 glass-strong text-jolananas-black-ink text-[10px] font-bold px-2 py-1 uppercase tracking-[0.2em] rounded-full">
+              <div className="absolute top-3 left-3 glass-strong text-primary text-[10px] font-bold px-2 py-1 uppercase tracking-[0.2em] rounded-full">
                 -{discountPercentage}%
               </div>
             )}
 
             {!product.availableForSale && (
               <div className="absolute inset-0 bg-jolananas-white-soft/80 backdrop-blur-[2px] flex items-center justify-center z-10">
-                <span className="text-xs font-bold uppercase tracking-[0.3em] text-jolananas-black-ink/60">Sold Out</span>
+                <span className="text-xs font-bold uppercase tracking-[0.3em] text-primary">Sold Out</span>
               </div>
             )}
-
-            {/* Quick Actions Overlay */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-swiss">
-              <Button 
-                onClick={() => setIsQuickViewOpen(true)}
-                variant="secondary" 
-                size="sm" 
-                className="glass-strong hover:bg-white/90 text-[10px] uppercase font-bold tracking-widest px-4"
-              >
-                Aperçu rapide
-              </Button>
-            </div>
           </div>
 
           {/* 2. Contenu Texte : Raffiné */}
           <div className="w-full space-y-3 px-4 pb-6">
             <Link href={`/products/${product.handle}`} className="block group/link">
-              <h3 className="font-sans font-semibold text-xs uppercase tracking-[0.15em] text-jolananas-black-ink/80 transition-colors group-hover/link:text-primary line-clamp-1">
+              <h3 className="font-sans font-semibold text-xs uppercase tracking-[0.15em] text-primary/80 transition-colors group-hover/link:text-primary line-clamp-1">
                 {product.title}
               </h3>
             </Link>
 
             <div className="flex items-center justify-center gap-3">
-              <span className="font-bold text-sm tracking-tight text-jolananas-black-ink">
+              <span className="font-bold text-sm tracking-tight text-primary">
                 {formatPrice(product.price ?? 0, product.currency)}
               </span>
               {hasDiscount && (

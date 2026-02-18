@@ -1,12 +1,3 @@
-/**
- * 🍍 JOLANANAS - Endpoint de Santé Base de Données
- * ==============================================
- * Endpoint désactivé - Plus de base de données locale
- * 
- * Note: Cet endpoint retourne un message indiquant que la DB n'est plus utilisée.
- * Pour vérifier la santé de l'application, utilisez /api/health
- */
-
 import { NextResponse } from 'next/server';
 
 export async function GET() {

@@ -1,12 +1,3 @@
-/**
- * 🍍 JOLANANAS - Service de Gestion Prédictive des Devises
- * =========================================================
- * Service centralisé pour la détection et l'utilisation des devises
- * basé sur l'API Shopify et la détection automatique
- * 
- * ⚠️ SERVER-ONLY : Ce fichier utilise ShopifyAdminClient et ne peut être utilisé que côté serveur
- */
-
 import 'server-only';
 
 import { getShopInfo } from '../shopify/index';

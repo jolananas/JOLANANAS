@@ -68,6 +68,7 @@ export default {
         serif: ["'Helvetica Neue'", "Helvetica", "Arial", "sans-serif"], // On uniformise pour le look "Galerie"
         // Fallbacks système (Importé de apps/config)
         mono: ["JetBrains Mono", "SF Mono", "Monaco", "Consolas", "monospace"],
+        brand: ["'weather sunday'", "sans-serif"],
       },
       animation: {
         // Animations Frontend existantes

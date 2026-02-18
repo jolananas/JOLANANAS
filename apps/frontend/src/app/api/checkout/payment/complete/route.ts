@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Finalisation Paiement
- * =========================================
- * Finalise un paiement et convertit le draft order en commande finale
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";
 import { ENV } from "@/lib/env";

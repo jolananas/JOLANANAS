@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook useFavorites
- * =================================
- * Gestion des favoris avec localStorage
- */
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";

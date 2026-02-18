@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Complétion Paiement Shop Pay
- * ================================================
- * Complète le paiement Shop Pay et crée la commande dans Shopify
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";
 import { ENV } from "@/lib/env";

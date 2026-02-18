@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Produits
- * ===========================
- * Route API pour récupérer la liste des produits
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getAllProducts } from "@/lib/shopify/index";
 

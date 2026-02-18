@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Collections
- * ==============================
- * Route API pour récupérer la liste des collections
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getAllProducts, getAllCollections } from "@/lib/shopify/index";
 

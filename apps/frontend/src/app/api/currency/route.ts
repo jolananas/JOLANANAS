@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Route pour la Gestion des Devises
- * =====================================================
- * Endpoint API pour récupérer les informations de devises
- */
-
 import { NextRequest, NextResponse } from 'next/server';
 import { currencyService } from '@/lib/currency/currencyService';
 import type { CurrencyServiceState } from '@/lib/currency/types';

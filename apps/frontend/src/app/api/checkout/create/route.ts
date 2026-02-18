@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Création Checkout Personnalisé
- * ==================================================
- * Crée un panier Shopify et un draft order pour paiement sécurisé
- * Retourne les informations nécessaires pour l'intégration des paiements
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getShopifyClient, CartLineInput } from "@/lib/ShopifyStorefrontClient";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";

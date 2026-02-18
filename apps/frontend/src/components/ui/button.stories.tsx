@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Stories Button
- * =============================
- * Stories Storybook pour le composant Button
- */
-
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./button";
 import { ShoppingBag, Heart, Star, ArrowRight } from "lucide-react";
@@ -207,7 +201,7 @@ export const AllVariants: Story = {
   render: () => (
     <div className="bg-gradient-to-br from-jolananas-gray-warm to-jolananas-white-soft p-8 rounded-lg">
       <div className="space-y-6">
-        <h3 className="text-xl font-bold text-jolananas-black-ink mb-4">
+        <h3 className="text-xl font-bold text-primary mb-4">
           Toutes les Variantes du Button JOLANANAS
         </h3>
 
@@ -220,7 +214,7 @@ export const AllVariants: Story = {
           <Button variant="link">Link</Button>
         </div>
 
-        <h4 className="text-lg font-semibold text-jolananas-black-ink mt-6">
+        <h4 className="text-lg font-semibold text-primary mt-6">
           Avec Icônes
         </h4>
 
@@ -239,7 +233,7 @@ export const AllVariants: Story = {
           </Button>
         </div>
 
-        <h4 className="text-lg font-semibold text-jolananas-black-ink mt-6">
+        <h4 className="text-lg font-semibold text-primary mt-6">
           États Spéciaux
         </h4>
 

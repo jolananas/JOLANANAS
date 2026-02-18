@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Shop Pay Payment Section Component
- * ================================================
- * Section de paiement personnalisée pour Shop Pay
- * Design et UX entièrement personnalisés en TypeScript
- * Utilise l'API Shop Pay Payment Request pour paiement sécurisé
- */
-
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";

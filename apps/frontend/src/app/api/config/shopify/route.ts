@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Shopify Configuration API
- * ========================================
- * Route API pour exposer le store domain de manière sécurisée
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { ENV } from "@/lib/env";
 

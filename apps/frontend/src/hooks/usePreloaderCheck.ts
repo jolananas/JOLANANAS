@@ -1,13 +1,3 @@
-/**
- * 🍍 JOLANANAS - Hook de Vérification Preloader
- * ============================================
- * Vérifie le chargement de toutes les ressources critiques :
- * - Polices (Google Fonts + locale)
- * - Assets (logo, images critiques)
- * - API Shopify
- * - Base de données Prisma
- */
-
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'

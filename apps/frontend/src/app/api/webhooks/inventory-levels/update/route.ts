@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Webhook Inventaire Shopify (Consolidé)
- * ====================================================
- * Traitement des mises à jour inventaire Shopify
- * Plus de stockage DB - utilise uniquement les logs serveur
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { ENV } from "@/lib/env";
 import { getShopifyAdminClient } from "@/lib/ShopifyAdminClient";

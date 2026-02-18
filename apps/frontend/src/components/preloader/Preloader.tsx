@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - Preloader Intelligent
- * ===================================
- * Preloader qui vérifie le chargement de toutes les ressources critiques
- * avant de disparaître avec une animation de séparation en deux panneaux
- */
-
 "use client";
 
 import Image from "next/image";

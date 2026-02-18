@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Formulaire d'inscription réutilisable
- * ===================================================
- * Composant formulaire d'inscription avec validation et appel API
- */
-
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';

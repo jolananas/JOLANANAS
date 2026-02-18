@@ -1,10 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Création Utilisateur
- * ==================================================
- * Endpoint pour créer un nouveau compte utilisateur dans Shopify uniquement
- * Plus de base de données locale - tout est géré par Shopify Customer Account API
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createCustomer, checkEmailExists } from "@/lib/shopify/auth";

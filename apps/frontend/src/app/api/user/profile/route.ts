@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - API Mise à jour Profil Utilisateur
- * =================================================
- * Endpoint pour mettre à jour les informations du profil utilisateur
- */
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";

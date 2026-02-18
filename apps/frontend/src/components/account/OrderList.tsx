@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Liste des Commandes
- * ===================================
- * Composant pour afficher la liste des commandes de l'utilisateur
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Page Favoris
- * ===========================
- * Page affichant tous les produits favoris de l'utilisateur
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";

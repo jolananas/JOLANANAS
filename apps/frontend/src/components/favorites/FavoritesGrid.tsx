@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Favorites Grid
- * =============================
- * Grille de produits favoris avec possibilité de retirer des favoris
- */
-
 "use client";
 
 import React from "react";

@@ -1,9 +1,3 @@
-/**
- * 🍍 JOLANANAS - Utilitaires de synchronisation de session
- * =========================================================
- * Fonctions pour garantir la synchronisation de session NextAuth
- */
-
 import { Session } from 'next-auth';
 
 export interface EnsureSessionOptions {

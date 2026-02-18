@@ -1,15 +1,3 @@
-/**
- * 🍍 JOLANANAS - Client Shopify Customer Account API
- * ===================================================
- * Gestion de l'authentification et des données client via Customer Account API
- * Utilisé pour remplacer la gestion locale des comptes clients
- *
- * IMPORTANT: Les fonctions frontend (customerAccessTokenCreateFrontend, getCustomerFrontend)
- * doivent être appelées depuis le client (browser) uniquement.
- * Les fonctions serveur (createCustomerAccessToken, getCustomerFromToken) utilisent Admin API
- * pour compatibilité et sont utilisées côté serveur.
- */
-
 import { ENV } from "../env";
 import { getShopifyAdminClient } from "../ShopifyAdminClient";
 
