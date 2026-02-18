@@ -121,13 +121,25 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
                     viewport={{ once: true }}
                     className="inline-block"
                   >
-                    {text.split("").map((char, index) => (
+                    {text.split(" ").map((word, wordIndex) => (
                       <motion.span
-                        key={index}
-                        variants={letterVariants}
-                        className="inline-block"
+                        key={wordIndex}
+                        className="inline-block whitespace-nowrap"
+                        variants={{
+                          hidden: {},
+                          visible: {},
+                        }}
                       >
-                        {char === " " ? "\u00A0" : char}
+                        {word.split("").map((char, charIndex) => (
+                          <motion.span
+                            key={charIndex}
+                            variants={letterVariants}
+                            className="inline-block"
+                          >
+                            {char}
+                          </motion.span>
+                        ))}
+                        <span className="inline-block">{"\u00A0"}</span>
                       </motion.span>
                     ))}
                   </motion.p>
