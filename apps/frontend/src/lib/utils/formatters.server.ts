@@ -102,20 +102,13 @@ export async function readFileWithUnicode(filePath: string): Promise<string> {
   // Imports dynamiques pour éviter le bundling côté client
   const { readFile } = await import('fs/promises');
   const { resolveUnicodePath } = await import('./path-resolver');
-  const { resolveFilePathFromMap } = await import('./file-path-mapper');
-
   // Méthode 1 : Résoudre le chemin avec toutes les méthodes de résolution
   let resolvedPath: string;
   try {
     resolvedPath = await resolveUnicodePath(filePath);
   } catch (error) {
-    // Si la résolution échoue, essayer avec le mapping
-    try {
-      resolvedPath = resolveFilePathFromMap(filePath);
-    } catch (mapError) {
-      // Si le mapping échoue aussi, utiliser le chemin original
-      resolvedPath = filePath;
-    }
+    // Si la résolution échoue, utiliser le chemin original
+    resolvedPath = filePath;
   }
 
   // Méthode 2 : Tenter de lire avec le chemin résolu
