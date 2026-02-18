@@ -4,6 +4,7 @@ import React from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, ArrowRight, Star } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -11,6 +12,7 @@ import { RetroGrid } from "@/components/ui/retro-grid";
 import { useBanner } from "@/components/layout/BannerContext";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { SocialProofSection } from "@/components/sections/SocialProofSection";
 
 interface HomePageClientProps {
   products: any[];
@@ -20,11 +22,35 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
   const safeProducts = Array.isArray(products) ? products : [];
   const featuredProducts = safeProducts.slice(0, 4);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.015,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 5 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
+  const text = "\"Chaque pièce est une histoire, façonnée à la main avec passion. J'allie l'artisanat traditionnel à une vision moderne pour créer des bijoux uniques, en séries très limitées.\"";
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#FEF7F0] overflow-x-hidden">
+    <div className="flex flex-col min-h-screen h-full bg-[#FEF7F0] overflow-x-hidden">
       {/* --- HERO SECTION PRO --- */}
       <PageContainer
-        className="relative w-full flex flex-col justify-center overflow-hidden"
+        className="relative w-full min-h-[calc(100vh-var(--header-offset,84px))] flex flex-col justify-center overflow-hidden"
       >
         {/* ARRIÈRE-PLAN : RETRO GRID */}
         <RetroGrid
@@ -37,17 +63,15 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
         />
 
         <div className="container flex items-center justify-center px-4 md:px-6 py-12 lg:py-24">
-          {/* J'ai corrigé "justify-left" (invalide) par "justify-start" et ajouté gap-12 pour l'espace */}
           <div className="flex flex-row items-center justify-start gap-6 lg:gap-12">
             {/* 1. COLONNE VISUELLE */}
-            {/* CORRECTION : On retire flex-1. On met flex-none pour qu'il ne prenne que la taille de l'image */}
             <div className="hidden md:flex flex-none relative shrink-0">
               <Image
                 src="/assets/images/logo/logo-jolananas-gradient.png"
                 alt="Logo – JOLANANAS"
                 width={350}
                 height={350}
-                className="object-contain w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] xl:w-[400px] 2xl:w-[500px] h-auto"
+                className="object-contain w-[125px] sm:w-[175px] md:w-[225px] lg:w-[275px] xl:w-[325px] 2xl:w-[375px] h-auto"
                 priority
               />
             </div>
@@ -65,11 +89,19 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
                     >
                       {/* Placeholder avatars ou couleurs */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
+                      <Image
+                        src="/assets/images/logo/logo-jolananas-gradient.png"
+                        alt="Logo – JOLANANAS"
+                        width={350}
+                        height={350}
+                        className="object-contain w-[125px] sm:w-[175px] md:w-[225px] lg:w-[275px] xl:w-[325px] 2xl:w-[375px] h-auto"
+                        priority
+                      />
                     </div>
                   ))}
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground pl-1">
-                  Approuvé par +500 clientes
+                  Bienvenue à nos nouveaux clients
                 </span>
               </div>
 
@@ -81,12 +113,26 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
                     au cœur.
                   </span>
                 </h1>
-                <div className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed space-y-4 font-medium">
-                  <p>
-                    Tout a commencé par une envie simple : créer des pièces uniques qui ont une âme.
-                  </p>
-                  <p>
-                    Je réalise chaque création à la main, avec soin et passion, en portant une attention particulière aux détails. Je privilégie les petites séries et les pièces uniques pour proposer des créations authentiques et personnelles.
+                <div className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed space-y-4 font-medium italic">
+                  <motion.p
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="inline-block"
+                  >
+                    {text.split("").map((char, index) => (
+                      <motion.span
+                        key={index}
+                        variants={letterVariants}
+                        className="inline-block"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    ))}
+                  </motion.p>
+                  <p className="text-right font-bold text-primary not-italic">
+                    — <span className="font-brand text-secondary">Joanna M.</span>, Fondatrice
                   </p>
                 </div>
               </div>
@@ -96,7 +142,8 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
                 <Link href="/collections" className="w-full sm:w-auto">
                   <Button
                     size="lg"
-                    className="group w-full sm:w-auto rounded-full h-14 px-8 text-base font-bold uppercase tracking-widest bg-black text-white hover:bg-primary transition-all shadow-xl hover:scale-105 border-2 border-transparent relative overflow-hidden"
+                    variant="cta"
+                    className="group w-full sm:w-auto rounded-full h-14 px-8 text-base font-bold uppercase tracking-widest transition-all shadow-xl hover:scale-105 border-2 border-transparent relative overflow-hidden"
                     style={{
                       backgroundImage:
                         "linear-gradient(#000, #000), linear-gradient(90deg, #EC7B9C, #F4C0AC, #ffffff, #EC7B9C)",
@@ -121,24 +168,13 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
                 </Link>
               </div>
 
-              {/* Preuve Sociale / Footer Hero */}
-              <div className="flex items-center gap-4 pt-4 opacity-80">
-                <div className="flex gap-1 text-primary">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill="currentColor" />
-                  ))}
-                </div>
-                <p className="text-xs font-medium uppercase tracking-widest text-black/60">
-                  4.9/5 sur Trustpilot
-                </p>
-              </div>
             </div>
           </div>
         </div>
       </PageContainer>
 
       {/* BEST SELLERS */}
-      <section className="py-24 container mx-auto px-4 relative z-10 bg-[#FEF7F0]">
+      <section className="my-12 py-24 container mx-auto px-4 relative z-10 bg-[#FEF7F0]">
         <div className="flex justify-between items-end mb-12 border-b border-black/5 pb-4">
           <h2 className="text-4xl font-serif font-black tracking-tighter uppercase">
             Nos Créations
@@ -165,6 +201,9 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
           )}
         </div>
       </section>
+
+      {/* SOCIAL PROOF / TESTIMONIALS */}
+      <SocialProofSection />
     </div>
   );
 };

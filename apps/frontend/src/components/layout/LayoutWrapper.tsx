@@ -25,23 +25,26 @@ function LayoutContent({ children }: LayoutWrapperProps) {
   const { isBannerVisible } = useBanner();
 
   return (
-    <div className="relative flex min-h-screen flex-col">
-      {/* Bandeau d'informations intelligent - Au-dessus de la navbar (ordre vertical) */}
+    <div 
+      className="relative flex min-h-screen flex-col"
+      style={{
+        "--header-offset": isBannerVisible ? "var(--banner-height, 48px) + var(--navbar-height, 68px)" : "var(--navbar-height, 68px)"
+      } as React.CSSProperties}
+    >
+      {/* Bandeau d'informations intelligent */}
       <Suspense fallback={null}>
         <InfoBanner />
       </Suspense>
 
-      {/* Navigation Globale - Positionnée sous le bandeau (ordre vertical) */}
+      {/* Navigation Globale */}
       <Suspense fallback={null}>
         <Navigation />
       </Suspense>
 
-      {/* Contenu Pages - Padding-top ajusté selon la hauteur du bandeau + navbar */}
-      {/* Bandeau si visible : h-9 (36px) sm:h-10 (40px) md:h-12 (48px) */}
-      {/* Total si bandeau visible : 56+36=92px mobile, 64+40=104px tablet, 64+48=112px desktop */}
       <main
         className={cn(
-          "flex-1 bg-transparent transition-[padding-top] duration-400 ease-smooth",
+          "flex-1 bg-transparent transition-[padding-top] duration-500 ease-smooth",
+          isBannerVisible ? "pt-[112px] md:pt-[116px]" : "pt-[84px] md:pt-[92px]"
         )}
       >
         {children}

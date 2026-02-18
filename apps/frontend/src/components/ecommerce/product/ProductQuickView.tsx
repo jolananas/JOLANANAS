@@ -1,11 +1,3 @@
-/**
- * 🍍 JOLANANAS - Product Quick View Component
- * ===========================================
- * Modal de prévisualisation rapide d'un produit
- * Intègre les variantes Shadcn Studio avec design system JOLANANAS
- * Utilise uniquement les données Shopify réelles (fetch API)
- */
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -33,6 +25,7 @@ import {
 import { LoadingDots } from "@/components/ui/loadingdots";
 import { useCart } from "@/components/providers/CartProvider";
 import { useProductCurrency } from "@/hooks/useProductCurrency";
+import { cn } from "@/lib/utils";
 // getProductByHandle est server-only, utiliser l'API route à la place
 import type { Product } from "@/lib/shopify/types";
 import type { BaseEcommerceProps } from "@/types/ecommerce";
@@ -120,200 +113,179 @@ export function ProductQuickView({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background">
         {isLoading ? (
-          <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex flex-col items-center justify-center min-h-[500px]">
             <DialogTitle className="sr-only">Chargement</DialogTitle>
             <DialogDescription className="sr-only">Chargement du produit en cours</DialogDescription>
-            <Loader2 className="h-8 w-8 animate-spin text-jolananas-pink-medium" />
-            <span className="ml-2 text-muted-foreground">
-              Chargement du produit <LoadingDots size="sm" />
-            </span>
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <p className="mt-4 text-sm text-muted-foreground font-medium uppercase tracking-widest">
+              Chargement...
+            </p>
           </div>
         ) : product ? (
-          <div className={`product-quick-view ${className}`}>
-            <DialogHeader>
-              <DialogTitle className="sr-only">{product.title}</DialogTitle>
-              <DialogDescription className="sr-only">
-                Aperçu rapide et options d'achat pour {product.title}
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              {/* Images */}
-              <div className="space-y-4">
-                <AspectRatio ratio={1} className="overflow-hidden rounded-xl">
-                  <Image
-                    src={
-                      product.images?.[selectedImageIndex]?.url ||
-                      product.images?.[0]?.url ||
-                      "/assets/images/collections/placeholder.svg"
-                    }
-                    alt={product.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </AspectRatio>
-
-                {/* Miniatures */}
-                {product.images.length > 1 && (
-                  <div className="grid grid-cols-4 gap-2">
-                    {product.images.slice(0, 4).map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImageIndex(index)}
-                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                          selectedImageIndex === index
-                            ? "border-jolananas-pink-medium"
-                            : "border-transparent hover:border-jolananas-pink-medium/50"
-                        }`}
-                        aria-label={`Voir l'image ${index + 1}`}
-                      >
-                        <Image
-                          src={image.url}
-                          alt={image.altText || `${product.title} miniature ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 25vw, 12.5vw"
-                        />
-                      </button>
-                    ))}
+          <div className={cn("grid md:grid-cols-2", className)}>
+            
+            {/* Left: Gallery - High Contrast */}
+            <div className="relative bg-muted/30 p-4 md:p-8 flex flex-col gap-4">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-sm">
+                <Image
+                  src={
+                    product.images?.[selectedImageIndex]?.url ||
+                    product.images?.[0]?.url ||
+                    "/assets/images/collections/placeholder.svg"
+                  }
+                  alt={product.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+                
+                {/* Discount Badge - Top Left */}
+                {discount > 0 && (
+                  <div className="absolute top-4 left-4 z-10">
+                    <Badge className="bg-primary text-primary-foreground font-bold rounded-full px-3 py-1 text-xs">
+                      -{discount}%
+                    </Badge>
                   </div>
                 )}
               </div>
 
-              {/* Informations */}
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">{product.title}</h2>
-                  <div className="flex items-center gap-3 mb-3">
-                    <Badge
-                      variant="default"
-                      className="text-xl px-0 py-0 bg-transparent text-jolananas-pink-deep font-bold"
+              {/* Thumbnails Grid */}
+              {product.images && product.images.length > 1 && (
+                <div className="grid grid-cols-4 gap-3">
+                  {product.images.slice(0, 4).map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImageIndex(index)}
+                      className={cn(
+                        "relative aspect-square rounded-xl overflow-hidden border-2 transition-all",
+                        selectedImageIndex === index
+                          ? "border-primary shadow-sm ring-1 ring-primary/20"
+                          : "border-transparent opacity-70 hover:opacity-100"
+                      )}
                     >
+                      <Image
+                        src={image.url}
+                        alt={image.altText || `${product.title} thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="100px"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right: Info - Structured & Clear */}
+            <div className="p-8 md:p-12 flex flex-col justify-center">
+              <div className="space-y-6">
+                {/* Brand & Title */}
+                <div className="space-y-4">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/70">
+                    Série Limitée
+                  </span>
+                  
+                  <h2 className="text-4xl md:text-5xl font-brand text-jolananas-black-ink leading-[1.1]">
+                    {product.title}
+                  </h2>
+
+                  <div className="flex items-center gap-4 pt-2">
+                    <span className="text-3xl font-bold tracking-tight text-jolananas-black-ink">
                       {formatPrice(product.price, currency)}
-                    </Badge>
+                    </span>
                     {product.compareAtPrice && (
-                      <>
-                        <Badge
-                          variant="outline"
-                          className="text-base line-through"
-                        >
-                          {formatPrice(product.compareAtPrice, currency)}
-                        </Badge>
-                        <Badge variant="destructive" className="text-base">
-                          -{discount}%
-                        </Badge>
-                      </>
+                      <span className="text-xl text-muted-foreground line-through font-medium">
+                        {formatPrice(product.compareAtPrice, currency)}
+                      </span>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-3">
+                </div>
+
+                <Separator className="bg-border/50" />
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                    À propos de cette pièce
+                  </span>
+                  <p className="text-muted-foreground leading-relaxed text-balance">
                     {product.description}
                   </p>
                 </div>
 
-                <Separator />
-
-                {/* Disponibilité */}
-                {!product.availableForSale && (
-                  <div className="text-sm text-destructive font-medium">
-                    Ce produit est actuellement épuisé.
-                  </div>
-                )}
-
-                {/* Quantité et actions */}
-                {product.availableForSale && (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-4">
-                      <label
-                        htmlFor="quick-view-quantity"
-                        className="text-sm font-medium"
-                      >
-                        Quantité
-                      </label>
-                      <Select
-                        value={quantity.toString()}
-                        onValueChange={(value) =>
-                          setQuantity(parseInt(value, 10))
-                        }
-                      >
-                        <SelectTrigger
-                          id="quick-view-quantity"
-                          className="w-24"
+                {/* Actions */}
+                <div className="space-y-6 pt-4">
+                  {product.availableForSale ? (
+                    <div className="space-y-4">
+                      {/* Quantity Selector */}
+                      <div className="flex items-center gap-4">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                          Quantité
+                        </span>
+                        <Select
+                          value={quantity.toString()}
+                          onValueChange={(value) => setQuantity(parseInt(value, 10))}
                         >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[1, 2, 3, 4, 5].map((num) => (
-                            <SelectItem key={num} value={num.toString()}>
-                              {num}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                          <SelectTrigger className="w-24 h-12 rounded-xl bg-muted/50 border-0 focus:ring-1 focus:ring-primary">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-xl">
+                            {[1, 2, 3, 4, 5].map((num) => (
+                              <SelectItem key={num} value={num.toString()} className="font-medium">
+                                {num}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
 
-                    <div className="space-y-2">
-                      <Button
-                        size="lg"
-                        className="w-full bg-gradient-to-r from-jolananas-pink-medium to-jolananas-pink-deep hover:from-jolananas-pink-deep hover:to-jolananas-pink-medium text-white"
-                        disabled={isAddingToCart}
-                        onClick={handleAddToCart}
-                      >
-                        {isAddingToCart ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Ajout en cours <LoadingDots size="sm" />
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingCart className="mr-2 h-4 w-4" />
-                            Ajouter au panier
-                          </>
-                        )}
-                      </Button>
-
-                      <Link
-                        href={`/products/${product.handle}`}
-                        onClick={onClose}
-                      >
-                        <Button variant="outline" className="w-full">
-                          Voir les détails complets
+                      {/* Add to Cart */}
+                      <div className="flex flex-col gap-3">
+                        <Button
+                          size="lg"
+                          className="h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+                          disabled={isAddingToCart}
+                          onClick={handleAddToCart}
+                        >
+                          {isAddingToCart ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <ShoppingCart className="w-5 h-5" />
+                              <span className="uppercase tracking-[0.2em] text-[11px]">Ajouter au panier</span>
+                            </div>
+                          )}
                         </Button>
-                      </Link>
-                    </div>
-                  </div>
-                )}
 
-                {/* Tags */}
-                {product.tags && product.tags.length > 0 && (
-                  <>
-                    <Separator />
-                    <div className="flex flex-wrap gap-2">
-                      {product.tags.slice(0, 5).map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
+                        <Link href={`/products/${product.handle}`} onClick={onClose}>
+                          <Button variant="outline" className="w-full h-12 rounded-2xl border-primary/20 hover:border-primary hover:bg-primary/5 text-primary text-[10px] uppercase font-bold tracking-widest transition-colors">
+                            Voir les détails complets
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
-                  </>
-                )}
+                  ) : (
+                    <div className="p-4 rounded-xl bg-destructive/5 border border-destructive/10 text-center">
+                      <span className="text-xs font-bold uppercase tracking-widest text-destructive">
+                        Épuisé pour le moment
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+          <div className="flex flex-col items-center justify-center min-h-[500px] p-12 text-center">
             <DialogTitle className="sr-only">Erreur</DialogTitle>
-            <DialogDescription className="sr-only">Impossible de charger le produit</DialogDescription>
-            <p className="text-muted-foreground mb-4">
-              Impossible de charger ce produit.
+            <DialogDescription className="sr-only">Le produit n'a pas pu être chargé</DialogDescription>
+            <p className="text-muted-foreground font-medium mb-8">
+              La création est actuellement introuvable.
             </p>
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="outline" onClick={onClose} className="rounded-full px-8 uppercase tracking-widest text-[10px] font-bold">
               Fermer
             </Button>
           </div>

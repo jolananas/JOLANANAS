@@ -8,23 +8,23 @@ import { useNavbar } from "./NavbarContext";
 interface PageContainerProps {
   children: React.ReactNode;
   className?: string;
+  id?: string;
 }
 
 /**
  * Standard container for pages to handle banner and navbar offsets.
  * Includes mt-24 and dynamic translation based on info banner visibility.
  */
-export function PageContainer({ children, className }: PageContainerProps) {
+export function PageContainer({ children, className, id }: PageContainerProps) {
   const { isBannerVisible } = useBanner();
   const { isNavbarVisible } = useNavbar();
 
 
   return (
     <div
+      id={id}
       className={cn(
-        "transition-transform duration-500 ease-swiss",
-        isNavbarVisible ? "translate-y-24" : "translate-y-0", // Standard gap for navbar
-        isBannerVisible ? "translate-y-12" : "translate-y-0",
+        "w-full",
         className
       )}
     >
