@@ -31,12 +31,12 @@ import {
 
 const BANNER_STYLES = {
   promotion: {
-    bg: "bg-accent/75 backdrop-blur-3xl dark:bg-accent/20",
-    // border: "border-accent dark:border-accent/30",
+    bg: "bg-primary/75 backdrop-blur-3xl dark:bg-primary/20",
+    // border: "border-primary dark:border-primary/30",
     text: "text-white dark:text-white",
     description: "text-white/90 dark:text-white/90",
     badge:
-      "bg-white/90 text-accent border-transparent hover:bg-white",
+      "bg-white/90 text-primary border-transparent hover:bg-white",
   },
   info: {
     bg: "bg-slate-100/75 backdrop-blur-3xl dark:bg-slate-900/75",
@@ -188,7 +188,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
     // Mapping intelligent selon l'ID du banner pour des icônes contextuelles
     if (banner?.id) {
       switch (banner.id) {
-        case "free-shipping-50":
+        case "free-shipping-60":
         case "free-shipping-close":
         case "free-shipping-achieved":
           return <Truck className={iconClass} aria-hidden="true" />;
@@ -235,7 +235,6 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
       className={cn(
         "fixed top-0 left-0 right-0 z-[101] w-full overflow-hidden",
         "shadow-sm dark:shadow-none",
-        // ANIMATION HAUTEUR : On joue sur max-height pour glisser
         "transition-all duration-700 ease-swiss",
         isVisible && banner ? "max-h-20" : "max-h-0",
         className,
@@ -251,8 +250,6 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
           "w-full transition-opacity duration-300",
           isVisible && banner ? "opacity-100 delay-200" : "opacity-0",
           currentStyle.bg,
-          // "border-b",
-          // currentStyle.border,
           currentStyle.text,
         )}
       >
@@ -299,7 +296,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
                       "text-xs font-semibold cursor-pointer transition-all duration-200 hover:scale-105 h-6 px-2.5 sm:h-7 sm:px-3",
                       banner.type === "promotion"
                         ? BANNER_STYLES.promotion.badge
-                        : "bg-transparent hover:bg-accent/50",
+                        : "bg-transparent hover:bg-primary/50",
                     )}
                   >
                     {banner.link.label}
@@ -316,7 +313,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 sm:h-8 sm:w-8 opacity-70 hover:opacity-100 transition-all duration-200 hover:bg-accent/50 flex-shrink-0"
+                  className="h-7 w-7 sm:h-8 sm:w-8 opacity-70 hover:opacity-100 transition-all duration-200 hover:bg-primary/50 flex-shrink-0"
                   onClick={handleDismiss}
                   aria-label="Fermer le bandeau d'information"
                   onKeyDown={(e) => {

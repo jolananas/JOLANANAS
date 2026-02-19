@@ -18,7 +18,7 @@ import {
   siGooglepay,
   siInstagram,
   siFacebook,
-  siX,
+  siSnapchat,
 } from "simple-icons";
 
 // Petit composant Helper pour afficher l'icône SimpleIcon
@@ -91,16 +91,15 @@ export function Footer() {
             </Link>
             <p className="text-lg text-white leading-relaxed max-w-md font-medium mx-auto lg:mx-0">
               L'art de la fantaisie. <br />
-              Des créations artisanales uniques, pensées pour révéler votre
-              personnalité avec élégance et audace.
+              Des bijoux artisanaux uniques, conçus pour révéler votre singularité avec audace et élégance.
             </p>
 
             {/* SOCIALS (Mise à jour Simple Icons) */}
             <div className="flex gap-4 pt-2 justify-center lg:justify-start">
               {[
-                { icon: siInstagram, href: "#" },
-                { icon: siFacebook, href: "#" },
-                { icon: siX, href: "#" },
+                { icon: siInstagram, href: "https://www.instagram.com/jolananas.officiel" },
+                { icon: siFacebook, href: "https://www.facebook.com/jolananas.officiel" },
+                { icon: siSnapchat, href: "https://www.snapchat.com/add/jolananas.off" },
               ].map((item, i) => (
                 <Link
                   key={i}

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PageContainer } from "@/components/layout/PageContainer";
-import { Heart, Scissors, Sparkles } from "lucide-react";
+import { ArrowRight, Heart, Scissors, Sparkles } from "lucide-react";
 
 export const metadata = {
   title: "Notre Histoire | JOLANANAS",
@@ -90,7 +90,7 @@ export default function AboutPage() {
                   <Link href="/collections" className="group">
                     <Button variant="cta" size="lg" className="rounded-full px-8 text-base shadow-sm font-medium">
                       Shopper les pépites 🛍️
-                      <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
                     </Button>
                   </Link>
                   <p className="text-xs text-muted-foreground mt-4 italic flex items-center gap-1.5 opacity-80">
