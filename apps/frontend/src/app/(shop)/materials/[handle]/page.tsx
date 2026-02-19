@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/SEO/JsonLd";
 import { baseUrl } from "@/app/shared-metadata";
 
-export const runtime = "edge";
+
 
 interface MaterialPageProps {
   params: {
@@ -131,21 +131,21 @@ export default async function MaterialPage({ params }: MaterialPageProps) {
             {descriptionField?.value}
           </div>
 
-          {propertiesField && (
-            <div className="bg-primary/5 p-6 rounded-xl space-y-4">
-              <h3 className="font-serif text-xl font-medium">Propriétés</h3>
-              <p className="text-muted-foreground">{propertiesField.value}</p>
+            {propertiesField && (
+              <div className="bg-primary/5 p-6 rounded-xl space-y-4">
+                <h3 className="font-serif text-xl font-medium">Propriétés</h3>
+                <p className="text-muted-foreground">{propertiesField.value}</p>
+              </div>
+            )}
+            
+            <div className="pt-8 border-t">
+              <Button variant="outline" asChild>
+                <Link href="/products">Découvrir les produits</Link>
+              </Button>
             </div>
-          )}
-          
-          <div className="pt-8 border-t">
-             <Button variant="outline" asChild>
-                <a href="/products">Découvrir les produits</a>
-             </Button>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
