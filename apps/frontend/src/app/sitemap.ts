@@ -6,15 +6,23 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.DOMAIN_URL;
 
-  // 1. Pages statiques
-  const routes = ["", "/a-propos", "/contact", "/mentions-legales"].map(
-    (route) => ({
-      url: `${baseUrl}${route}`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    }),
-  );
+  // 1. Pages statiques (URLs canoniques françaises)
+  const routes = [
+    "",
+    "/a-propos",
+    "/contact",
+    "/mentions-legales",
+    "/mentions-legales/CGV",
+    "/mentions-legales/confidentialite",
+    "/mentions-legales/CGU",
+    "/mentions-legales/cookies",
+    "/mentions-legales/retours",
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
 
   try {
     // 2. Produits

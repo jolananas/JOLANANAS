@@ -19,6 +19,7 @@ Le présent CLUF régit l'utilisation de l'application web, de la Progressive We
 ### 1.2. Définitions
 
 **"Logiciel"** désigne :
+
 - L'application web JOLANANAS accessible via le navigateur Internet
 - La Progressive Web App (PWA) JOLANANAS installable sur appareils mobiles et desktop
 - Les interfaces de programmation applicatives (APIs) backend, incluant mais sans s'y limiter :
@@ -71,6 +72,7 @@ L'acceptation du présent CLUF peut se faire par l'une des méthodes suivantes :
 ### 3.2. Moment de l'acceptation
 
 L'acceptation du présent CLUF est effective dès :
+
 - La première utilisation du Logiciel
 - L'installation de la PWA sur votre appareil
 - La première requête vers les APIs backend
@@ -83,6 +85,7 @@ Si vous n'acceptez pas les présentes conditions, vous ne devez pas utiliser le 
 ### 3.4. Capacité juridique
 
 En acceptant ce CLUF, vous déclarez et garantissez que :
+
 - Vous avez la capacité juridique de conclure des contrats dans votre juridiction
 - Vous êtes âgé d'au moins 18 ans ou avez l'autorisation d'un représentant légal
 - Vous n'êtes pas interdit d'utiliser le Logiciel par la loi applicable
@@ -181,6 +184,7 @@ Toute exception doit être préalablement autorisée par écrit par JOLANANAS.
 ### 6.1. Conservation des droits par JOLANANAS
 
 Le Logiciel, incluant mais sans s'y limiter :
+
 - Le code source (JavaScript, TypeScript, HTML, CSS, etc.)
 - Les bibliothèques et frameworks personnalisés
 - Les algorithmes, structures de données et logique métier
@@ -523,7 +527,7 @@ Le fait pour JOLANANAS de ne pas se prévaloir à un moment donné d'une des cla
 Le présent CLUF complète mais ne remplace pas :
 
 - Les [Conditions Générales d'Utilisation (CGU)](/terms) qui régissent l'utilisation du site web
-- Les [Conditions Générales de Vente (CGV)](/cgv) qui régissent les transactions commerciales
+- Les [Conditions Générales de Vente (CGV)](/CGV) qui régissent les transactions commerciales
 - La [Politique de Confidentialité](/privacy) qui régit le traitement des données personnelles
 
 En cas de contradiction entre ces documents, le présent CLUF prévaudra pour tout ce qui concerne la licence d'utilisation du Logiciel.
@@ -549,8 +553,8 @@ Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le Logiciel.
 
 ---
 
-*Dernière mise à jour : Janvier 2025*  
-*Version : 1.0*
+_Dernière mise à jour : Janvier 2025_  
+_Version : 1.0_
 
 **Sources officielles et références légales :**
 
@@ -565,7 +569,3 @@ Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le Logiciel.
 ---
 
 **© 2025 JOLANANAS. Tous droits réservés.**
-
-
-
-

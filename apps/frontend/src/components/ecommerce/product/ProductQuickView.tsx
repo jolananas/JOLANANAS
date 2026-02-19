@@ -125,6 +125,8 @@ export function ProductQuickView({
           </div>
         ) : product ? (
           <div className={cn("grid md:grid-cols-2", className)}>
+            <DialogTitle className="sr-only">{product.title}</DialogTitle>
+            <DialogDescription className="sr-only">{product.description}</DialogDescription>
             
             {/* Left: Gallery - High Contrast */}
             <div className="relative bg-muted/30 p-4 md:p-8 flex flex-col gap-4">

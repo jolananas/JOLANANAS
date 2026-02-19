@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, LogIn, Sparkles, Crown, Palette } from "lucide-react";
+import { Menu, X, Sparkles, Crown, Palette } from "lucide-react";
 import { SearchDialog } from "@/components/layout/SearchDialog";
 import { CartSheet } from "@/components/cart/CartSheet";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ const navItems = [
   { name: "Accueil", href: "/" },
   { name: "Créations", href: "/products" },
   { name: "Collections", href: "/collections" },
-  { name: "Notre Histoire", href: "/about" },
+  { name: "Notre Histoire", href: "/a-propos" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -208,16 +208,16 @@ export function Navigation() {
                 : "max-h-0 opacity-0", // Cache le contenu proprement
             )}
           >
-            <Link href="/auth/login" className="w-auto md:w-full">
+            <a href="https://accounts.jolananas.com" className="w-auto md:w-full">
               <Button
                 variant="default"
                 size="lg"
                 className="w-full uppercase text-xl md:text-lg"
                 onClick={() => setIsOpen(false)}
               >
-                Connexion
+                Mon compte
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
         {/* CARTE ACTUALITÉS */}
@@ -279,7 +279,7 @@ export function Navigation() {
           </Link>
           {/* Carte 3 - Notre Histoire */}
           <Link
-            href="/about"
+            href="/a-propos"
             className={cn(
               "group relative overflow-hidden rounded-2xl bg-gradient-to-br from-jolananas-white-soft to-jolananas-peach-light/20 p-6 transition-all duration-100",
               isOpen

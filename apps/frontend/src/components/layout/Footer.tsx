@@ -169,7 +169,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li>
                 <Link
-                  href="/about"
+                  href="/a-propos"
                   className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Notre Histoire
@@ -227,7 +227,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li>
                 <Link
-                  href="/cgv"
+                  href="/mentions-legales/CGV"
                   className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   CGV
@@ -235,7 +235,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/mentions-legales/confidentialite"
                   className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
                 >
                   Confidentialité

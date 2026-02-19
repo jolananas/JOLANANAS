@@ -36,26 +36,33 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
   },
 
-  // Redirections SEO
+  // Redirections permanentes
   async redirects() {
     return [
-      {
-        source: "/home",
-        destination: "/",
-        permanent: true,
-      },
+      // Ancienne page d'accueil
+      { source: "/home", destination: "/", permanent: true },
+
+      // Compte client → Shopify Customer Accounts
+      { source: "/account",          destination: "https://accounts.jolananas.com", permanent: false },
+      { source: "/account/:path*",   destination: "https://accounts.jolananas.com", permanent: false },
+      { source: "/auth/login",       destination: "https://accounts.jolananas.com", permanent: false },
+      { source: "/auth/register",    destination: "https://accounts.jolananas.com", permanent: false },
+      { source: "/auth/:path*",      destination: "https://accounts.jolananas.com", permanent: false },
     ];
   },
 
-  // Configuration des rewrites - Supprimé car inutile avec la nouvelle structure src
-  /* async rewrites() {
+  // Rewrites : alias d'URLs françaises → dossiers anglais (masquage transparent)
+  async rewrites() {
     return [
-      {
-        source: '/src/api/:path*',
-        destination: '/api/:path*',
-      },
+      { source: "/a-propos",                          destination: "/about" },
+      { source: "/mentions-legales",                  destination: "/legal" },
+      { source: "/mentions-legales/confidentialite",  destination: "/legal/privacy" },
+      { source: "/mentions-legales/CGU",              destination: "/legal/terms" },
+      { source: "/mentions-legales/CGV",              destination: "/legal/cgv" },
+      { source: "/mentions-legales/cookies",          destination: "/legal/cookies" },
+      { source: "/mentions-legales/retours",          destination: "/legal/retours" },
     ];
-  }, */
+  },
 
   // Configuration environnement
   env: {

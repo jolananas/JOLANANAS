@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Package, TrendingUp, Sparkles } from "lucide-react";
+import { Search, Package, TrendingUp, Sparkles, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
@@ -31,11 +31,28 @@ interface SearchProduct {
   tags: string[];
 }
 
-const SUGGESTIONS = [
-  { label: "Bijoux artisanaux", query: "bijou" },
-  { label: "Créations florales", query: "fleur" },
-  { label: "Accessoires", query: "accessoire" },
-];
+const RECENTLY_VIEWED_KEY = "jolananas_recently_viewed";
+const MAX_RECENT = 4;
+const MAX_TAGS = 6;
+
+/** Extrait les tags les plus fréquents du catalogue (auto, sans maintenance) */
+function getTopTags(products: SearchProduct[]): { label: string; query: string }[] {
+  const freq = new Map<string, number>();
+  for (const p of products) {
+    for (const tag of p.tags ?? []) {
+      const t = tag.trim().toLowerCase();
+      if (t.length < 2) continue;
+      freq.set(t, (freq.get(t) ?? 0) + 1);
+    }
+  }
+  return Array.from(freq.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, MAX_TAGS)
+    .map(([tag]) => ({
+      label: tag.charAt(0).toUpperCase() + tag.slice(1),
+      query: tag,
+    }));
+}
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -54,9 +71,21 @@ export function SearchDialog() {
   const [fetched, setFetched] = useState(false);
   const [isMac, setIsMac] = useState(false);
   const [origin, setOrigin] = useState("50% 0%");
+  const [recentlyViewed, setRecentlyViewed] = useState<SearchProduct[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { formatPrice } = useCurrency();
   const router = useRouter();
+
+  // Suggestions automatiques issues des tags du catalogue
+  const topTags = useMemo(() => getTopTags(products), [products]);
+
+  // Charge l'historique depuis localStorage
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+      if (raw) setRecentlyViewed(JSON.parse(raw));
+    } catch { /* ignore */ }
+  }, [open]);
   const debouncedQuery = useDebounce(query, 280);
 
   // Détection plateforme après mount (évite le mismatch d'hydration SSR)
@@ -140,6 +169,17 @@ export function SearchDialog() {
   })();
 
   const handleSelect = (handle: string) => {
+    // Sauvegarde dans l'historique des consultations
+    const product = products.find((p) => p.handle === handle);
+    if (product) {
+      try {
+        const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+        const prev: SearchProduct[] = raw ? JSON.parse(raw) : [];
+        const next = [product, ...prev.filter((p) => p.handle !== handle)].slice(0, MAX_RECENT);
+        localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(next));
+        setRecentlyViewed(next);
+      } catch { /* ignore */ }
+    }
     setOpen(false);
     setQuery("");
     router.push(`/products/${handle}`);
