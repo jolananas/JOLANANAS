@@ -14,7 +14,7 @@
 .env.old
 .env.bak
 env.backup
-env.*
+# env.* removed to avoid ignoring env.ts
 *.env
 *.env.*
 *.secret
