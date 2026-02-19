@@ -46,30 +46,32 @@ const faqs = [
 
 export default function FaqPage() {
   return (
-    <PageContainer className="container mx-auto px-4 py-32 max-w-3xl">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-          Questions fréquentes
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          Vous ne trouvez pas votre réponse ?{" "}
-          <a href="/contact" className="text-primary underline underline-offset-4">
-            Contactez-nous
-          </a>
-        </p>
-      </div>
+    <div className="container mx-auto px-4 py-32 max-w-4xl">
+      <PageContainer className="container mx-auto px-4 py-32 max-w-3xl">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
+            Questions fréquentes
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Vous ne trouvez pas votre réponse ?{" "}
+            <a href="/contact" className="text-primary underline underline-offset-4">
+              Contactez-nous
+            </a>
+          </p>
+        </div>
 
-      <div className="space-y-6">
-        {faqs.map((faq, i) => (
-          <div
-            key={i}
-            className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-colors duration-200"
-          >
-            <h2 className="font-semibold text-lg mb-3">{faq.question}</h2>
-            <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
-          </div>
-        ))}
-      </div>
-    </PageContainer>
+        <div className="space-y-6">
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-colors duration-200"
+            >
+              <h2 className="font-semibold text-lg mb-3">{faq.question}</h2>
+              <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </PageContainer>
+    </div>
   );
 }

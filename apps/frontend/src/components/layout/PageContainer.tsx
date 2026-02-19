@@ -24,7 +24,7 @@ export function PageContainer({ children, className, id }: PageContainerProps) {
     <div
       id={id}
       className={cn(
-        "w-full",
+        "w-full container mx-auto px-4 max-w-4xl",
         className,
         isBannerVisible ? "mt-14 md:mt-14 pt-40 md:pt-20" : "mt-16",
         isNavbarVisible ? "mt-14 md:mt-14 pt-40 md:pt-20" : "mt-16"

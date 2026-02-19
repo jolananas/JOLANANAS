@@ -90,6 +90,7 @@ export async function getAllProducts() {
             handle
             description
             availableForSale
+            tags
             featuredImage {
               url(transform: {preferredContentType: WEBP})
               altText

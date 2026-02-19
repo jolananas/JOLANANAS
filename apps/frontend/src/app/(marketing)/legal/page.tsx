@@ -56,41 +56,43 @@ export default async function LegalPage() {
   }
 
   return (
-    <PageContainer className="container py-32 md:py-48">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/">Accueil</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Mentions Légales</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+    <div className="container mx-auto px-4 py-32 max-w-4xl">
+      <PageContainer className="container py-32 md:py-48">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Accueil</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Mentions Légales</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
-        <Card className="border-0 shadow-none bg-transparent">
-          <CardHeader className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-2">
-              <CardTitle className="font-serif text-4xl font-bold tracking-tight md:text-5xl text-balance">
-                Mentions Légales
-              </CardTitle>
-              <Badge variant="secondary">Document officiel</Badge>
-            </div>
-            <CardDescription className="text-lg text-pretty leading-relaxed">
-              Informations légales concernant le site JOLANANAS
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Card className="p-6 md:p-8">
-              <MarkdownContent content={fileContent} />
-            </Card>
-          </CardContent>
-        </Card>
-      </div>
-    </PageContainer>
+          <Card className="border-0 shadow-none bg-transparent">
+            <CardHeader className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-2">
+                <CardTitle className="font-serif text-4xl font-bold tracking-tight md:text-5xl text-balance">
+                  Mentions Légales
+                </CardTitle>
+                <Badge variant="secondary">Document officiel</Badge>
+              </div>
+              <CardDescription className="text-lg text-pretty leading-relaxed">
+                Informations légales concernant le site JOLANANAS
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Card className="p-6 md:p-8">
+                <MarkdownContent content={fileContent} />
+              </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </PageContainer>
+    </div>
   );
 }

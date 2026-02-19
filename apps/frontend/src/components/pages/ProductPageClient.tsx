@@ -486,493 +486,495 @@ export function ProductPageClient({
   const isPreOrder = selectedVariant?.quantityAvailable === 0 && selectedVariant?.inventoryPolicy === "CONTINUE" && !selectedSellingPlanId;
 
   return (
-    <PageContainer className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
-      <PageContainer className="container mx-auto px-4 md:px-8">
-        {/* LAYOUT GRID : 2 COLONNES */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          {/* COLONNE GAUCHE : GALERIE (Sticky) */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="sticky top-24 space-y-4">
-              {/* Image Principale */}
-              <div 
-                className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden rounded-[2rem] bg-white border border-black/5 shadow-sm group cursor-zoom-in"
-                onClick={() => activeImage && setIsLightboxOpen(true)}
-              >
-                {activeImage ? (
-                  (() => {
-                    const videoMedia = product.media?.edges.find(
-                      (e: any) =>
-                        e.node.mediaContentType === "VIDEO" &&
-                        e.node.previewImage?.url === activeImage,
-                    )?.node;
+    <div className="container mx-auto px-4 py-32 max-w-4xl">
+      <PageContainer className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
+        <PageContainer className="container mx-auto px-4 md:px-8">
+          {/* LAYOUT GRID : 2 COLONNES */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* COLONNE GAUCHE : GALERIE (Sticky) */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="sticky top-24 space-y-4">
+                {/* Image Principale */}
+                <div 
+                  className="relative aspect-[4/5] md:aspect-square w-full overflow-hidden rounded-[2rem] bg-white border border-black/5 shadow-sm group cursor-zoom-in"
+                  onClick={() => activeImage && setIsLightboxOpen(true)}
+                >
+                  {activeImage ? (
+                    (() => {
+                      const videoMedia = product.media?.edges.find(
+                        (e: any) =>
+                          e.node.mediaContentType === "VIDEO" &&
+                          e.node.previewImage?.url === activeImage,
+                      )?.node;
 
-                    if (
-                      videoMedia &&
-                      videoMedia.sources &&
-                      videoMedia.sources.length > 0
-                    ) {
+                      if (
+                        videoMedia &&
+                        videoMedia.sources &&
+                        videoMedia.sources.length > 0
+                      ) {
+                        return (
+                          <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            className="w-full h-full object-cover"
+                            poster={activeImage}
+                          >
+                            <source
+                              src={videoMedia.sources[0].url}
+                              type={videoMedia.sources[0].mimeType}
+                            />
+                          </video>
+                        );
+                      }
+
                       return (
-                        <video
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          className="w-full h-full object-cover"
-                          poster={activeImage}
-                        >
-                          <source
-                            src={videoMedia.sources[0].url}
-                            type={videoMedia.sources[0].mimeType}
+                        <>
+                          <Image
+                            src={activeImage}
+                            alt={product.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 60vw"
+                            className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                            priority
                           />
-                        </video>
-                      );
-                    }
-
-                    return (
-                      <>
-                        <Image
-                          src={activeImage}
-                          alt={product.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 60vw"
-                          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                          priority
-                        />
-                        {/* Overlay Hint */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                          <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                             <Maximize2 className="w-4 h-4 text-primary" />
-                             <span className="text-xs font-bold uppercase tracking-widest text-primary">Agrandir</span>
+                          {/* Overlay Hint */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                              <Maximize2 className="w-4 h-4 text-primary" />
+                              <span className="text-xs font-bold uppercase tracking-widest text-primary">Agrandir</span>
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    );
-                  })()
-                ) : (
-                  <div className="flex items-center justify-center h-full text-muted-foreground bg-secondary/10">
-                    Aucune image
-                  </div>
-                )}
+                        </>
+                      );
+                    })()
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-muted-foreground bg-secondary/10">
+                      Aucune image
+                    </div>
+                  )}
 
-                {/* Badge Promo */}
-                {isSale && (
-                  <div className="absolute top-6 left-6 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest z-10">
-                    Soldes
-                  </div>
-                )}
-              </div>
+                  {/* Badge Promo */}
+                  {isSale && (
+                    <div className="absolute top-6 left-6 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-widest z-10">
+                      Soldes
+                    </div>
+                  )}
+                </div>
 
-              {/* Galerie Thumbnails + "Voir toutes" */}
-              {((product?.images && product.images.length > 1) || (product?.media?.edges && product.media.edges.length > 0)) && (
-                <div className="space-y-3">
-                  {/* Thumbnails Strip */}
-                  <div 
-                    className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide"
-                    style={{ 
-                      WebkitMaskImage: 'linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent)',
-                      maskImage: 'linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent)',
-                      WebkitMaskRepeat: 'no-repeat',
-                      maskRepeat: 'no-repeat'
-                    }}
-                  >
-                    {product?.images?.map((node, i) => (
-                      <button
-                        key={`img-${i}`}
-                        onClick={() => { setActiveImage(node.url); setActiveImageIndex(i); }}
-                        className={cn(
-                          "relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all",
-                          activeImage === node.url
-                            ? "border-primary ring-2 ring-primary/20 ring-offset-2 ring-offset-[#FEF7F0]"
-                            : "border-transparent hover:border-black/10",
-                        )}
-                        aria-label={`Vue ${i + 1}`}
-                        aria-pressed={activeImage === node.url}
-                        aria-controls={`product-image-${i}`}
-                        aria-describedby={`product-image-${i}`}
-                        aria-haspopup="dialog"
-                        style={{ cursor: "pointer" }}
-                      >
-                        <Image
-                          src={node.url}
-                          alt={node.altText || `Vue ${i + 1}`}
-                          fill
-                          sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                          className="object-cover"
-                        />
-                      </button>
-                    ))}
-
-                    {/* Vidéos */}
-                    {product?.media?.edges
-                      .filter((e: any) => e.node.mediaContentType === "VIDEO")
-                      .map(({ node }: any, i: number) => (
+                {/* Galerie Thumbnails + "Voir toutes" */}
+                {((product?.images && product.images.length > 1) || (product?.media?.edges && product.media.edges.length > 0)) && (
+                  <div className="space-y-3">
+                    {/* Thumbnails Strip */}
+                    <div 
+                      className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide"
+                      style={{ 
+                        WebkitMaskImage: 'linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent)',
+                        maskImage: 'linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent)',
+                        WebkitMaskRepeat: 'no-repeat',
+                        maskRepeat: 'no-repeat'
+                      }}
+                    >
+                      {product?.images?.map((node, i) => (
                         <button
-                          key={`vid-${i}`}
-                          onClick={() =>
-                            node.previewImage &&
-                            setActiveImage(node.previewImage.url)
-                          }
+                          key={`img-${i}`}
+                          onClick={() => { setActiveImage(node.url); setActiveImageIndex(i); }}
                           className={cn(
-                            "relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all group/vid",
-                            activeImage === node.previewImage?.url
+                            "relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all",
+                            activeImage === node.url
                               ? "border-primary ring-2 ring-primary/20 ring-offset-2 ring-offset-[#FEF7F0]"
                               : "border-transparent hover:border-black/10",
                           )}
+                          aria-label={`Vue ${i + 1}`}
+                          aria-pressed={activeImage === node.url}
+                          aria-controls={`product-image-${i}`}
+                          aria-describedby={`product-image-${i}`}
+                          aria-haspopup="dialog"
+                          style={{ cursor: "pointer" }}
                         >
-                          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover/vid:bg-black/10 transition-colors">
-                            <div className="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center shadow-sm">
-                              <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-black border-b-[5px] border-b-transparent ml-1" />
-                            </div>
-                          </div>
-                          {node.previewImage && (
-                            <Image
-                              src={node.previewImage.url}
-                              alt="Produit en vidéo"
-                              fill
-                              sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
-                              className="object-cover"
-                            />
-                          )}
+                          <Image
+                            src={node.url}
+                            alt={node.altText || `Vue ${i + 1}`}
+                            fill
+                            sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
+                            className="object-cover"
+                          />
                         </button>
                       ))}
-                  </div>
 
-                  {/* Bouton "Voir toutes les photos" */}
-                  {totalPhotoCount > 1 && (
-                    <button
-                      onClick={() => setIsLibraryOpen(true)}
-                      className="w-full flex items-center justify-center gap-2.5 py-3 rounded-2xl border border-black/10 bg-white/60 hover:bg-white hover:border-primary/30 text-sm font-bold text-primary/70 hover:text-primary transition-all duration-200 group"
-                    >
-                      <Images className="w-4 h-4 transition-transform group-hover:scale-110" />
-                      <span>Voir toutes les photos</span>
-                      <span className="ml-1 text-xs font-semibold text-primary/40 bg-primary/5 px-2 py-0.5 rounded-full">
-                        {totalPhotoCount}
-                      </span>
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+                      {/* Vidéos */}
+                      {product?.media?.edges
+                        .filter((e: any) => e.node.mediaContentType === "VIDEO")
+                        .map(({ node }: any, i: number) => (
+                          <button
+                            key={`vid-${i}`}
+                            onClick={() =>
+                              node.previewImage &&
+                              setActiveImage(node.previewImage.url)
+                            }
+                            className={cn(
+                              "relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex-shrink-0 rounded-2xl overflow-hidden border-2 transition-all group/vid",
+                              activeImage === node.previewImage?.url
+                                ? "border-primary ring-2 ring-primary/20 ring-offset-2 ring-offset-[#FEF7F0]"
+                                : "border-transparent hover:border-black/10",
+                            )}
+                          >
+                            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover/vid:bg-black/10 transition-colors">
+                              <div className="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center shadow-sm">
+                                <div className="w-0 h-0 border-t-[5px] border-t-transparent border-l-[8px] border-l-black border-b-[5px] border-b-transparent ml-1" />
+                              </div>
+                            </div>
+                            {node.previewImage && (
+                              <Image
+                                src={node.previewImage.url}
+                                alt="Produit en vidéo"
+                                fill
+                                sizes="(max-width: 640px) 64px, (max-width: 768px) 80px, 96px"
+                                className="object-cover"
+                              />
+                            )}
+                          </button>
+                        ))}
+                    </div>
 
-          {/* COLONNE DROITE : INFO & ACTION */}
-          <div className="lg:col-span-5 flex flex-col pt-4 lg:pt-0">
-            {/* Header Produit */}
-            <div className="mb-8 border-b border-black/10 pb-8">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase text-primary mb-4 leading-[0.9]">
-                {product.title}
-              </h1>
-
-              <div className="flex items-baseline gap-4">
-                <span className="text-3xl font-bold text-primary tracking-tight">
-                  {price && formatPrice(price, product.currency)}
-                </span>
-                {isSale && (
-                  <span className="text-xl text-muted-foreground line-through decoration-red-500/50">
-                    {formatPrice(
-                      compareAtPrice,
-                      product.currency,
+                    {/* Bouton "Voir toutes les photos" */}
+                    {totalPhotoCount > 1 && (
+                      <button
+                        onClick={() => setIsLibraryOpen(true)}
+                        className="w-full flex items-center justify-center gap-2.5 py-3 rounded-2xl border border-black/10 bg-white/60 hover:bg-white hover:border-primary/30 text-sm font-bold text-primary/70 hover:text-primary transition-all duration-200 group"
+                      >
+                        <Images className="w-4 h-4 transition-transform group-hover:scale-110" />
+                        <span>Voir toutes les photos</span>
+                        <span className="ml-1 text-xs font-semibold text-primary/40 bg-primary/5 px-2 py-0.5 rounded-full">
+                          {totalPhotoCount}
+                        </span>
+                      </button>
                     )}
-                  </span>
+                  </div>
                 )}
               </div>
-              
-              {shopInfo?.paymentSettings?.supportedDigitalWallets?.includes("SHOP_PAY") && price && (
-                 <ShopPayInstallments amount={price} currencyCode={product.currency} />
-              )}
             </div>
 
-            {/* Sélecteurs (Options) */}
-            <div className="space-y-8 mb-10">
-              {product?.options?.map((option) => (
-                <div key={option.id} className="space-y-3">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    {option.name}{" "}:{" "}
-                    <span className="text-primary">
-                      {selectedOptions[option.name]}
+            {/* COLONNE DROITE : INFO & ACTION */}
+            <div className="lg:col-span-5 flex flex-col pt-4 lg:pt-0">
+              {/* Header Produit */}
+              <div className="mb-8 border-b border-black/10 pb-8">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter uppercase text-primary mb-4 leading-[0.9]">
+                  {product.title}
+                </h1>
+
+                <div className="flex items-baseline gap-4">
+                  <span className="text-3xl font-bold text-primary tracking-tight">
+                    {price && formatPrice(price, product.currency)}
+                  </span>
+                  {isSale && (
+                    <span className="text-xl text-muted-foreground line-through decoration-red-500/50">
+                      {formatPrice(
+                        compareAtPrice,
+                        product.currency,
+                      )}
                     </span>
+                  )}
+                </div>
+                
+                {shopInfo?.paymentSettings?.supportedDigitalWallets?.includes("SHOP_PAY") && price && (
+                  <ShopPayInstallments amount={price} currencyCode={product.currency} />
+                )}
+              </div>
+
+              {/* Sélecteurs (Options) */}
+              <div className="space-y-8 mb-10">
+                {product?.options?.map((option) => (
+                  <div key={option.id} className="space-y-3">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      {option.name}{" "}:{" "}
+                      <span className="text-primary">
+                        {selectedOptions[option.name]}
+                      </span>
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {option.values.map((value) => {
+                        const isSelected = selectedOptions[option.name] === value;
+                        return (
+                          <button
+                            key={value}
+                            onClick={() => handleOptionChange(option.name, value)}
+                            className={cn(
+                              "px-6 py-3 rounded-full text-sm font-bold border transition-all duration-200 min-w-[3rem]",
+                              isSelected
+                                ? "bg-primary text-white border-primary shadow-lg scale-105"
+                                : "bg-white text-primary border-primary/10 hover:border-primary/30 hover:bg-white/50",
+                            )}
+                          >
+                            {value}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Sélecteur d'Abonnement / Selling Plans */}
+                {product.sellingPlanGroups && product.sellingPlanGroups.length > 0 && (
+                  <div className="space-y-4">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Options d'achat
+                    </h3>
+                    <SellingPlanSelector
+                      sellingPlanGroups={product.sellingPlanGroups}
+                      onSellingPlanChange={setSelectedSellingPlanId}
+                      basePrice={selectedVariant?.price || product.price}
+                      currency={product.currency}
+                    />
+                  </div>
+                )}
+
+                {/* Sélecteur Quantité */}
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Quantité
                   </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {option.values.map((value) => {
-                      const isSelected = selectedOptions[option.name] === value;
-                      return (
-                        <button
-                          key={value}
-                          onClick={() => handleOptionChange(option.name, value)}
-                          className={cn(
-                            "px-6 py-3 rounded-full text-sm font-bold border transition-all duration-200 min-w-[3rem]",
-                            isSelected
-                              ? "bg-primary text-white border-primary shadow-lg scale-105"
-                              : "bg-white text-primary border-primary/10 hover:border-primary/30 hover:bg-white/50",
-                          )}
-                        >
-                          {value}
-                        </button>
-                      );
-                    })}
+                  <div className="flex items-center gap-4 bg-white w-fit px-2 py-1 rounded-full border border-black/10">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/20 transition-colors"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="w-8 text-center font-bold text-lg">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/20 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-              ))}
-
-              {/* Sélecteur d'Abonnement / Selling Plans */}
-              {product.sellingPlanGroups && product.sellingPlanGroups.length > 0 && (
-                <div className="space-y-4">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Options d'achat
-                  </h3>
-                  <SellingPlanSelector
-                    sellingPlanGroups={product.sellingPlanGroups}
-                    onSellingPlanChange={setSelectedSellingPlanId}
-                    basePrice={selectedVariant?.price || product.price}
-                    currency={product.currency}
-                  />
-                </div>
-              )}
-
-              {/* Sélecteur Quantité */}
-              <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                  Quantité
-                </h3>
-                <div className="flex items-center gap-4 bg-white w-fit px-2 py-1 rounded-full border border-black/10">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/20 transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-8 text-center font-bold text-lg">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-secondary/20 transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
-            </div>
 
-            {/* Actions Principales */}
-            <div className="flex flex-col gap-4 mb-10">
-              <Button
-                size="lg"
-                onClick={handleAddToCart}
-                disabled={!selectedVariant?.availableForSale || isAdding}
-                className="group relative w-full rounded-full h-16 text-lg font-bold uppercase tracking-widest text-white transition-all shadow-xl hover:scale-[1.02] overflow-hidden border-2 border-transparent bg-black disabled:opacity-70 disabled:cursor-not-allowed"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(#000, #000), linear-gradient(90deg, #EC7B9C, #F4C0AC, #ffffff, #EC7B9C)",
-                  backgroundOrigin: "padding-box, border-box",
-                  backgroundClip: "padding-box, border-box",
-                  backgroundSize: "100% 100%, 200% 100%",
-                }}
-              >
-                <div
-                  className="absolute inset-0 animate-shine [background-size:200%_100%]"
+              {/* Actions Principales */}
+              <div className="flex flex-col gap-4 mb-10">
+                <Button
+                  size="lg"
+                  onClick={handleAddToCart}
+                  disabled={!selectedVariant?.availableForSale || isAdding}
+                  className="group relative w-full rounded-full h-16 text-lg font-bold uppercase tracking-widest text-white transition-all shadow-xl hover:scale-[1.02] overflow-hidden border-2 border-transparent bg-black disabled:opacity-70 disabled:cursor-not-allowed"
                   style={{
-                    backgroundImage: "inherit",
-                    backgroundOrigin: "inherit",
-                    backgroundClip: "inherit",
+                    backgroundImage:
+                      "linear-gradient(#000, #000), linear-gradient(90deg, #EC7B9C, #F4C0AC, #ffffff, #EC7B9C)",
+                    backgroundOrigin: "padding-box, border-box",
+                    backgroundClip: "padding-box, border-box",
+                    backgroundSize: "100% 100%, 200% 100%",
                   }}
-                />
-                <span className="relative flex items-center justify-center gap-3 z-10">
-                  {isAdding
-                    ? "Ajout..."
-                    : !selectedVariant?.availableForSale
-                      ? "Épuisé"
-                      : isPreOrder
-                        ? "Pré-commander"
-                        : "Ajouter au Panier"}
-                  <ShoppingBag
-                    className={cn(
-                      "w-5 h-5 transition-transform",
-                      isAdding && "animate-bounce",
-                    )}
-                  />
-                </span>
-              </Button>
-
-              <p className="text-xs text-center text-muted-foreground mt-2">
-                Livraison offerte dès 60€ • Fait main avec passion
-              </p>
-              
-              <StoreAvailability availability={availability} />
-
-              <ProductBundle mainProduct={product} recommendations={recommendations || []} />
-            </div>
-
-            {/* Accordéons d'Information */}
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="description" className="border-black/10">
-                <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
-                  L'Âme de la Pièce
-                </AccordionTrigger>
-                <AccordionContent>
+                >
                   <div
-                    className="prose prose-sm text-muted-foreground leading-relaxed max-w-none pb-4"
-                    dangerouslySetInnerHTML={{
-                      __html: product.descriptionHtml || product.description,
+                    className="absolute inset-0 animate-shine [background-size:200%_100%]"
+                    style={{
+                      backgroundImage: "inherit",
+                      backgroundOrigin: "inherit",
+                      backgroundClip: "inherit",
                     }}
                   />
-                </AccordionContent>
-              </AccordionItem>
+                  <span className="relative flex items-center justify-center gap-3 z-10">
+                    {isAdding
+                      ? "Ajout..."
+                      : !selectedVariant?.availableForSale
+                        ? "Épuisé"
+                        : isPreOrder
+                          ? "Pré-commander"
+                          : "Ajouter au Panier"}
+                    <ShoppingBag
+                      className={cn(
+                        "w-5 h-5 transition-transform",
+                        isAdding && "animate-bounce",
+                      )}
+                    />
+                  </span>
+                </Button>
 
-              <AccordionItem value="shipping" className="border-black/10">
-                <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
-                  Livraison & Authenticité
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground space-y-4 pb-4">
-                  <div className="flex gap-3 items-start">
-                    <Truck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-primary">
-                        Expédition Soignée
-                      </p>
-                      <p className="text-sm">
-                        Chaque création est emballée avec soin et expédiée sous 24/48h depuis mon atelier en France.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 items-start">
-                    <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-bold text-primary">
-                        Satisfait ou Échangé
-                      </p>
-                      <p className="text-sm">
-                        Chaque pièce est unique. Si elle ne vous transporte pas, contactez-moi sous 14 jours pour un échange ou un retour.
-                      </p>
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </div>
-      </PageContainer>
-
-      {/* STICKY MOBILE BAR */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-black/5 z-40 md:hidden flex items-center gap-4 animate-in slide-in-from-bottom-full duration-500 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
-        <div className="flex-1">
-          <p className="text-xs font-bold text-primary truncate max-w-[150px]">
-            {product.title}
-          </p>
-          <div className="flex items-center gap-2">
-            <p className="text-xs text-muted-foreground">
-              {price && formatPrice(price, product.currency)}
-            </p>
-            {isSale && (
-              <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full">
-                SOLDES
-              </span>
-            )}
-          </div>
-        </div>
-        <Button
-          size="sm"
-          onClick={handleAddToCart}
-          disabled={!selectedVariant?.availableForSale || isAdding}
-          className="rounded-full px-6 font-bold uppercase tracking-wider bg-primary text-white hover:bg-primary/80 shadow-lg"
-        >
-          {isAdding ? "..." : "Ajouter"}
-        </Button>
-      </div>
-
-      {/* Lightbox (single image, click on main) */}
-      <AnimatePresence>
-        {isLightboxOpen && activeImage && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center isolate">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 bg-black/90 backdrop-blur-md"
-              onClick={() => setIsLightboxOpen(false)}
-            />
-            
-            {/* Close Button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ delay: 0.1 }}
-              className="absolute top-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
-              onClick={() => setIsLightboxOpen(false)}
-            >
-              <X className="w-6 h-6" />
-            </motion.button>
-
-            {/* TOP-LEFT : Titre + Variante */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ delay: 0.15 }}
-              className="absolute top-6 left-0 md:left-6 z-50 w-full md:w-auto md:max-w-[calc(100%-5rem)] text-center md:text-left pointer-events-none px-6 md:px-0"
-            >
-              <p className="text-white font-bold text-base md:text-lg leading-tight drop-shadow-md">
-                {product.title}
-              </p>
-              {variantLabel && (
-                <p className="text-white/70 text-xs md:text-sm font-medium mt-0.5 tracking-wide drop-shadow">
-                  {variantLabel}
+                <p className="text-xs text-center text-muted-foreground mt-2">
+                  Livraison offerte dès 60€ • Fait main avec passion
                 </p>
-              )}
-            </motion.div>
+                
+                <StoreAvailability availability={availability} />
 
-            {/* BOTTOM-RIGHT : Métadonnées photo */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ delay: 0.15 }}
-              className="absolute bottom-6 left-0 md:left-auto md:right-6 z-50 w-full md:w-auto md:max-w-[calc(100%-3rem)] text-center md:text-right pointer-events-none px-6 md:px-0"
-            >
-              {activeImageAlt && activeImageAlt !== product.title && (
-                <p className="text-white/80 text-xs md:text-sm font-medium drop-shadow leading-snug">
-                  {activeImageAlt}
-                </p>
-              )}
-              <p className="text-white/40 text-[11px] mt-0.5 tracking-widest uppercase drop-shadow">
-                {activeImageIndex + 1} / {totalImages}
-              </p>
-            </motion.div>
-
-            {/* Image Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full h-full max-w-7xl max-h-[90vh] p-4 flex items-center justify-center pointer-events-none"
-            >
-              <div className="relative w-full h-full pointer-events-auto">
-                 <Image
-                    src={activeImage}
-                    alt={activeImageAlt}
-                    fill
-                    className="object-contain"
-                    sizes="100vw"
-                    priority
-                    quality={100}
-                 />
+                <ProductBundle mainProduct={product} recommendations={recommendations || []} />
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
-      {/* Photo Library Modal */}
-      <PhotoLibraryModal
-        open={isLibraryOpen}
-        onClose={() => setIsLibraryOpen(false)}
-        groups={photoGroups}
-        productTitle={product.title}
-      />
-    </PageContainer>
+              {/* Accordéons d'Information */}
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="description" className="border-black/10">
+                  <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
+                    L'Âme de la Pièce
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div
+                      className="prose prose-sm text-muted-foreground leading-relaxed max-w-none pb-4"
+                      dangerouslySetInnerHTML={{
+                        __html: product.descriptionHtml || product.description,
+                      }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="shipping" className="border-black/10">
+                  <AccordionTrigger className="text-sm font-bold uppercase tracking-widest hover:no-underline hover:text-primary">
+                    Livraison & Authenticité
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground space-y-4 pb-4">
+                    <div className="flex gap-3 items-start">
+                      <Truck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-bold text-primary">
+                          Expédition Soignée
+                        </p>
+                        <p className="text-sm">
+                          Chaque création est emballée avec soin et expédiée sous 24/48h depuis mon atelier en France.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3 items-start">
+                      <ShieldCheck className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-bold text-primary">
+                          Satisfait ou Échangé
+                        </p>
+                        <p className="text-sm">
+                          Chaque pièce est unique. Si elle ne vous transporte pas, contactez-moi sous 14 jours pour un échange ou un retour.
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
+        </PageContainer>
+
+        {/* STICKY MOBILE BAR */}
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-black/5 z-40 md:hidden flex items-center gap-4 animate-in slide-in-from-bottom-full duration-500 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.1)]">
+          <div className="flex-1">
+            <p className="text-xs font-bold text-primary truncate max-w-[150px]">
+              {product.title}
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs text-muted-foreground">
+                {price && formatPrice(price, product.currency)}
+              </p>
+              {isSale && (
+                <span className="text-[10px] bg-red-500 text-white px-1.5 py-0.5 rounded-full">
+                  SOLDES
+                </span>
+              )}
+            </div>
+          </div>
+          <Button
+            size="sm"
+            onClick={handleAddToCart}
+            disabled={!selectedVariant?.availableForSale || isAdding}
+            className="rounded-full px-6 font-bold uppercase tracking-wider bg-primary text-white hover:bg-primary/80 shadow-lg"
+          >
+            {isAdding ? "..." : "Ajouter"}
+          </Button>
+        </div>
+
+        {/* Lightbox (single image, click on main) */}
+        <AnimatePresence>
+          {isLightboxOpen && activeImage && (
+            <div className="fixed inset-0 z-[200] flex items-center justify-center isolate">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 bg-black/90 backdrop-blur-md"
+                onClick={() => setIsLightboxOpen(false)}
+              />
+              
+              {/* Close Button */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: 0.1 }}
+                className="absolute top-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+                onClick={() => setIsLightboxOpen(false)}
+              >
+                <X className="w-6 h-6" />
+              </motion.button>
+
+              {/* TOP-LEFT : Titre + Variante */}
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ delay: 0.15 }}
+                className="absolute top-6 left-0 md:left-6 z-50 w-full md:w-auto md:max-w-[calc(100%-5rem)] text-center md:text-left pointer-events-none px-6 md:px-0"
+              >
+                <p className="text-white font-bold text-base md:text-lg leading-tight drop-shadow-md">
+                  {product.title}
+                </p>
+                {variantLabel && (
+                  <p className="text-white/70 text-xs md:text-sm font-medium mt-0.5 tracking-wide drop-shadow">
+                    {variantLabel}
+                  </p>
+                )}
+              </motion.div>
+
+              {/* BOTTOM-RIGHT : Métadonnées photo */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: 0.15 }}
+                className="absolute bottom-6 left-0 md:left-auto md:right-6 z-50 w-full md:w-auto md:max-w-[calc(100%-3rem)] text-center md:text-right pointer-events-none px-6 md:px-0"
+              >
+                {activeImageAlt && activeImageAlt !== product.title && (
+                  <p className="text-white/80 text-xs md:text-sm font-medium drop-shadow leading-snug">
+                    {activeImageAlt}
+                  </p>
+                )}
+                <p className="text-white/40 text-[11px] mt-0.5 tracking-widest uppercase drop-shadow">
+                  {activeImageIndex + 1} / {totalImages}
+                </p>
+              </motion.div>
+
+              {/* Image Container */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="relative w-full h-full max-w-7xl max-h-[90vh] p-4 flex items-center justify-center pointer-events-none"
+              >
+                <div className="relative w-full h-full pointer-events-auto">
+                  <Image
+                      src={activeImage}
+                      alt={activeImageAlt}
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                      priority
+                      quality={100}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Photo Library Modal */}
+        <PhotoLibraryModal
+          open={isLibraryOpen}
+          onClose={() => setIsLibraryOpen(false)}
+          groups={photoGroups}
+          productTitle={product.title}
+        />
+      </PageContainer>
+    </div>
   );
 }

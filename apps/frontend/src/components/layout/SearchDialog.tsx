@@ -98,22 +98,36 @@ export function SearchDialog() {
     );
   }, []);
 
-  // Raccourci clavier ⌘K / Ctrl+K
+  const handleOpen = () => {
+    // Calcul de l'origine exacte (effet génie parfait, merci les maths CSS)
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const Bx = rect.left + rect.width / 2;
+      const By = rect.top + rect.height / 2;
+      // top:50% left:50% translate(-50%,-50%) décale le repère de vw/2, vh/2. 
+      // 50% dans transform-origin ajoute W/2 et H/2 pour annuler le translate.
+      setOrigin(`calc(${Bx - window.innerWidth / 2}px + 50%) calc(${By - window.innerHeight / 2}px + 50%)`);
+    }
+    setOpen(true);
+  };
+
+  // Pareil pour le clavier (quand ouvert via ⌘K)
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        // Calcule l'origine depuis le bouton avant d'ouvrir
-        if (buttonRef.current) {
+        if (!open && buttonRef.current) {
           const rect = buttonRef.current.getBoundingClientRect();
-          setOrigin(`${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`);
+          const Bx = rect.left + rect.width / 2;
+          const By = rect.top + rect.height / 2;
+          setOrigin(`calc(${Bx - window.innerWidth / 2}px + 50%) calc(${By - window.innerHeight / 2}px + 50%)`);
         }
         setOpen((prev) => !prev);
       }
     };
     document.addEventListener("keydown", handleKeydown);
     return () => document.removeEventListener("keydown", handleKeydown);
-  }, []);
+  }, [open]);
 
   // Chargement lazy des produits au premier open
   const fetchProducts = useCallback(async () => {
@@ -189,14 +203,7 @@ export function SearchDialog() {
     setQuery(q);
   };
 
-  const handleOpen = () => {
-    // Calcule l'origine exacte depuis le centre du bouton au moment du clic
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setOrigin(`${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`);
-    }
-    setOpen(true);
-  };
+
 
   return (
     <>
@@ -254,15 +261,15 @@ export function SearchDialog() {
               Recherchez parmi tous les produits Jolananas
             </DialogPrimitive.Description>
 
-            <Command className="border-none [&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 [&_[cmdk-input]]:border-none [&_[cmdk-input]]:shadow-none [&_[cmdk-input]]:ring-0">
+            <Command className="border-none [&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-14 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-14 [&_[cmdk-input]]:text-base [&_[cmdk-item]]:px-3 [&_[cmdk-item]]:py-4 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 [&_[cmdk-input]]:border-none [&_[cmdk-input]]:shadow-none [&_[cmdk-input]]:ring-0">
               <CommandInput
-                placeholder={isMac ? "Rechercher des créations... (⌘K)" : "Rechercher des créations..."}
+                placeholder={isMac ? "Rechercher des produits créatifs... (⌘K)" : "Rechercher des produits créatifs..."}
                 value={query}
                 onValueChange={setQuery}
                 className="text-primary placeholder:text-primary/40"
               />
 
-              <CommandList className="max-h-[420px] px-1">
+              <CommandList className="max-h-[500px] px-2 py-2">
                 {/* Chargement */}
                 {loading && (
                   <div className="p-4 space-y-3">
@@ -282,13 +289,13 @@ export function SearchDialog() {
                 {!loading && !query && topTags.length > 0 && (
                   <CommandGroup
                     heading={
-                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                      <span className="flex items-center gap-1.5 text-primary/50 text-[10px] uppercase tracking-widest font-bold my-2 ml-1">
                         <TrendingUp className="h-3.5 w-3.5" />
                         Tendances
                       </span>
                     }
                   >
-                    <div className="flex flex-wrap gap-2 px-2 pb-2 pt-1">
+                    <div className="flex flex-wrap gap-2 px-1 pb-3 pt-1">
                       {topTags.map((tag) => (
                         <button
                           key={tag.query}
@@ -306,7 +313,7 @@ export function SearchDialog() {
                 {!loading && !query && recentlyViewed.length > 0 && (
                   <CommandGroup
                     heading={
-                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                      <span className="flex items-center gap-1.5 text-primary/50 text-[10px] uppercase tracking-widest font-bold my-2 ml-1">
                         <Clock className="h-3.5 w-3.5" />
                         Consultés récemment
                       </span>
@@ -351,9 +358,9 @@ export function SearchDialog() {
                 {!loading && debouncedQuery && results.length > 0 && (
                   <CommandGroup
                     heading={
-                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                      <span className="flex items-center gap-1.5 text-primary/50 text-[10px] uppercase tracking-widest font-bold my-2 ml-1">
                         <Sparkles className="h-3.5 w-3.5" />
-                        {results.length} création{results.length > 1 ? "s" : ""} trouvée{results.length > 1 ? "s" : ""}
+                        {results.length} création{results.length > 1 ? "s" : ""}
                       </span>
                     }
                   >

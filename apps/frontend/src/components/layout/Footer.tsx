@@ -145,9 +145,6 @@ export function Footer() {
             <ul className="space-y-4">
               {[
                 "Toutes les collections",
-                "Nouveautés",
-                "Best Sellers",
-                "Éditions Limitées",
               ].map((item) => (
                 <li key={item}>
                   <Link
