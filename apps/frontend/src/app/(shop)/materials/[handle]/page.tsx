@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import { getMetaobjectByHandle, Metaobject } from "@/lib/shopify/metaobjects";
 import Image from "next/image";
-import { Link } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/SEO/JsonLd";
 import { baseUrl } from "@/app/shared-metadata";
