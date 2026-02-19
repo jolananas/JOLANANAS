@@ -4,6 +4,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/layout/PageContainer";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Nos Collections | JOLANANAS",
   description: "Explorez nos univers de créations artisanales.",
