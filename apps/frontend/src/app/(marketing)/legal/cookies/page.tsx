@@ -53,10 +53,9 @@ export default async function CookiesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl"></div>
-      <PageContainer className="container py-32 md:py-48">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <Breadcrumb>
+    <PageContainer className="container py-32 md:py-48">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
@@ -90,6 +89,5 @@ export default async function CookiesPage() {
           </Card>
         </div>
       </PageContainer>
-    </div>
   );
 }

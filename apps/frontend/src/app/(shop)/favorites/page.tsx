@@ -78,11 +78,10 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl"></div>
-      <PageContainer className="container py-32 md:py-48">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* En-tête avec Card */}
-          <Card className="border-0 shadow-none bg-transparent">
+    <PageContainer className="container py-32 md:py-48">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* En-tête avec Card */}
+        <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="text-center space-y-4">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Badge
@@ -105,6 +104,5 @@ export default function FavoritesPage() {
           <FavoritesGrid products={products} />
         </div>
       </PageContainer>
-    </div>
   );
 }
