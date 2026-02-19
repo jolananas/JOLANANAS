@@ -17,6 +17,7 @@ interface DashboardData {
     avatar: string | null;
     emailVerified: Date | null;
     memberSince: string;
+    tags?: string[];
   };
   stats: {
     totalOrders: number;
@@ -129,8 +130,23 @@ export function UserDashboard() {
     );
   }
 
+  const isVIP = dashboardData.user.tags?.includes("VIP") || dashboardData.user.tags?.includes("vip");
+
   return (
     <div className="space-y-8">
+      {/* Badge VIP si applicable */}
+      {isVIP && (
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 flex items-center gap-3">
+          <div className="bg-primary/10 p-2 rounded-full">
+            <span className="text-xl">🌟</span>
+          </div>
+          <div>
+            <h3 className="font-serif font-bold text-primary">Membre de l'Atelier Privé</h3>
+            <p className="text-sm text-muted-foreground">Vous avez accès à nos ventes privées et offres exclusives.</p>
+          </div>
+        </div>
+      )}
+
       {/* Statistiques principales */}
       <DashboardStats
         stats={dashboardData.stats}

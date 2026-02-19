@@ -57,7 +57,7 @@ export function ActiveSessions() {
 
       if (!data.success) {
         throw new Error(
-          data.error || "Erreur lors de la récupération des sessions",
+          data.error,
         );
       }
 
@@ -85,7 +85,7 @@ export function ActiveSessions() {
       const deleteData = await response.json();
 
       if (!response.ok || !deleteData.success) {
-        throw new Error(deleteData.error || "Erreur lors de la suppression");
+        throw new Error(deleteData.error);
       }
 
       // Recharger la liste

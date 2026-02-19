@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Générer un nom de fichier unique basé sur shopifyCustomerId
-    const fileExtension = file.name.split(".").pop() || "jpg";
+    const fileExtension = file.name.split(".").pop();
     const fileName = `${session.user.shopifyCustomerId}-${Date.now()}.${fileExtension}`;
     const filePath = join(avatarsDir, fileName);
 

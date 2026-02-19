@@ -27,37 +27,26 @@ export async function GET(request: NextRequest) {
     // Récupérer tous les produits pour compter les produits par collection
     const products = await getAllProducts();
 
-    // Créer un Map pour accéder rapidement aux collections Shopify par handle
-    const collectionsMap = new Map(
-      shopifyCollections.map((collection) => [collection.handle, collection]),
-    );
 
-    // Extraire toutes les collections uniques depuis les produits
-    const collectionsSet = new Set<string>();
-    products.forEach((product) => {
-      product.collections.forEach((collection) => {
-        collectionsSet.add(collection);
-      });
-    });
 
-    // Créer la liste des collections avec métadonnées réelles
-    const collections = Array.from(collectionsSet).map((handle) => {
-      const collectionProducts = products.filter((p) =>
-        p.collections.includes(handle),
+    // Construire la liste depuis Shopify directement (source fiable).
+    // product.collections peut être undefined si getAllProducts() ne l'inclut pas.
+    const collections = shopifyCollections.map((shopifyCollection: any) => {
+      const collectionProducts = products.filter((p: any) =>
+        (p.collections ?? []).includes(shopifyCollection.handle),
       );
-      const shopifyCollection = collectionsMap.get(handle);
 
       return {
-        handle,
-        title: shopifyCollection?.title || formatHandleAsTitle(handle),
+        handle: shopifyCollection.handle,
+        title: shopifyCollection.title || formatHandleAsTitle(shopifyCollection.handle),
         description:
-          shopifyCollection?.description ||
-          `Découvrez notre collection ${formatHandleAsTitle(handle)}`,
+          shopifyCollection.description ||
+          `Découvrez notre collection ${formatHandleAsTitle(shopifyCollection.handle)}`,
         productCount: collectionProducts.length,
         image:
-          collectionProducts[0]?.images[0] ||
           shopifyCollection?.image?.url ||
-          "/app/src/public/assets/images/collections/placeholder.svg",
+          collectionProducts[0]?.images?.[0]?.url ||
+          "/assets/images/collections/placeholder.svg",
       };
     });
 

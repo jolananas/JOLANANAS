@@ -1,4 +1,3 @@
-import 'server-only';
 
 import { normalize, resolve, dirname, basename, join } from 'path';
 import { existsSync, realpathSync } from 'fs';

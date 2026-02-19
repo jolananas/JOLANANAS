@@ -1,51 +1,32 @@
 "use server";
+import { shopifyFetch } from "./client";
+import { GET_PRODUCT_RECOMMENDATIONS_QUERY, GET_SHOP_INFO_QUERY } from "./queries";
 
-const domain = process.env.SHOPIFY_STORE_DOMAIN;
-const storefrontAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+/** Garde-fou JS — version stricte :
+ *  1. Répare les URLs avec double extension (.heic.webp) issues d'un vieux cache
+ *  2. Détecte HEIC/HEIF uniquement dans le chemin (avant le ?) pour éviter les faux positifs
+ *  3. Ajoute ?format=webp via paramètre URL — jamais en changeant l'extension
+ *  4. N'ajoute pas format= si c'est déjà présent
+ */
+function cleanShopifyImage(url: string | undefined | null): string {
+  if (!url) return "";
 
-if (!domain || !storefrontAccessToken) {
-  console.error(
-    "ERREUR CONFIGURATION: SHOPIFY_STORE_DOMAIN ou SHOPIFY_STOREFRONT_ACCESS_TOKEN manquant dans env.local",
-  );
-}
+  // 1. Nettoyer toute double extension erronée laissée par d'anciennes tentatives
+  let cleanUrl = url
+    .replace(/\.heic\.webp/gi, ".heic")
+    .replace(/\.heif\.webp/gi, ".heif");
 
-const SHOPIFY_GRAPHQL_API_ENDPOINT = `https://${domain}/api/2024-01/graphql.json`;
+  // 2. Détecter HEIC/HEIF uniquement dans le path (avant le premier ?)
+  const path = cleanUrl.split("?")[0];
+  const isHeic = /\.heic$/i.test(path) || /\.heif$/i.test(path);
 
-async function shopifyFetch<T>({
-  query,
-  variables,
-  cache = "force-cache",
-  tags,
-}: {
-  query: string;
-  variables?: any;
-  cache?: RequestCache;
-  tags?: string[];
-}): Promise<T> {
-  try {
-    const response = await fetch(SHOPIFY_GRAPHQL_API_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": storefrontAccessToken!,
-      },
-      body: JSON.stringify({ query, variables }),
-      cache,
-      ...(tags && { next: { tags } }),
-    });
-
-    const json = await response.json();
-
-    if (json.errors) {
-      console.error("Erreur Shopify API:", json.errors);
-      throw new Error("Erreur API Shopify");
-    }
-
-    return json.data;
-  } catch (error) {
-    console.error("Erreur Fetch Shopify:", error);
-    throw { error };
+  // 3. Forcer la conversion via paramètre CDN Shopify (pas en modifiant l'extension)
+  if (isHeic && !cleanUrl.includes("format=")) {
+    const separator = cleanUrl.includes("?") ? "&" : "?";
+    return `${cleanUrl}${separator}format=webp`;
   }
+
+  return cleanUrl;
 }
 
 function reshapeProduct(product: any) {
@@ -55,30 +36,53 @@ function reshapeProduct(product: any) {
 
   return {
     ...rest,
-    images: images?.edges?.map((edge: any) => edge.node) || [],
-    price: parseFloat(priceRange?.minVariantPrice?.amount || "0"),
+    images: images?.edges?.map((edge: any) => ({
+      ...edge.node,
+      url: cleanShopifyImage(edge.node.url),
+    })) || [],
+    price: parseFloat(priceRange?.minVariantPrice?.amount),
     compareAtPrice: variants?.edges?.[0]?.node?.compareAtPrice
       ? parseFloat(variants.edges[0].node.compareAtPrice.amount)
       : undefined,
-    currency: priceRange?.minVariantPrice?.currencyCode || "EUR",
+    currency: priceRange?.minVariantPrice?.currencyCode,
     variants: variants?.edges?.map((edge: any) => {
       const node = edge.node;
       return {
         ...node,
-        price: parseFloat(node.price?.amount || "0"),
+        price: parseFloat(node.price?.amount),
         compareAtPrice: node.compareAtPrice
           ? parseFloat(node.compareAtPrice.amount)
           : undefined,
+        quantityAvailable: node.quantityAvailable,
+        inventoryPolicy:
+          node.quantityAvailable <= 0 && node.availableForSale
+            ? "CONTINUE"
+            : "DENY",
+        image: node.image
+          ? { ...node.image, url: cleanShopifyImage(node.image.url) }
+          : null,
       };
     }) || [],
-    featuredImage: featuredImage?.url || images?.edges?.[0]?.node?.url || "",
+    featuredImage: cleanShopifyImage(
+      featuredImage?.url || images?.edges?.[0]?.node?.url || ""
+    ),
+    sellingPlanGroups:
+      product.sellingPlanGroups?.edges?.map((edge: any) => ({
+        ...edge.node,
+        sellingPlans: {
+          edges: edge.node.sellingPlans.edges.map((e: any) => ({
+            node: e.node,
+          })),
+        },
+      })) || [],
   };
 }
+
 
 export async function getAllProducts() {
   const query = `
     query AllProducts {
-      products(first: 20) {
+      products(first: 250) {
         edges {
           node {
             id
@@ -87,7 +91,7 @@ export async function getAllProducts() {
             description
             availableForSale
             featuredImage {
-              url
+              url(transform: {preferredContentType: WEBP})
               altText
             }
             priceRange {
@@ -116,7 +120,7 @@ export async function getAllProducts() {
       }
     }
   `;
-  const data = await shopifyFetch<any>({ query, tags: ["products"] });
+  const { data } = await shopifyFetch<any>({ query, tags: ["products"] });
   return (
     data?.products?.edges.map((edge: any) => reshapeProduct(edge.node)) || []
   );
@@ -131,15 +135,15 @@ export async function getProductByHandle(handle: string) {
         handle
         description
         availableForSale
-        images(first: 10) {
+        images(first: 250) {
           edges {
             node {
-              url
+              url(transform: {preferredContentType: WEBP})
               altText
             }
           }
         }
-        media(first: 10) {
+        media(first: 250) {
           edges {
             node {
               ... on Video {
@@ -169,7 +173,7 @@ export async function getProductByHandle(handle: string) {
             currencyCode
           }
         }
-        variants(first: 20) {
+        variants(first: 250) {
           edges {
             node {
               id
@@ -183,8 +187,9 @@ export async function getProductByHandle(handle: string) {
                 amount
                 currencyCode
               }
+              quantityAvailable
               image {
-                url
+                url(transform: {preferredContentType: WEBP})
                 altText
               }
               selectedOptions {
@@ -203,7 +208,7 @@ export async function getProductByHandle(handle: string) {
       }
     }
   `;
-  const data = await shopifyFetch<any>({
+  const { data } = await shopifyFetch<any>({
     query,
     variables: { handle },
     cache: "no-store",
@@ -214,7 +219,7 @@ export async function getProductByHandle(handle: string) {
 export async function getAllCollections() {
   const query = `
     query Collections {
-      collections(first: 10) {
+      collections(first: 250) {
         edges {
           node {
             id
@@ -222,7 +227,7 @@ export async function getAllCollections() {
             handle
             description
             image {
-              url
+              url(transform: {preferredContentType: WEBP})
               altText
             }
           }
@@ -230,7 +235,7 @@ export async function getAllCollections() {
       }
     }
   `;
-  const data = await shopifyFetch<any>({ query });
+  const { data } = await shopifyFetch<any>({ query });
   return data?.collections?.edges.map((edge: any) => edge.node) || [];
 }
 
@@ -241,7 +246,7 @@ export async function getCollectionByHandle(handle: string) {
         id
         title
         description
-        products(first: 20) {
+        products(first: 250) {
           edges {
             node {
               id
@@ -250,7 +255,7 @@ export async function getCollectionByHandle(handle: string) {
               description
               availableForSale
               featuredImage {
-                url
+                url(transform: {preferredContentType: WEBP})
                 altText
               }
               priceRange {
@@ -279,7 +284,7 @@ export async function getCollectionByHandle(handle: string) {
       }
     }
   `;
-  const data = await shopifyFetch<any>({ query, variables: { handle } });
+  const { data } = await shopifyFetch<any>({ query, variables: { handle } });
 
   if (data?.collection) {
     return {
@@ -295,18 +300,7 @@ export async function getCollectionByHandle(handle: string) {
 }
 
 export async function getShopInfo() {
-  const query = `
-    query getShopInfo {
-      shop {
-        name
-        description
-        paymentSettings {
-          currencyCode
-        }
-      }
-    }
-  `;
-  const data = await shopifyFetch<any>({ query });
+  const { data } = await shopifyFetch<any>({ query: GET_SHOP_INFO_QUERY });
   return data?.shop;
 }
 
@@ -339,7 +333,7 @@ export async function createCart() {
       }
     }
   `;
-  const data = await shopifyFetch<any>({ query, cache: "no-store" });
+  const { data } = await shopifyFetch<any>({ query, cache: "no-store" });
   return data?.cartCreate?.cart;
 }
 
@@ -360,6 +354,12 @@ export async function getCart(cartId: string) {
             node {
               id
               quantity
+              cost {
+                totalAmount {
+                  amount
+                  currencyCode
+                }
+              }
               merchandise {
                 ... on ProductVariant {
                   id
@@ -372,7 +372,7 @@ export async function getCart(cartId: string) {
                     title
                     handle
                     featuredImage {
-                      url
+                      url(transform: {preferredContentType: WEBP})
                       altText
                     }
                   }
@@ -385,7 +385,7 @@ export async function getCart(cartId: string) {
     }
   `;
   try {
-    const data = await shopifyFetch<any>({
+    const { data } = await shopifyFetch<any>({
       query,
       variables: { cartId },
       cache: "no-store",
@@ -398,7 +398,7 @@ export async function getCart(cartId: string) {
 
 export async function addToCart(
   cartId: string,
-  lines: { merchandiseId: string; quantity: number }[],
+  lines: { merchandiseId: string; quantity: number; sellingPlanId?: string }[],
 ) {
   const query = `
     mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
@@ -417,6 +417,12 @@ export async function addToCart(
               node {
                 id
                 quantity
+                cost {
+                  totalAmount {
+                    amount
+                    currencyCode
+                  }
+                }
                 merchandise {
                   ... on ProductVariant {
                     id
@@ -429,7 +435,7 @@ export async function addToCart(
                       title
                       handle
                       featuredImage {
-                        url
+                        url(transform: {preferredContentType: WEBP})
                         altText
                       }
                     }
@@ -442,7 +448,7 @@ export async function addToCart(
       }
     }
   `;
-  const data = await shopifyFetch<any>({
+  const { data } = await shopifyFetch<any>({
     query,
     variables: { cartId, lines },
     cache: "no-store",
@@ -472,6 +478,12 @@ export async function updateCartLine(
               node {
                 id
                 quantity
+                cost {
+                  totalAmount {
+                    amount
+                    currencyCode
+                  }
+                }
                 merchandise {
                   ... on ProductVariant {
                     id
@@ -484,7 +496,7 @@ export async function updateCartLine(
                       title
                       handle
                       featuredImage {
-                        url
+                        url(transform: {preferredContentType: WEBP})
                         altText
                       }
                     }
@@ -497,7 +509,7 @@ export async function updateCartLine(
       }
     }
   `;
-  const data = await shopifyFetch<any>({
+  const { data } = await shopifyFetch<any>({
     query,
     variables: { cartId, lines: [{ id: lineId, quantity }] },
     cache: "no-store",
@@ -523,6 +535,12 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
               node {
                 id
                 quantity
+                cost {
+                  totalAmount {
+                    amount
+                    currencyCode
+                  }
+                }
                 merchandise {
                   ... on ProductVariant {
                     id
@@ -535,7 +553,7 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
                       title
                       handle
                       featuredImage {
-                        url
+                        url(transform: {preferredContentType: WEBP})
                         altText
                       }
                     }
@@ -548,7 +566,7 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
       }
     }
   `;
-  const data = await shopifyFetch<any>({
+  const { data } = await shopifyFetch<any>({
     query,
     variables: { cartId, lineIds },
     cache: "no-store",
@@ -557,4 +575,47 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
 }
 
 // Re-export what might be needed by other files if they were using it
-// Assuming other utility functions were not essential or provided in the snippet
+
+export async function getVariantAvailability(variantId: string) {
+  const query = `
+    query getVariantAvailability($variantId: ID!) {
+      node(id: $variantId) {
+        ... on ProductVariant {
+          storeAvailability(first: 50) {
+            edges {
+              node {
+                available
+                location {
+                  name
+                }
+                pickUpTime
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const { data } = await shopifyFetch<any>({
+    query,
+    variables: { variantId },
+    cache: "no-store",
+  });
+  
+  const edges = data?.node?.storeAvailability?.edges;
+  if (!edges || edges.length === 0) return null;
+  
+  // Return the first available location or null
+  const available = edges.find((edge: any) => edge.node.available);
+  return available ? available.node : null;
+}
+
+export async function getProductRecommendations(productId: string) {
+  const { data } = await shopifyFetch<any>({
+    query: GET_PRODUCT_RECOMMENDATIONS_QUERY,
+    variables: { productId },
+    cache: "no-store", // Recommendations should be fresh
+  });
+
+  return data?.productRecommendations?.map((product: any) => reshapeProduct(product)) || [];
+}

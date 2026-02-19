@@ -113,7 +113,7 @@ export const authOptions: NextAuthOptions = {
             },
             userinfo: {
               url: `https://${getCustomerAccountDomain()}/api/customer-account/v1/customer`,
-              async request(context) {
+              async request(context: any) {
                 // Utiliser GraphQL pour récupérer les informations client
                 const clientId = ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID!;
                 const accessToken = context.tokens.access_token as string;
@@ -140,12 +140,13 @@ export const authOptions: NextAuthOptions = {
                 };
               },
             },
-            profile(profile) {
+            profile(profile: any) {
               return {
                 id: profile.sub,
                 email: profile.email,
                 name: profile.name || undefined,
                 image: profile.picture || undefined,
+                role: 'CUSTOMER' as const,
               };
             },
           },
@@ -192,6 +193,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: customer.id, // ID Shopify
             email: customer.email,
+            phone: customer.phone || null,
             name: sanitizeForCookie(
               customer.firstName && customer.lastName
                 ? `${customer.firstName} ${customer.lastName}`
@@ -241,6 +243,9 @@ export const authOptions: NextAuthOptions = {
         if (user.email) {
           token.email = user.email;
         }
+        if ((user as any).phone) {
+          token.phone = (user as any).phone;
+        }
         // emailVerified peut être défini si disponible
         if ((user as any).emailVerified) {
           token.emailVerified = (user as any).emailVerified;
@@ -262,6 +267,9 @@ export const authOptions: NextAuthOptions = {
         }
         if ((user as any).shopifyCustomerId) {
           token.shopifyCustomerId = (user as any).shopifyCustomerId;
+        }
+        if ((user as any).phone) {
+          token.phone = (user as any).phone;
         }
         // emailVerified depuis Shopify
         if (user.emailVerified) {
@@ -288,6 +296,9 @@ export const authOptions: NextAuthOptions = {
         // emailVerified depuis le token
         if (token.emailVerified) {
           session.user.emailVerified = token.emailVerified as Date | null;
+        }
+        if (token.phone) {
+          (session.user as any).phone = token.phone;
         }
         // Ajouter shopifyCustomerId à la session pour utilisation dans les routes API
         (session.user as any).shopifyCustomerId = token.shopifyCustomerId;

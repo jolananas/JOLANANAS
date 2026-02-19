@@ -326,14 +326,16 @@ function createShopPayButtonInstance(
         
         // Récupérer le store domain depuis l'API
         let storeDomain = '';
+        let storefrontToken = '';
         try {
           const response = await fetch('/api/config/shopify');
           if (response.ok) {
             const data = await response.json();
             storeDomain = data.storeDomain;
+            storefrontToken = data.storefrontToken;
           }
         } catch (error) {
-          console.error('❌ Erreur récupération store domain:', error);
+          console.error('❌ Erreur récupération config Shopify:', error);
         }
         
         if (!storeDomain) {
@@ -345,6 +347,11 @@ function createShopPayButtonInstance(
         
         // Attribut store-url requis (format: https://votre-boutique.myshopify.com)
         shopPayButton.setAttribute('store-url', `https://${storeDomain}`);
+        
+        // Attribut client-id requis pour l'authentification (Storefront Access Token public)
+        if (storefrontToken) {
+          shopPayButton.setAttribute('client-id', storefrontToken);
+        }
         
         // Utiliser les variant IDs fournis
         // Le web component shop-pay-button accepte les variant IDs au format GID Shopify

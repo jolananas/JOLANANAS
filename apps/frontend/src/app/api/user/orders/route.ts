@@ -23,8 +23,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = Math.min(parseInt(searchParams.get("limit") || "10", 10), 50); // Max 50 par page
+    const page = parseInt(searchParams.get("page") as string, 10);
+    const limit = Math.min(parseInt(searchParams.get("limit") as string, 10), 50); // Max 50 par page
     const status = searchParams.get("status");
     const search = searchParams.get("search");
 
@@ -116,13 +116,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       id: order.id?.toString(),
       shopifyOrderId: order.id?.toString(),
       orderNumber: order.order_number || order.name,
-      status: order.financial_status || order.fulfillment_status || "PENDING",
-      total: parseFloat(order.total_price || "0"),
-      currency: order.currency || "EUR",
+      status: order.financial_status || order.fulfillment_status,
+      total: parseFloat(order.total_price as string),
+      currency: order.currency,
       shippingCost: parseFloat(
-        order.total_shipping_price_set?.shop_money?.amount || "0",
+        order.total_shipping_price_set?.shop_money?.amount as string,
       ),
-      taxAmount: parseFloat(order.total_tax || "0"),
+      taxAmount: parseFloat(order.total_tax as string),
       createdAt: order.created_at || new Date().toISOString(),
       updatedAt: order.updated_at || new Date().toISOString(),
       items: (order.line_items || []).map(
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
           productId: item.product_id?.toString(),
           variantId: item.variant_id?.toString(),
           quantity: item.quantity || 0,
-          price: parseFloat(item.price || "0"),
+          price: parseFloat(item.price as string),
           title: item.title,
           variantTitle: item.variant_title || null,
           imageUrl: item.image || null,
@@ -155,7 +155,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             address2: order.shipping_address.address2 || null,
             city: order.shipping_address.city,
             province: order.shipping_address.province || null,
-            country: order.shipping_address.country || "France",
+            country: order.shipping_address.country,
             zip: order.shipping_address.zip,
             phone: order.shipping_address.phone || null,
           }

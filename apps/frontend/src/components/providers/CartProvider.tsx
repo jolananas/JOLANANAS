@@ -14,7 +14,7 @@ type CartContextType = {
   cart: any | null;
   cartOpen: boolean;
   toggleCart: () => void;
-  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  addItem: (variantId: string, quantity?: number, sellingPlanId?: string) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
   loading: boolean;
   // Legacy Adapter Properties for Checkout
@@ -66,7 +66,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const toggleCart = () => setCartOpen(!cartOpen);
 
-  const addItem = async (variantId: string, quantity: number = 1) => {
+  const addItem = async (variantId: string, quantity: number = 1, sellingPlanId?: string) => {
     setLoading(true);
     setCartOpen(true);
     try {
@@ -77,7 +77,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("jolananas_cart_id", currentCartId);
       }
       const updatedCart = await addToCart(currentCartId, [
-        { merchandiseId: variantId, quantity },
+        { merchandiseId: variantId, quantity, sellingPlanId },
       ]);
       setCart(updatedCart);
     } catch (e) {
@@ -107,14 +107,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       variantId: edge.node.merchandise.id,
       quantity: edge.node.quantity,
       title: edge.node.merchandise.product.title,
-      price: parseFloat(edge.node.merchandise.price.amount),
+      price: edge.node.cost?.totalAmount?.amount 
+        ? parseFloat(edge.node.cost.totalAmount.amount) / edge.node.quantity
+        : parseFloat(edge.node.merchandise.price?.amount || "0"), // Accurate unit price with fallback
       image: edge.node.merchandise.product.featuredImage?.url,
       handle: edge.node.merchandise.product.handle,
       productTitle: edge.node.merchandise.product.title,
+      sellingPlan: edge.node.sellingPlanAllocation?.sellingPlan,
     }));
   }, [cart]);
 
-  const totalPrice = parseFloat(cart?.cost?.totalAmount?.amount || "0");
+  const totalPrice = parseFloat(cart?.cost?.totalAmount?.amount);
   const totalItems = items.reduce((acc: number, item: any) => acc + item.quantity, 0);
 
   const clearCart = () => {

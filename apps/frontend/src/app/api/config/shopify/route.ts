@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         storeDomain: ENV.SHOPIFY_STORE_DOMAIN,
+        storefrontToken: ENV.SHOPIFY_STOREFRONT_TOKEN,
         configured: true,
       },
       {

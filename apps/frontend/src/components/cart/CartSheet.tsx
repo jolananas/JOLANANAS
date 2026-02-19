@@ -20,7 +20,6 @@ import { useCart } from "@/components/providers/CartProvider";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { useShipping } from "@/components/ecommerce/cart/shared/useShipping";
-import { ShippingProgress } from "@/components/ecommerce/cart/shared/ShippingProgress";
 import { ReassuranceBlock } from "@/components/ecommerce/cart/shared/ReassuranceBlock";
 import { CartItem } from "@/components/ecommerce/cart/shared/CartItem";
 import { EmptyCart } from "@/components/cart/EmptyCart";
@@ -52,7 +51,7 @@ export function CartSheet() {
           variant="ghost"
           size="icon"
           className="relative h-11 w-11 sm:h-9 sm:w-9 touch-manipulation text-jolananas-pink-medium hover:bg-jolananas-pink-light/10"
-          aria-label={`Panier (${totalItems})`}
+          aria-label={`Vos trésors (${totalItems})`}
           suppressHydrationWarning
         >
           <ShoppingBag className="h-5 w-5" />
@@ -61,7 +60,7 @@ export function CartSheet() {
               {totalItems}
             </span>
           )}
-          <span className="sr-only">Panier ({totalItems})</span>
+          <span className="sr-only">Vos trésors ({totalItems})</span>
         </Button>
       </SheetTrigger>
       <SheetContent
@@ -71,13 +70,13 @@ export function CartSheet() {
           <SheetHeader>
             <SheetTitle className="flex items-center gap-3 text-2xl font-black text-gray-900">
               <ShoppingBag className="h-6 w-6 text-jolananas-pink-deep" />
-              Panier
+              Vos trésors
               <Badge variant="secondary" className="bg-jolananas-pink-light/10 text-jolananas-pink-deep border-none text-xs">
-                {totalItems} {totalItems > 1 ? 'articles' : 'article'}
+                {totalItems} {totalItems > 1 ? 'pièces' : 'pièce'}
               </Badge>
             </SheetTitle>
             <SheetDescription className="sr-only">
-              Votre panier actuel chez Jolananas
+              Vos trésors actuels chez Jolananas
             </SheetDescription>
           </SheetHeader>
         </div>
@@ -110,12 +109,7 @@ export function CartSheet() {
         {items.length > 0 && (
           <div className="p-6 bg-gray-50/50 border-t border-gray-100 space-y-6">
             <div className="space-y-4">
-              {shippingInfo && (
-                <ShippingProgress 
-                  progressPercent={progressPercent} 
-                  freeShippingLeft={freeShippingLeft} 
-                />
-              )}
+
 
               <div className="space-y-2">
                 <div className="flex justify-between text-gray-600">
@@ -145,7 +139,7 @@ export function CartSheet() {
                 className="w-full h-14 bg-jolananas-pink-deep hover:bg-jolananas-pink-medium text-white rounded-2xl font-bold text-lg shadow-glow-pink group transition-all"
                 onClick={handleCheckout}
               >
-                Passer la commande
+                Commander ces trésors
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               

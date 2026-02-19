@@ -183,9 +183,7 @@ export function OrderList() {
       });
 
       if (!data.success) {
-        throw new Error(
-          data.error || "Erreur lors de la récupération des commandes",
-        );
+        throw new Error(data.error);
       }
 
       setOrders(data.orders || []);

@@ -190,7 +190,7 @@ export function CategoryFilter({
         <div className="space-y-4">
           <h3 className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary/40">Disponibilité</h3>
           <Select
-            value={filters.availability || "all"}
+            value={filters.availability}
             onValueChange={(value) => updateFilter("availability", value)}
           >
             <SelectTrigger className="w-full bg-white/50 border-0 shadow-none text-[10px] uppercase font-bold tracking-widest h-9">

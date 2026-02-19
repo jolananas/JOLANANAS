@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { AddToCartButton } from "@/components/product/AddToCartButton";
 import { useProductCurrency } from "@/hooks/useProductCurrency";
-import type { Product } from "@/lib/shopify/types";
+import type { Product, Variant } from "@/lib/shopify/types";
 import { PageContainer } from "../layout/PageContainer";
 
 interface ProductInfoProps {
@@ -63,26 +63,88 @@ export function ProductInfo({ product }: ProductInfoProps) {
             </>
           )}
         </div>
+
+        {/* Stock Status */}
+        {/* Stock Status */}
+        {(() => {
+          const selectedVariant = product.variants?.find((v) => v.id === variantId) as Variant | undefined;
+          if (!selectedVariant) return null;
+
+          const quantity = selectedVariant.quantityAvailable;
+          const policy = selectedVariant.inventoryPolicy;
+
+          if (quantity === undefined) return null;
+
+          return (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {quantity === 1 && (
+                <Badge variant="outline" className="border-jolananas-pink-deep text-jolananas-pink-deep bg-jolananas-pink-light/10 animate-pulse">
+                  ✨ Pièce unique - Disponible
+                </Badge>
+              )}
+              {quantity === 2 && (
+                <Badge variant="outline" className="border-orange-500 text-orange-600 bg-orange-50">
+                  ⚡ Dernière chance
+                </Badge>
+              )}
+              {quantity === 0 && policy === "CONTINUE" && (
+                <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200 border">
+                  ⏳ Précommande - Expédition sous 2 semaines
+                </Badge>
+              )}
+              {quantity > 2 && quantity <= 5 && (
+                <div className="text-sm font-medium text-orange-600 flex items-center gap-1.5">
+                   ⚠️ Plus que {quantity} en stock
+                </div>
+              )}
+               {quantity > 5 && (
+                 <div className="text-sm font-medium text-green-600 flex items-center gap-1.5">
+                   <Truck className="h-4 w-4" />
+                   En stock - Expédition immédiate
+                 </div>
+               )}
+            </div>
+          );
+        })()}
       </div>
 
       <Separator />
 
       {/* Description */}
       <div className="space-y-2">
-        <h2 className="font-serif font-semibold">Description</h2>
+        <h2 className="font-serif font-semibold text-xl">Le mot de Joanna</h2>
         <p className="text-muted-foreground leading-relaxed">
           {product.description}
         </p>
       </div>
 
-      {/* Tags */}
+      {product.material?.reference && (
+        <div className="space-y-3 pt-2">
+           <Separator />
+           <div className="flex items-center justify-between">
+              <h3 className="font-serif font-medium text-lg">Matière & Origine</h3>
+               <Button variant="link" asChild className="p-0 h-auto text-primary">
+                 <a href={`/materials/${product.material.reference.handle}`}>En savoir plus &rarr;</a>
+               </Button>
+           </div>
+           <p className="text-muted-foreground">
+             {product.material.reference.fields.find(f => f.key === "name" || f.key === "label")?.value}
+           </p>
+        </div>
+      )}
+
+      {/* Secrets de fabrication */}
       {product.tags && product.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {product.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
+        <div className="space-y-2 pt-2">
+          <Separator />
+          <h3 className="font-serif font-medium text-lg">Les secrets de fabrication</h3>
+          <div className="flex flex-wrap gap-2">
+            {product.tags.map((tag) => (
+              <Badge key={tag} variant="secondary" className="bg-jolananas-pink-light/10 text-jolananas-pink-deep hover:bg-jolananas-pink-light/20">
+                {tag}
+              </Badge>
+            ))}
+          </div>
         </div>
       )}
 
@@ -101,6 +163,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
             productPrice={product.price}
             variantId={variantId}
             availableForSale={product.availableForSale}
+            quantityAvailable={product.variants?.find((v) => v.id === variantId)?.quantityAvailable}
+            inventoryPolicy={product.variants?.find((v) => v.id === variantId)?.inventoryPolicy}
           />
         ) : (
           <Button disabled className="w-full">

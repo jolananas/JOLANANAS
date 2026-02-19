@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
     const draftOrder = draftOrderResponse.data.draft_order;
 
     if (amount) {
-      const expectedAmount = parseFloat(draftOrder.total_price || "0");
-      const receivedAmount = parseFloat(amount.value || "0");
+      const expectedAmount = parseFloat(draftOrder.total_price);
+      const receivedAmount = parseFloat(amount.value);
       if (Math.abs(expectedAmount - receivedAmount) > 0.01) {
         return NextResponse.json(
           { error: "Le montant du paiement ne correspond pas" },

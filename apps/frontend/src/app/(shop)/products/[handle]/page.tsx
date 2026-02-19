@@ -1,6 +1,8 @@
-import { getProductByHandle, getAllProducts } from "@/lib/shopify";
+import { getProductByHandle, getAllProducts, getProductRecommendations, getShopInfo } from "@/lib/shopify";
 import { ProductPageClient } from "@/components/pages/ProductPageClient";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/SEO/JsonLd";
+import { baseUrl } from "@/app/shared-metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,7 @@ export async function generateMetadata({
   return {
     title: product.title,
     description: product.description.substring(0, 160),
+    keywords: product.tags || [],
     openGraph: {
       images: product.featuredImage?.url
         ? [{ url: product.featuredImage.url, width: 1200, height: 630 }]
@@ -34,7 +37,7 @@ export async function generateMetadata({
       type: "website",
     },
     alternates: {
-      canonical: `${process.env.DOMAIN_URL || "https://jolananas.com"}/products/${handle}`,
+      canonical: `${baseUrl}/products/${handle}`,
     },
   };
 }
@@ -70,13 +73,39 @@ export default async function ProductPage({
     },
     offers: {
       "@type": "Offer",
-      url: `${process.env.DOMAIN_URL || "https://jolananas.com"}/products/${handle}`,
+      url: `${baseUrl}/products/${handle}`,
       priceCurrency: product.priceRange?.minVariantPrice?.currencyCode || "EUR",
-      price: product.priceRange?.minVariantPrice?.amount || "0.00",
+      price: product.priceRange?.minVariantPrice?.amount,
       availability: product.availableForSale
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
+      priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
     },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Produits",
+        item: `${baseUrl}/products`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: product.title,
+        item: `${baseUrl}/products/${handle}`,
+      },
+    ],
   };
 
   if (videoMedia && videoMedia.sources && videoMedia.sources.length > 0) {
@@ -90,14 +119,22 @@ export default async function ProductPage({
     };
   }
 
-  // 3. On passe le produit complet au client
+  // 3. Fetch Recommendations & Shop Info
+  const [recommendations, shopInfo] = await Promise.all([
+    getProductRecommendations(product.id),
+    getShopInfo(),
+  ]);
+
+  // 4. On passe le produit complet au client
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      <JsonLd data={jsonLd} id="product-schema" />
+      <JsonLd data={breadcrumbJsonLd} id="breadcrumb-schema" />
+      <ProductPageClient
+        product={product}
+        recommendations={recommendations}
+        shopInfo={shopInfo}
       />
-      <ProductPageClient product={product} />
     </>
   );
 }

@@ -44,7 +44,7 @@ export function VerifyEmailForm({
       );
 
       if (!data.success) {
-        throw new Error(data.error || "Une erreur est survenue");
+        throw new Error(data.error);
       }
 
       if (data.verified) {
@@ -89,7 +89,7 @@ export function VerifyEmailForm({
       );
 
       if (!data.success) {
-        throw new Error(data.error || "Une erreur est survenue");
+        throw new Error(data.error);
       }
 
       setSuccess(true);
@@ -127,7 +127,7 @@ export function VerifyEmailForm({
         <div className="p-3 rounded-lg bg-green-100 text-green-800 text-sm dark:bg-green-900 dark:text-green-300 flex items-center gap-2">
           <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
           <span>
-            Email de vérification envoyé à {email || "votre adresse email"}.
+            Email de vérification envoyé à {email}.
             Vérifiez votre boîte de réception.
           </span>
         </div>
@@ -138,7 +138,7 @@ export function VerifyEmailForm({
         <div className="flex-1">
           <p className="text-sm font-medium">Vérifier votre email</p>
           <p className="text-xs text-muted-foreground">
-            {email || "Votre email n'a pas encore été vérifié"}
+            {email}
           </p>
         </div>
         <Button

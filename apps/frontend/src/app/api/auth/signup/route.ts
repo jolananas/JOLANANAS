@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     // 4. Création dans Shopify (Customer Account API uniquement)
     const nameParts = nameTrimmed.split(" ");
     const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(" ") || "."; // LastName requis par Shopify
+    const lastName = nameParts.slice(1).join(" "); // LastName requis par Shopify
 
     const createResult = await createCustomer(
       emailLower,

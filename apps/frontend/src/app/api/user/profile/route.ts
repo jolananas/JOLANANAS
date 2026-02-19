@@ -11,7 +11,13 @@ const ProfileUpdateSchema = z.object({
   name: z
     .string()
     .min(2, "Le nom doit contenir au moins 2 caractères")
-    .max(100, "Le nom ne peut pas dépasser 100 caractères"),
+    .max(100, "Le nom ne peut pas dépasser 100 caractères")
+    .optional(),
+  phone: z
+    .string()
+    .regex(/^\+?[0-9\s-]{8,20}$/, "Format de téléphone invalide")
+    .optional()
+    .or(z.literal("")),
 });
 
 /**
@@ -45,18 +51,22 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const { name } = validation.data;
+    const { name, phone } = validation.data;
+    const updateData: any = {};
 
-    // Extraire prénom et nom
-    const nameParts = name.trim().split(" ");
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(" ");
+    if (name !== undefined) {
+      // Extraire prénom et nom
+      const nameParts = name.trim().split(" ");
+      updateData.firstName = nameParts[0];
+      updateData.lastName = nameParts.slice(1).join(" ") || "";
+    }
+
+    if (phone !== undefined) {
+      updateData.phone = phone;
+    }
 
     // Mettre à jour le client dans Shopify
-    const updateResult = await updateCustomer(session.user.shopifyCustomerId, {
-      firstName,
-      lastName,
-    });
+    const updateResult = await updateCustomer(session.user.shopifyCustomerId, updateData);
 
     if (!updateResult.customer || updateResult.errors.length > 0) {
       return NextResponse.json(

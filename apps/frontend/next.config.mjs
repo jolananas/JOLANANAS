@@ -10,18 +10,23 @@ const nextConfig = {
   // Configuration des images
   images: {
     formats: ["image/avif", "image/webp"],
+    // Laisse le temps à Shopify CDN de convertir les gros fichiers HEIC
+    minimumCacheTTL: 60,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "u6ydbb-sx.myshopify.com",
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "cdn.shopify.com",
+        pathname: "/s/files/**",
       },
       {
         protocol: "https",
         hostname: "shopify.com",
+        pathname: "/**",
       },
     ],
     dangerouslyAllowSVG: true,

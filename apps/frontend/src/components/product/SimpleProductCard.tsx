@@ -105,7 +105,7 @@ export function SimpleProductCard({ product }: SimpleProductCardProps) {
         </h3>
 
         <p className="text-[10px] text-muted-foreground line-clamp-1 leading-relaxed opacity-80">
-          {product.description || "Création artisanale exclusive JOLANANAS"}
+          {product.description}
         </p>
 
         {/* Prix */}

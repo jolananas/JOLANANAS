@@ -18,7 +18,7 @@ export const PRODUCT_FRAGMENT = `
         currencyCode
       }
     }
-    images(first: 10) {
+    images(first: 250) {
       edges {
         node {
           url
@@ -32,12 +32,13 @@ export const PRODUCT_FRAGMENT = `
       name
       values
     }
-    variants(first: 50) {
+    variants(first: 250) {
       edges {
         node {
           id
           title
           availableForSale
+          quantityAvailable
           price {
             amount
             currencyCode
@@ -60,7 +61,7 @@ export const PRODUCT_FRAGMENT = `
       }
     }
     tags
-    collections(first: 5) {
+    collections(first: 250) {
       edges {
         node {
           id
@@ -69,11 +70,62 @@ export const PRODUCT_FRAGMENT = `
         }
       }
     }
+    material: metafield(namespace: "custom", key: "material") {
+      reference {
+        ... on Metaobject {
+          id
+          handle
+          type
+          fields {
+            key
+            value
+          }
+        }
+      }
+    }
+    sellingPlanGroups(first: 1) {
+      edges {
+        node {
+          name
+          options {
+            name
+            values
+          }
+          sellingPlans(first: 250) {
+            edges {
+              node {
+                id
+                name
+                description
+                options {
+                  name
+                  value
+                }
+                priceAdjustments {
+                  orderCount
+                  adjustmentValue {
+                    ... on SellingPlanFixedAmountPriceAdjustment {
+                      adjustmentAmount {
+                        amount
+                        currencyCode
+                      }
+                    }
+                    ... on SellingPlanPercentagePriceAdjustment {
+                      adjustmentPercentage
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 `
 
 export const GET_ALL_PRODUCTS_QUERY = `
-  query GetAllProducts($first: Int = 20, $after: String) {
+  query GetAllProducts($first: Int = 250, $after: String) {
     products(first: $first, after: $after) {
       edges {
         cursor
@@ -100,7 +152,7 @@ export const GET_PRODUCT_BY_HANDLE_QUERY = `
 `
 
 export const GET_COLLECTION_BY_HANDLE_QUERY = `
-  query GetCollectionByHandle($handle: String!, $first: Int = 20) {
+  query GetCollectionByHandle($handle: String!, $first: Int = 250, $after: String) {
     collectionByHandle(handle: $handle) {
       id
       title
@@ -112,7 +164,11 @@ export const GET_COLLECTION_BY_HANDLE_QUERY = `
         width
         height
       }
-      products(first: $first) {
+      products(first: $first, after: $after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         edges {
           node {
             ...ProductFragment
@@ -125,7 +181,7 @@ export const GET_COLLECTION_BY_HANDLE_QUERY = `
 `
 
 export const GET_ALL_COLLECTIONS_QUERY = `
-  query GetAllCollections($first: Int = 10) {
+  query GetAllCollections($first: Int = 250) {
     collections(first: $first) {
       edges {
         node {
@@ -154,6 +210,7 @@ export const GET_SHOP_INFO_QUERY = `
       }
       paymentSettings {
         currencyCode
+        supportedDigitalWallets
       }
     }
   }
@@ -311,6 +368,38 @@ export const GET_SHIPPING_INFO_QUERY = `
         value
         type
       }
+      }
     }
   }
 `
+
+export const GET_VARIANT_AVAILABILITY_QUERY = `
+  query getVariantAvailability($variantId: ID!) {
+    node(id: $variantId) {
+      ... on ProductVariant {
+        storeAvailability(first: 50) {
+          edges {
+            node {
+              available
+              location {
+                name
+              }
+              pickUpTime
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const GET_PRODUCT_RECOMMENDATIONS_QUERY = `
+  query productRecommendations($productId: ID!) {
+    productRecommendations(productId: $productId) {
+      ...ProductFragment
+    }
+  }
+  ${PRODUCT_FRAGMENT}
+`
+
+

@@ -1,20 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Search, X, User, ShoppingBag } from "lucide-react";
-import { useScrollLock } from "@/hooks/useScrollLock";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Search, Package, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scrollarea";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   Command,
   CommandEmpty,
@@ -24,198 +14,340 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import type { Product } from "@/lib/shopify/types";
 import { useCurrency } from "@/hooks/useCurrency";
 import Image from "next/image";
-import { EmptySearchContent } from "@/components/error";
+import { cn } from "@/lib/utils";
 
-interface SearchDialogProps {
-  products: Product[];
+interface SearchProduct {
+  id: string;
+  title: string;
+  handle: string;
+  description: string;
+  featuredImage: string | null;
+  images: { url: string; altText: string | null }[];
+  price: number;
+  currency: string;
+  availableForSale: boolean;
+  tags: string[];
 }
 
-export function SearchDialog({ products }: SearchDialogProps) {
+const SUGGESTIONS = [
+  { label: "Bijoux artisanaux", query: "bijou" },
+  { label: "Créations florales", query: "fleur" },
+  { label: "Accessoires", query: "accessoire" },
+];
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
+export function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Product[]>([]);
+  const [products, setProducts] = useState<SearchProduct[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [fetched, setFetched] = useState(false);
+  const [isMac, setIsMac] = useState(false);
+  const [origin, setOrigin] = useState("50% 0%");
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const { formatPrice } = useCurrency();
   const router = useRouter();
+  const debouncedQuery = useDebounce(query, 280);
 
-  // Gestion du scroll lock quand le menu est ouvert
-  useScrollLock(open);
+  // Détection plateforme après mount (évite le mismatch d'hydration SSR)
+  useEffect(() => {
+    const ua = navigator.userAgent;
+    const platform = navigator.platform ?? "";
+    setIsMac(
+      /Mac|iPhone|iPad|iPod/.test(platform) ||
+      /Mac|iPad/.test(ua)
+    );
+  }, []);
+
+  // Raccourci clavier ⌘K / Ctrl+K
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        // Calcule l'origine depuis le bouton avant d'ouvrir
+        if (buttonRef.current) {
+          const rect = buttonRef.current.getBoundingClientRect();
+          setOrigin(`${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`);
+        }
+        setOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener("keydown", handleKeydown);
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, []);
+
+  // Chargement lazy des produits au premier open
+  const fetchProducts = useCallback(async () => {
+    if (fetched) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/products", {
+        next: { revalidate: 1800 },
+      } as RequestInit);
+      if (!res.ok) throw new Error("Erreur réseau");
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+      setFetched(true);
+    } catch {
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetched]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
+    if (open) fetchProducts();
+  }, [open, fetchProducts]);
 
-    // Recherche améliorée avec gestion des cas limites
-    const searchQuery = query.toLowerCase().trim();
-    const searchTerms = searchQuery
-      .split(/\s+/)
-      .filter((term) => term.length > 0);
+  // Filtrage côté client intelligent
+  const results = (() => {
+    const q = debouncedQuery.toLowerCase().trim();
+    if (!q) return [];
 
-    const filtered = products.filter((product) => {
-      const title = product.title.toLowerCase();
-      const description = product.description.toLowerCase();
-      const tags = (product.tags || []).map((tag) => tag.toLowerCase());
-      const collections = (product.collections || []).map((col) =>
-        col.toLowerCase(),
-      );
+    const terms = q.split(/\s+/).filter((t) => t.length > 0);
 
-      // Recherche par termes multiples (tous les termes doivent correspondre)
-      return searchTerms.every(
-        (term) =>
-          title.includes(term) ||
-          description.includes(term) ||
-          tags.some((tag) => tag.includes(term)) ||
-          collections.some((col) => col.includes(term)),
-      );
-    });
+    return products
+      .filter((product) => {
+        const title = product.title.toLowerCase();
+        const desc = product.description?.toLowerCase() ?? "";
+        const tags = (product.tags || []).map((t) => t.toLowerCase());
+        return terms.every(
+          (term) =>
+            title.includes(term) ||
+            desc.includes(term) ||
+            tags.some((tag) => tag.includes(term))
+        );
+      })
+      .sort((a, b) => {
+        const q = debouncedQuery.toLowerCase();
+        const aStarts = a.title.toLowerCase().startsWith(q) ? 2 : 0;
+        const bStarts = b.title.toLowerCase().startsWith(q) ? 2 : 0;
+        const aContains = a.title.toLowerCase().includes(q) ? 1 : 0;
+        const bContains = b.title.toLowerCase().includes(q) ? 1 : 0;
+        return bStarts + bContains - (aStarts + aContains);
+      })
+      .slice(0, 8);
+  })();
 
-    // Trier par pertinence (titre en premier, puis description, puis tags)
-    const sortedResults = filtered.sort((a, b) => {
-      const aTitle = a.title.toLowerCase();
-      const bTitle = b.title.toLowerCase();
-
-      // Priorité aux produits dont le titre commence par la requête
-      const aTitleStarts = aTitle.startsWith(searchQuery) ? 1 : 0;
-      const bTitleStarts = bTitle.startsWith(searchQuery) ? 1 : 0;
-      if (aTitleStarts !== bTitleStarts) return bTitleStarts - aTitleStarts;
-
-      // Puis priorité aux produits dont le titre contient la requête
-      const aTitleMatch = aTitle.includes(searchQuery) ? 1 : 0;
-      const bTitleMatch = bTitle.includes(searchQuery) ? 1 : 0;
-      if (aTitleMatch !== bTitleMatch) return bTitleMatch - aTitleMatch;
-
-      // Enfin, trier par ordre alphabétique
-      return aTitle.localeCompare(bTitle);
-    });
-
-    setResults(sortedResults);
-  }, [query, products]);
-
-  const handleProductClick = (handle: string) => {
+  const handleSelect = (handle: string) => {
     setOpen(false);
     setQuery("");
     router.push(`/products/${handle}`);
   };
 
+  const handleSuggestion = (q: string) => {
+    setQuery(q);
+  };
+
+  const handleOpen = () => {
+    // Calcule l'origine exacte depuis le centre du bouton au moment du clic
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setOrigin(`${rect.left + rect.width / 2}px ${rect.top + rect.height / 2}px`);
+    }
+    setOpen(true);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-11 w-11 sm:h-9 sm:w-9 touch-manipulation text-jolananas-pink-medium hover:text-white"
-          aria-label="Rechercher"
-        >
-          <Search className="h-5 w-5" />
-          <span className="sr-only">Rechercher</span>
-        </Button>
-      </DialogTrigger>
-      {open && (
-        <DialogContent
-          className="fixed top-0 right-0 left-0 bottom-0 w-full sm:left-auto sm:w-2/3 lg:w-2/3 max-w-none h-full translate-x-0 translate-y-0 rounded-none border-0 p-0 bg-slate-900/95 backdrop-blur-md z-50"
-          showCloseButton={false}
-        >
-          {/* Header avec icônes et bouton fermer */}
-          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-slate-700/50">
-            <div className="flex items-center gap-4">
-              <User className="h-5 w-5 text-white/70 hover:text-white transition-colors cursor-pointer" />
-              <ShoppingBag className="h-5 w-5 text-white/70 hover:text-white transition-colors cursor-pointer" />
-            </div>
-            <button
-              onClick={() => setOpen(false)}
-              className="text-white/70 hover:text-white transition-colors p-2.5 sm:p-2 hover:bg-slate-800 rounded-lg touch-manipulation min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 flex items-center justify-center"
-              aria-label="Fermer"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+    <>
+      {/* Bouton déclencheur */}
+      <Button
+        ref={buttonRef}
+        variant="ghost"
+        size="icon"
+        className="h-11 w-11 sm:h-9 sm:w-9 touch-manipulation text-primary/70 hover:text-primary hover:bg-primary/5 rounded-full"
+        aria-label="Rechercher (⌘K)"
+        onClick={handleOpen}
+      >
+        <Search className="h-5 w-5" />
+        <span className="sr-only">Rechercher</span>
+      </Button>
 
-          {/* Contenu principal */}
-          <div className="flex flex-col h-[calc(100vh-64px)] sm:h-[calc(100vh-80px)] p-4 sm:p-6">
-            {/* Titre et sous-titre */}
-            <DialogHeader className="text-left mb-4 sm:mb-6">
-              <DialogTitle className="text-xl sm:text-2xl font-bold text-white mb-2">
-                Rechercher des produits
-              </DialogTitle>
-              <DialogDescription className="text-white/70 text-sm sm:text-base">
-                Trouvez vos créations préférées
-              </DialogDescription>
-            </DialogHeader>
+      {/* Dialog avec effet génie depuis la position du bouton */}
+      <DialogPrimitive.Root
+        open={open}
+        onOpenChange={(v) => {
+          setOpen(v);
+          if (!v) setQuery("");
+        }}
+      >
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay
+            className={cn(
+              "fixed inset-0 z-[150] bg-black/30 backdrop-blur-[2px]",
+              "data-[state=open]:animate-in data-[state=closed]:animate-out",
+              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+              "duration-300"
+            )}
+          />
+          <DialogPrimitive.Content
+            aria-describedby="search-dialog-description"
+            style={{ transformOrigin: origin }}
+            className={cn(
+              // Positionnement centré
+              "fixed top-[50%] left-[50%] z-[150]",
+              "w-full max-w-lg translate-x-[-50%] translate-y-[-50%]",
+              // Apparence
+              "bg-background rounded-2xl border-none shadow-2xl shadow-primary/10 overflow-hidden",
+              // Animation génie — part du point d'origine (le bouton)
+              "data-[state=open]:animate-in data-[state=closed]:animate-out",
+              "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
+              "data-[state=open]:zoom-in-0 data-[state=closed]:zoom-out-0",
+              "duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            )}
+          >
+            {/* Titre SR-only pour accessibilité */}
+            <DialogPrimitive.Title className="sr-only">
+              Rechercher des créations
+            </DialogPrimitive.Title>
+            <DialogPrimitive.Description id="search-dialog-description" className="sr-only">
+              Recherchez parmi tous les produits Jolananas
+            </DialogPrimitive.Description>
 
-            {/* Barre de recherche */}
-            <div className="mb-4 sm:mb-6">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-sky-400/70" />
-                <Input
-                  placeholder="Rechercher par nom, description ou tags..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 sm:py-3 bg-slate-800/50 border-sky-400/50 text-white placeholder:text-white/50 focus:border-sky-400 focus:ring-sky-400/20 rounded-lg text-base sm:text-sm"
-                  autoFocus
-                />
-              </div>
-            </div>
+            <Command className="border-none [&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 [&_[cmdk-input]]:border-none [&_[cmdk-input]]:shadow-none [&_[cmdk-input]]:ring-0">
+              <CommandInput
+                placeholder={isMac ? "Rechercher des créations... (⌘K)" : "Rechercher des créations..."}
+                value={query}
+                onValueChange={setQuery}
+                className="text-primary placeholder:text-primary/40"
+              />
 
-            {/* Liste des résultats */}
-            <ScrollArea className="flex-1">
-              {results.length > 0 ? (
-                <div className="space-y-3">
-                  {results.map((product) => (
-                    <button
-                      key={product.id}
-                      onClick={() => handleProductClick(product.handle)}
-                      className="w-full flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg hover:bg-slate-800/50 active:bg-slate-800/70 transition-all duration-200 text-left group touch-manipulation"
-                    >
-                      <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-lg overflow-hidden bg-slate-700/50 flex-shrink-0">
-                        <Image
-                          src={
-                            product.featuredImage ||
-                            product.images[0]?.url ||
-                            "/assets/images/collections/placeholder.svg"
-                          }
-                          alt={product.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-200"
-                          sizes="80px"
-                        />
+              <CommandList className="max-h-[420px] px-1">
+                {/* Chargement */}
+                {loading && (
+                  <div className="p-4 space-y-3">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="flex gap-3 items-center">
+                        <Skeleton className="h-12 w-12 rounded-lg flex-shrink-0" />
+                        <div className="flex-1 space-y-2">
+                          <Skeleton className="h-4 w-3/4" />
+                          <Skeleton className="h-3 w-1/2" />
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-base text-white mb-1 line-clamp-1 group-hover:text-sky-400 transition-colors">
-                          {product.title}
-                        </h4>
-                        {product.description && (
-                          <p className="text-sm text-white/60 line-clamp-2 mb-2">
-                            {product.description}
-                          </p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Suggestions rapides */}
+                {!loading && !query && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                        <TrendingUp className="h-3.5 w-3.5" />
+                        Suggestions
+                      </span>
+                    }
+                  >
+                    {SUGGESTIONS.map((s) => (
+                      <CommandItem
+                        key={s.query}
+                        value={s.query}
+                        onSelect={() => handleSuggestion(s.query)}
+                        className="cursor-pointer rounded-lg text-primary/80 hover:bg-primary/5 data-[selected=true]:bg-primary/5 data-[selected=true]:text-primary"
+                      >
+                        <Search className="h-4 w-4 text-primary/40 mr-2 flex-shrink-0" />
+                        {s.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+
+                {/* Résultats de recherche */}
+                {!loading && debouncedQuery && results.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                        <Sparkles className="h-3.5 w-3.5" />
+                        {results.length} création{results.length > 1 ? "s" : ""} trouvée{results.length > 1 ? "s" : ""}
+                      </span>
+                    }
+                  >
+                    {results.map((product) => (
+                      <CommandItem
+                        key={product.id}
+                        value={product.title}
+                        onSelect={() => handleSelect(product.handle)}
+                        className={cn(
+                          "flex items-center gap-3 py-2.5 px-2 cursor-pointer rounded-xl",
+                          "text-primary hover:bg-primary/5",
+                          "data-[selected=true]:bg-primary/5 data-[selected=true]:text-primary"
                         )}
-                        <p className="text-base font-bold text-sky-400">
-                          {formatPrice(product.price)}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              ) : query.trim() ? (
-                <EmptySearchContent fullScreen={false} />
-              ) : (
-                <EmptySearchContent fullScreen={false} />
-              )}
-            </ScrollArea>
-          </div>
-        </DialogContent>
-      )}
-    </Dialog>
+                      >
+                        {/* Image */}
+                        <div className="relative h-12 w-12 rounded-lg overflow-hidden bg-primary/5 flex-shrink-0 border border-primary/10">
+                          <Image
+                            src={
+                              product.featuredImage ||
+                              product.images?.[0]?.url ||
+                              "/assets/images/collections/placeholder.svg"
+                            }
+                            alt={product.title}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-sm text-primary leading-tight line-clamp-1">
+                            {product.title}
+                          </p>
+                          <p className="text-sm font-bold text-jolananas-pink-medium mt-0.5">
+                            {formatPrice(product.price)}
+                          </p>
+                        </div>
+
+                        {/* Badge dispo */}
+                        {product.availableForSale ? (
+                          <span className="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                            Dispo
+                          </span>
+                        ) : (
+                          <span className="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary/50">
+                            Épuisé
+                          </span>
+                        )}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+
+                {/* État vide */}
+                {!loading && debouncedQuery && results.length === 0 && (
+                  <CommandEmpty>
+                    <div className="flex flex-col items-center gap-3 py-8 text-primary/50">
+                      <Package className="h-10 w-10 opacity-30" />
+                      <p className="text-sm font-medium">Aucune création trouvée</p>
+                      <p className="text-xs">Essayez avec d'autres mots-clés</p>
+                    </div>
+                  </CommandEmpty>
+                )}
+              </CommandList>
+
+              {/* Footer */}
+              <div className="px-4 py-3 flex items-center justify-between opacity-60">
+                <p className="text-[11px] text-primary/40">
+                  ↑↓ naviguer · ↵ sélectionner · {isMac ? "esc" : "échap"} fermer
+                </p>
+                <kbd className="text-[10px] font-mono bg-primary/5 text-primary/40 px-1.5 py-0.5 rounded">
+                  {isMac ? "⌘K" : "Ctrl+K"}
+                </kbd>
+              </div>
+            </Command>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
+    </>
   );
 }

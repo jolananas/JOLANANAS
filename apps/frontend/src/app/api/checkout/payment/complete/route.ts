@@ -116,8 +116,8 @@ export async function POST(request: NextRequest) {
     const draftOrder = draftOrderResponse.data.draft_order;
 
     if (paymentGateway === "paypal" && paypalAmount) {
-      const expectedAmount = parseFloat(draftOrder.total_price || "0");
-      const receivedAmount = parseFloat(paypalAmount.value || "0");
+      const expectedAmount = parseFloat(draftOrder.total_price);
+      const receivedAmount = parseFloat(paypalAmount.value);
       if (Math.abs(expectedAmount - receivedAmount) > 0.01) {
         return NextResponse.json(
           { error: "Le montant du paiement PayPal ne correspond pas" },

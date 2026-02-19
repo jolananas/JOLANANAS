@@ -21,6 +21,41 @@ export interface SelectedOption {
   value: string;
 }
 
+export interface SellingPlanPriceAdjustment {
+  orderCount?: number;
+  adjustmentValue: {
+    adjustmentAmount?: {
+      amount: string;
+      currencyCode: string;
+    };
+    adjustmentPercentage?: number;
+  };
+}
+
+export interface SellingPlan {
+  id: string;
+  name: string;
+  description?: string;
+  options: {
+    name: string;
+    value: string;
+  }[];
+  priceAdjustments: SellingPlanPriceAdjustment[];
+}
+
+export interface SellingPlanGroup {
+  name: string;
+  options: {
+    name: string;
+    values: string[];
+  }[];
+  sellingPlans: {
+    edges: {
+      node: SellingPlan;
+    }[];
+  };
+}
+
 export interface Variant {
   id: string;
   title: string;
@@ -28,6 +63,8 @@ export interface Variant {
   selectedOptions: SelectedOption[];
   price: number;
   compareAtPrice?: number;
+  quantityAvailable?: number;
+  inventoryPolicy?: "DENY" | "CONTINUE";
   image?: Image;
 }
 
@@ -66,6 +103,18 @@ export interface Product {
   collections?: string[];
   media?: MediaConnection;
   firstVariantId?: string;
+  material?: {
+    reference?: {
+      id: string;
+      handle: string;
+      type: string;
+      fields: {
+        key: string;
+        value: string;
+      }[];
+    };
+  };
+  sellingPlanGroups?: SellingPlanGroup[];
 }
 
 export interface Media {
@@ -111,6 +160,7 @@ export interface CartItem {
   image?: string;
   productTitle?: string;
   handle?: string;
+  sellingPlanId?: string;
 }
 export interface ShopifyProduct {
   id: string;
@@ -123,6 +173,11 @@ export interface ShopifyProduct {
       node: ShopifyVariant;
     }>;
   };
+  sellingPlanGroups?: {
+    edges: Array<{
+      node: SellingPlanGroup;
+    }>;
+  };
 }
 
 export interface ShopifyVariant {
@@ -131,6 +186,8 @@ export interface ShopifyVariant {
   price: Price;
   compareAtPrice?: Price;
   availableForSale: boolean;
+  quantityAvailable?: number;
+  inventoryPolicy?: "DENY" | "CONTINUE";
 }
 
 export interface PriceRange {
@@ -159,4 +216,49 @@ export interface ShopifyCartLine {
     totalAmount: Price;
   };
   merchandise: ShopifyVariant;
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      id: string;
+      name: string;
+    };
+  };
+}
+
+export interface Blog {
+  handle: string;
+  title: string;
+}
+
+export interface Article {
+  id: string;
+  handle: string;
+  title: string;
+  excerpt?: string;
+  excerptHtml?: string;
+  contentHtml: string;
+  publishedAt: string;
+  image?: Image;
+  author?: {
+    name: string;
+  };
+  blog: Blog;
+}
+
+export interface MetaobjectField {
+  key: string;
+  value: string;
+  reference?: {
+    id: string;
+    image?: {
+      url: string;
+      altText?: string;
+    };
+  };
+}
+
+export interface Metaobject {
+  id: string;
+  handle: string;
+  type: string;
+  fields: MetaobjectField[];
 }

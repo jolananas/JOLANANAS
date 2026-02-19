@@ -223,7 +223,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
 
   // Styles de fond selon le type
   const getBannerStyle = (type?: string) => {
-    const styleKey = (type as keyof typeof BANNER_STYLES) || "default";
+    const styleKey = (type as keyof typeof BANNER_STYLES);
     return BANNER_STYLES[styleKey] || BANNER_STYLES.default;
   };
 

@@ -312,7 +312,7 @@ export function AddressAutocompleteWithNumber({
                 type="text"
                 value={streetNumber}
                 onChange={(e) => handleNumberChange(e.target.value)}
-                placeholder={selectedStreet.housenumber || "Ex: 21, 21B"}
+                placeholder={selectedStreet.housenumber}
                 className="w-24"
                 disabled={disabled}
               />

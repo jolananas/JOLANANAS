@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { siInstagram } from "simple-icons";
 import { cn } from "@/lib/utils";
+import { Lock, ArrowRight } from "lucide-react";
 import { useGatekeeperLogic } from "@/hooks/useGatekeeperLogic"; // <--- Nouveau Hook
 
 // --- DICTIONNAIRE AMÉLIORÉ ---
@@ -40,7 +41,7 @@ const GATEKEEPER_MODES: any = {
 
 export function SiteGatekeeper() {
   const { shouldBlock, activeMode } = useGatekeeperLogic();
-  const content = GATEKEEPER_MODES[activeMode];
+  const content = activeMode ? GATEKEEPER_MODES[activeMode] : null;
 
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<

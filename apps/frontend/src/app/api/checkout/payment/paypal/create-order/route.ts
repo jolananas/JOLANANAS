@@ -91,8 +91,8 @@ async function createPayPalOrder(
       brand_name: "JOLANANAS",
       landing_page: "BILLING",
       user_action: "PAY_NOW",
-      return_url: `${process.env.DOMAIN_URL || "http://localhost:4647"}/checkout/success`,
-      cancel_url: `${process.env.DOMAIN_URL || "http://localhost:4647"}/checkout?canceled=true`,
+      return_url: `${process.env.DOMAIN_URL}/checkout/success`,
+      cancel_url: `${process.env.DOMAIN_URL}/checkout?canceled=true`,
     },
   };
 
@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
     }
 
     const draftOrder = draftOrderResponse.data.draft_order;
-    const expectedAmount = parseFloat(draftOrder.total_price || "0");
+    const expectedAmount = parseFloat(draftOrder.total_price);
 
     if (Math.abs(expectedAmount - amount) > 0.01) {
       return NextResponse.json(

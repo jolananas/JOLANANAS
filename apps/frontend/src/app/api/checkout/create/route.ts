@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
     if (cartData.errors) {
       console.error("❌ Erreur création panier Shopify:", cartData.errors);
       const userFriendlyError = transformShopifyError(
-        cartData.errors[0]?.message || "Erreur inconnue",
+        cartData.errors[0]?.message,
         "checkout/create",
       );
       return NextResponse.json({ error: userFriendlyError }, { status: 400 });
@@ -224,7 +224,7 @@ export async function POST(request: NextRequest) {
               address2: normalizedShippingInfo.address2,
               city: normalizedShippingInfo.city,
               zip: normalizedShippingInfo.postalCode,
-              country: normalizedShippingInfo.country || "France",
+              country: normalizedShippingInfo.country,
               phone: normalizedShippingInfo.phone,
             },
           ],
@@ -263,9 +263,7 @@ export async function POST(request: NextRequest) {
           : undefined,
         city: normalizeDataForAPI(normalizedShippingInfo.city),
         zip: normalizeDataForAPI(normalizedShippingInfo.postalCode),
-        country: normalizeDataForAPI(
-          normalizedShippingInfo.country || "France",
-        ),
+        country: normalizeDataForAPI(normalizedShippingInfo.country),
         phone: normalizedShippingInfo.phone
           ? normalizeDataForAPI(normalizedShippingInfo.phone)
           : undefined,

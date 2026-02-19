@@ -8,7 +8,6 @@ import {
 } from "@/lib/shopify/customer-accounts";
 import {
   getCartIdFromRequest,
-  getCart,
 } from "@/lib/utils/cart-storage";
 import { getCart as getShopifyCart } from "@/lib/shopify/index";
 
@@ -83,12 +82,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         id: order.id,
         shopifyOrderId: order.id,
         orderNumber: order.orderNumber || order.name,
-        status: order.financialStatus || order.fulfillmentStatus || "PENDING",
+        status: order.financialStatus || order.fulfillmentStatus,
         total:
           typeof order.total === "string"
             ? parseFloat(order.total)
             : order.total || 0,
-        currency: order.currencyCode || order.currency || "EUR",
+        currency: order.currencyCode || order.currency,
         createdAt:
           order.createdAt || order.processedAt || new Date().toISOString(),
         items: (order.lineItems || []).map((item: any) => ({
@@ -125,7 +124,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
             total: activeCart.cost?.totalAmount?.amount
               ? parseFloat(activeCart.cost.totalAmount.amount)
               : 0,
-            currency: activeCart.cost?.totalAmount?.currencyCode || "EUR",
+            currency: activeCart.cost?.totalAmount?.currencyCode,
             items:
               activeCart.lines?.edges?.map((edge: any) => ({
                 id: edge.node.id,

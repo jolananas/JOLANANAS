@@ -119,7 +119,7 @@ export function ResetPasswordClient() {
       );
 
       if (!data.success) {
-        throw new Error(data.error || "Une erreur est survenue");
+        throw new Error(data.error);
       }
 
       setSuccess(true);

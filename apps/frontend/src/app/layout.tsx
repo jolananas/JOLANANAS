@@ -20,38 +20,10 @@ const poppins = Poppins({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.DOMAIN_URL || "https://jolananas.com"),
-  title: {
-    default: "JOLANANAS - L'Artisanat au cœur | Bijoux Fantaisie & Pièces Uniques",
-    template: "%s | JOLANANAS"
-  },
-  description: "Des créations artisanales uniques, faites main avec passion, pour apporter une touche personnelle et originale à votre style.",
-  openGraph: {
-    type: "website",
-    locale: "fr_FR",
-    siteName: "JOLANANAS",
-    images: [
-      {
-        url: "/images/og-default.jpg", // Assurez-vous d'avoir cette image ou une similaire
-        width: 1200,
-        height: 630,
-        alt: "JOLANANAS - Bijoux et Accessoires Artisanaux",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@jolananas", // Ajuster si le compte existe
-    creator: "@jolananas",
-  },
-  alternates: {
-    languages: {
-      "fr-FR": "/fr",
-      "en-US": "/en",
-    },
-  },
-};
+import { defaultMetadata, organizationSchema, websiteSchema } from "./shared-metadata";
+import { JsonLd } from "@/components/SEO/JsonLd";
+
+export const metadata: Metadata = defaultMetadata;
 
 import { Suspense } from "react";
 
@@ -69,6 +41,8 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased min-h-screen flex flex-col bg-background text-primary selection:bg-primary/20">
+        <JsonLd data={organizationSchema} id="org-schema" />
+        <JsonLd data={websiteSchema} id="website-schema" />
         <Suspense fallback={null}>
           <SiteGatekeeper />
         </Suspense>

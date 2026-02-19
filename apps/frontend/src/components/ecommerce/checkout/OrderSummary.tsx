@@ -53,7 +53,7 @@ export function OrderSummary({
         } else {
           console.error(
             "❌ Erreur de configuration Shopify:",
-            data.message || "Metafields de livraison non configurés",
+            data.message,
           );
           setShippingInfo(null);
         }

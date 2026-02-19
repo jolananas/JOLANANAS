@@ -51,19 +51,19 @@ export function ProductFilters({
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="featured" id="featured" />
               <Label htmlFor="featured" className="text-sm cursor-pointer">
-                Recommandés
+                Coups de cœur de l'atelier
               </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="price-asc" id="price-asc" />
               <Label htmlFor="price-asc" className="text-sm cursor-pointer">
-                Prix croissant
+                Petits plaisirs d'abord
               </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="price-desc" id="price-desc" />
               <Label htmlFor="price-desc" className="text-sm cursor-pointer">
-                Prix décroissant
+                Pièces d'exception
               </Label>
             </div>
           </div>
@@ -86,7 +86,7 @@ export function ProductFilters({
         <SheetContent>
           <SheetHeader>
             <SheetTitle className="flex items-center justify-between">
-              <span>Filtres</span>
+              <span>Affiner ma recherche</span>
               {hasActiveFilters && (
                 <Button variant="ghost" size="sm" onClick={onClearFilters}>
                   <X className="h-4 w-4 mr-1" />
@@ -95,7 +95,7 @@ export function ProductFilters({
               )}
             </SheetTitle>
             <SheetDescription className="sr-only">
-              Filtres de produits et options de tri
+              Options de tri et de filtrage pour trouver votre perle rare
             </SheetDescription>
           </SheetHeader>
 
@@ -110,19 +110,19 @@ export function ProductFilters({
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="featured" id="m-featured" />
                     <Label htmlFor="m-featured" className="text-sm cursor-pointer">
-                      Recommandés
+                      Coups de cœur de l'atelier
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="price-asc" id="m-price-asc" />
                     <Label htmlFor="m-price-asc" className="text-sm cursor-pointer">
-                      Prix croissant
+                      Petits plaisirs d'abord
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="price-desc" id="m-price-desc" />
                     <Label htmlFor="m-price-desc" className="text-sm cursor-pointer">
-                      Prix décroissant
+                      Pièces d'exception
                     </Label>
                   </div>
                 </RadioGroup>

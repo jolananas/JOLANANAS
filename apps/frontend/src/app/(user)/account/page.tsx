@@ -118,6 +118,11 @@ function AccountPageContent() {
   const [originalProfileName, setOriginalProfileName] = useState(
     session?.user?.name || "",
   );
+  // @ts-ignore - Phone property might not be in session type yet
+  const [profilePhone, setProfilePhone] = useState(session?.user?.phone || "");
+  // @ts-ignore
+  const [originalProfilePhone, setOriginalProfilePhone] = useState(session?.user?.phone || "");
+  
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [profileSuccess, setProfileSuccess] = useState(false);
@@ -176,13 +181,20 @@ function AccountPageContent() {
     validateEmail(email);
   }, [email, validateEmail]);
 
-  // Initialiser le nom du profil quand la session change
+  // Initialiser le nom et téléphone du profil quand la session change
   useEffect(() => {
     if (session?.user?.name) {
       setProfileName(session.user.name);
       setOriginalProfileName(session.user.name);
     }
-  }, [session?.user?.name]);
+    // @ts-ignore
+    if (session?.user?.phone !== undefined) {
+      // @ts-ignore
+      setProfilePhone(session.user.phone || "");
+      // @ts-ignore
+      setOriginalProfilePhone(session.user.phone || "");
+    }
+  }, [session?.user]);
 
   // Auto-dismiss des messages de succès mot de passe
   useEffect(() => {
@@ -488,9 +500,11 @@ function AccountPageContent() {
         .join("")
         .toUpperCase()
         .slice(0, 2)
-    : user?.email?.[0]?.toUpperCase() || "U";
+    : user?.email?.[0]?.toUpperCase();
 
-  const isProfileModified = profileName.trim() !== originalProfileName.trim();
+  const isProfileModified = 
+    profileName.trim() !== originalProfileName.trim() ||
+    profilePhone.trim() !== originalProfilePhone.trim();
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -501,22 +515,34 @@ function AccountPageContent() {
     setProfileSuccess(false);
 
     const previousName = profileName;
+    const previousPhone = profilePhone;
     const trimmedName = profileName.trim();
+    const trimmedPhone = profilePhone.trim();
+    
     setOriginalProfileName(trimmedName);
+    setOriginalProfilePhone(trimmedPhone);
 
     try {
-      const data = await apiPut<{ success: boolean; user: { name: string } }>(
+      const data = await apiPut<{ success: boolean; user: { name: string; phone?: string } }>(
         "/api/user/profile",
-        { name: trimmedName },
+        { 
+          name: trimmedName,
+          phone: trimmedPhone || undefined
+        },
       );
 
       if (!data.success) throw new Error("Erreur lors de la mise à jour");
 
-      await updateSession({ name: trimmedName });
+      await updateSession({ 
+        name: trimmedName,
+        phone: trimmedPhone 
+      });
       setProfileSuccess(true);
     } catch (err) {
       setProfileName(previousName);
+      setProfilePhone(previousPhone);
       setOriginalProfileName(previousName);
+      setOriginalProfilePhone(previousPhone);
       setProfileError(err instanceof Error ? err.message : "Erreur inconnue");
     } finally {
       setIsProfileLoading(false);
@@ -564,7 +590,7 @@ function AccountPageContent() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-serif text-3xl font-bold">
-                  {user.name || "Mon Compte"}
+                  {user.name}
                 </h1>
                 {session.user.emailVerified && (
                   <Badge variant="outline" className="bg-green-100 text-green-800">
@@ -636,6 +662,17 @@ function AccountPageContent() {
                       value={profileName}
                       onChange={(e) => setProfileName(e.target.value)}
                       disabled={isProfileLoading}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Téléphone</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={profilePhone}
+                      onChange={(e) => setProfilePhone(e.target.value)}
+                      disabled={isProfileLoading}
+                      placeholder="+33 6 12 34 56 78"
                     />
                   </div>
                   <Button type="submit" disabled={isProfileLoading || !isProfileModified}>

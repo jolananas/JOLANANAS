@@ -17,9 +17,7 @@ function getShopifyConfig(): { endpoint: string; token: string } | null {
 
     return {
       endpoint,
-      token:
-        ENV.SHOPIFY_STOREFRONT_TOKEN ||
-        process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      token: ENV.SHOPIFY_STOREFRONT_TOKEN as string,
     };
   } catch (error) {
     // Si la validation ENV échoue, cela signifie que les variables ne sont pas configurées
@@ -224,6 +222,11 @@ export async function shopifyFetch<T>({
 
     // DEBUG : Vérifier les headers avant l'envoi
     if (ENV.NODE_ENV === "development") {
+      const tokenPreview = normalizedToken.length > 8 
+        ? `${normalizedToken.substring(0, 4)}...${normalizedToken.substring(normalizedToken.length - 4)}`
+        : "***";
+      console.log(`🔑 Utilisation du token (masqué): ${tokenPreview}`);
+      
       Object.entries(headers).forEach(([key, value]) => {
         for (let i = 0; i < value.length; i++) {
           const code = value.charCodeAt(i);

@@ -135,7 +135,7 @@ export class ShopifyStorefrontClient {
   // PRODUITS PUBLICS
   // ===============================================
 
-  async getProducts(first: number = 20, after?: string) {
+  async getProducts(first: number = 250, after?: string) {
     const query = `
       query getProducts($first: Int!, $after: String) {
         products(first: $first, after: $after) {
@@ -154,7 +154,7 @@ export class ShopifyStorefrontClient {
               vendor
               productType
               availableForSale
-              images(first: 10) {
+              images(first: 250) {
                 edges {
                   node {
                     id
@@ -165,7 +165,7 @@ export class ShopifyStorefrontClient {
                   }
                 }
               }
-              variants(first: 10) {
+              variants(first: 250) {
                 edges {
                   node {
                     id
@@ -229,7 +229,7 @@ export class ShopifyStorefrontClient {
           availableForSale
           createdAt
           updatedAt
-          images(first: 20) {
+          images(first: 250) {
             edges {
               node {
                 id
@@ -240,7 +240,7 @@ export class ShopifyStorefrontClient {
               }
             }
           }
-          variants(first: 50) {
+          variants(first: 250) {
             edges {
               node {
                 id
@@ -287,7 +287,7 @@ export class ShopifyStorefrontClient {
   // COLLECTIONS PUBLIQUES
   // ===============================================
 
-  async getCollections(first: number = 20, after?: string) {
+  async getCollections(first: number = 250, after?: string) {
     const query = `
       query getCollections($first: Int!, $after: String) {
         collections(first: $first, after: $after) {
@@ -311,7 +311,7 @@ export class ShopifyStorefrontClient {
                 width
                 height
               }
-              products(first: 8) {
+              products(first: 250) {
                 edges {
                   node {
                     id
@@ -374,7 +374,7 @@ export class ShopifyStorefrontClient {
             width
             height
           }
-          products(first: 50) {
+          products(first: 250) {
             pageInfo {
               hasNextPage
               hasPreviousPage
@@ -387,7 +387,7 @@ export class ShopifyStorefrontClient {
                 title
                 handle
                 availableForSale
-                images(first: 3) {
+                images(first: 250) {
                   edges {
                     node {
                       id
@@ -624,7 +624,7 @@ export class ShopifyStorefrontClient {
   // RECHERCHE PUBLIQUE
   // ===============================================
 
-  async searchProducts(query: string, first: number = 20) {
+  async searchProducts(query: string, first: number = 250) {
     const graphqlQuery = `
       query searchProducts($query: String!, $first: Int!) {
         search(query: $query, types: PRODUCT, first: $first) {

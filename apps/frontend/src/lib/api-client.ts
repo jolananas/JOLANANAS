@@ -156,7 +156,8 @@ export async function apiFetch<T = unknown>(
 
     // Ne pas ajouter Content-Type pour FormData
     const isFormData = fetchOptions.body instanceof FormData;
-    if (!isFormData && !fetchOptions.headers?.['Content-Type']) {
+    const headers = fetchOptions.headers as Record<string, string> | undefined;
+    if (!isFormData && !headers?.['Content-Type']) {
       kyOptions.headers = {
         'Content-Type': 'application/json',
         ...fetchOptions.headers,
@@ -231,7 +232,7 @@ export async function apiGet<T = unknown>(
     
     // Vérifier le Content-Type
     const contentType = response.headers.get('content-type');
-    if (!contentType.includes('application/json')) {
+    if (!contentType || !contentType.includes('application/json')) {
       // Si ce n'est pas du JSON et que ce n'est pas du HTML (déjà vérifié), considérer comme 404
       throw createApiError(
         'Ressource non trouvée',

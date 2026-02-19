@@ -59,7 +59,7 @@ export function ProductsPageClient() {
       <div className="container max-w-[1600px] mx-auto pb-24 px-4">
         <div className="grid gap-12 lg:grid-cols-12 items-start">
           {/* Filters - Sticky Sidebar Desktop / Floating Mobile Drawer (Future) */}
-          <aside className="lg:col-span-3 xl:col-span-2 sticky top-32">
+          <aside className="lg:col-span-3 xl:col-span-2 block lg:sticky top-32">
             <CategoryFilter
               onFilterChange={setFilters}
               initialFilters={filters}

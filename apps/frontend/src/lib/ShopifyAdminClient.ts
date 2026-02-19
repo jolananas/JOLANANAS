@@ -10,7 +10,7 @@ import {
 // Configuration Admin API (privée)
 const ADMIN_CONFIG = {
   domain: ENV.SHOPIFY_STORE_DOMAIN,
-  adminToken: ENV.SHOPIFY_STOREFRONT_TOKEN!,
+  adminToken: ENV.SHOPIFY_STOREFRONT_ACCESS_TOKEN as string,
   apiVersion: ENV.SHOPIFY_API_VERSION,
 };
 
@@ -18,7 +18,7 @@ const ADMIN_CONFIG = {
 if (ENV.NODE_ENV === "development") {
   if (!ADMIN_CONFIG.adminToken || ADMIN_CONFIG.adminToken.length < 20) {
     console.warn(
-      "⚠️ SHOPIFY_STOREFRONT_TOKEN semble invalide ou manquant. Vérifiez votre fichier .env.local",
+      "⚠️ SHOPIFY_STOREFRONT_ACCESS_TOKEN semble invalide ou manquant. Vérifiez votre fichier .env.local",
     );
   } else {
     // Masquer le token pour la sécurité (afficher seulement les 10 premiers caractères)
@@ -250,7 +250,7 @@ export class ShopifyAdminClient {
           errorData = JSON.parse(errorText);
         } catch {
           // Si le parsing JSON échoue, utiliser le texte brut
-          errorData = { message: errorText || "Erreur Admin API" };
+          errorData = { message: errorText };
         }
 
         // Log détaillé pour le débogage
@@ -264,7 +264,7 @@ export class ShopifyAdminClient {
 
         if (response.status === 401) {
           errorMessage +=
-            "Token d'accès invalide ou expiré. Vérifiez SHOPIFY_STOREFRONT_TOKEN.";
+            "Token d'accès Admin invalide ou expiré. Vérifiez SHOPIFY_STOREFRONT_ACCESS_TOKEN.";
         } else if (response.status === 403) {
           errorMessage +=
             "Accès refusé. Vérifiez les permissions de l'app Shopify (scopes Admin API).";
@@ -302,7 +302,7 @@ export class ShopifyAdminClient {
           );
           console.error("   7. Générez un nouveau token Admin si nécessaire");
           console.error(
-            "   8. Ajoutez le token dans .env.local comme SHOPIFY_STOREFRONT_TOKEN",
+            "   8. Ajoutez le token dans .env.local comme SHOPIFY_STOREFRONT_ACCESS_TOKEN",
           );
           console.error("   9. Redémarrez le serveur");
           console.error("");
@@ -331,7 +331,7 @@ export class ShopifyAdminClient {
     } catch (error: any) {
       console.error("❌ Erreur Shopify Admin:", error);
 
-      const errors = [{ message: error.message || "Erreur Admin API" }];
+      const errors = [{ message: error.message }];
       return { errors };
     }
   }
@@ -358,9 +358,9 @@ export class ShopifyAdminClient {
     return this.request(endpoint);
   }
 
-  async getOrder(orderId: string) {
+  async getOrder(orderId: string): Promise<AdminResponse<{ order?: any }>> {
     const endpoint = `/orders/${orderId}.json`;
-    return this.request(endpoint);
+    return this.request<{ order?: any }>(endpoint);
   }
 
   async updateOrder(orderId: string, orderData: any) {
@@ -377,15 +377,15 @@ export class ShopifyAdminClient {
   // ===============================================
 
   async getCustomers(
-    first: number = 50,
+    limit: number = 50,
   ): Promise<AdminResponse<{ customers?: any[] }>> {
-    const endpoint = `/customers.json?limit=${first}`;
+    const endpoint = `/customers.json?limit=${limit}`;
     return this.request<{ customers?: any[] }>(endpoint);
   }
 
-  async getCustomer(customerId: string) {
+  async getCustomer(customerId: string): Promise<AdminResponse<{ customer: any }>> {
     const endpoint = `/customers/${customerId}.json`;
-    return this.request(endpoint);
+    return this.request<{ customer: any }>(endpoint);
   }
 
   async getCustomerOrders(
@@ -406,13 +406,13 @@ export class ShopifyAdminClient {
     });
   }
 
-  async createCustomer(customerData: any) {
+  async createCustomer(customerData: any): Promise<AdminResponse<{ customer?: any }>> {
     const endpoint = `/customers.json`;
 
     // Normaliser toutes les données avant JSON.stringify pour éviter les erreurs ByteString
     const normalizedCustomer = normalizeDataForAPI(customerData);
 
-    return this.request(endpoint, {
+    return this.request<{ customer?: any }>(endpoint, {
       method: "POST",
       body: JSON.stringify({ customer: normalizedCustomer }),
     });
@@ -576,6 +576,15 @@ export class ShopifyAdminClient {
   async getProduct(productId: string) {
     const endpoint = `/products/${productId}.json`;
     return this.request(endpoint);
+  }
+
+  async findProductByHandle(handle: string): Promise<{ product?: any } | null> {
+    const endpoint = `/products.json?handle=${handle}`;
+    const response = await this.request<{ products: any[] }>(endpoint);
+    if (response.data?.products && response.data.products.length > 0) {
+      return { product: response.data.products[0] };
+    }
+    return null;
   }
 
   async updateProduct(productId: string, productData: any) {
@@ -999,7 +1008,7 @@ export class ShopifyAdminClient {
       payment_status?: "paid" | "pending" | "refunded";
       transaction_id?: string;
     },
-  ) {
+  ): Promise<AdminResponse<{ draft_order?: any }>> {
     const endpoint = `/draft_orders/${draftOrderId}/complete.json`;
 
     const body: any = {};
@@ -1007,7 +1016,7 @@ export class ShopifyAdminClient {
       body.payment_pending = paymentData.payment_status === "pending";
     }
 
-    return this.request(endpoint, {
+    return this.request<{ draft_order?: any }>(endpoint, {
       method: "PUT",
       body: JSON.stringify(body),
     });

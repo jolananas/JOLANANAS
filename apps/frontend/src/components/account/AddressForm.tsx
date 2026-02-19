@@ -101,11 +101,11 @@ export function AddressForm({
         address2: address.address2,
         city: address.city,
         province: address.province,
-        country: address.country || "FR",
+        country: address.country,
         zip: address.zip,
         phone: address.phone,
-        type: address.type || "SHIPPING",
-        isDefault: address.isDefault || false,
+        type: address.type,
+        isDefault: address.isDefault,
       });
     }
   }, [address, mode]);
@@ -193,8 +193,8 @@ export function AddressForm({
         country: formData.country,
         zip: formData.zip.trim(),
         phone: formData.phone?.trim() || undefined,
-        type: formData.type || "SHIPPING",
-        isDefault: formData.isDefault || false,
+        type: formData.type,
+        isDefault: formData.isDefault,
       };
 
       let data: {
@@ -255,7 +255,7 @@ export function AddressForm({
           }
         }
 
-        const errorMessage = data.error || "Une erreur est survenue";
+        const errorMessage = data.error;
         setError(errorMessage);
         return;
       }

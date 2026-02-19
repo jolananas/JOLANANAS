@@ -92,8 +92,7 @@ export async function GET(request: NextRequest) {
     // Statistiques par statut de commande
     const ordersByStatus = orders.reduce(
       (acc: Record<string, number>, order: any) => {
-        const status =
-          order.financialStatus || order.fulfillmentStatus || "PENDING";
+        const status = order.financialStatus || order.fulfillmentStatus;
         acc[status] = (acc[status] || 0) + 1;
         return acc;
       },
@@ -132,12 +131,12 @@ export async function GET(request: NextRequest) {
       id: order.id,
       shopifyOrderId: order.id,
       orderNumber: order.orderNumber || order.name,
-      status: order.financialStatus || order.fulfillmentStatus || "PENDING",
+      status: order.financialStatus || order.fulfillmentStatus,
       total:
         typeof order.total === "string"
           ? parseFloat(order.total)
           : order.total || 0,
-      currency: order.currencyCode || order.currency || "EUR",
+      currency: order.currencyCode || order.currency,
       createdAt:
         order.createdAt || order.processedAt || new Date().toISOString(),
       itemsCount: order.lineItems?.length || 0,
@@ -188,6 +187,7 @@ export async function GET(request: NextRequest) {
             ? new Date(customer.createdAt)
             : null,
           memberSince: customer.createdAt || new Date().toISOString(),
+          tags: customer.tags || [],
         },
         stats: {
           totalOrders,

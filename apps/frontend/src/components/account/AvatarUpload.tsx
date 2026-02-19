@@ -72,11 +72,11 @@ export function AvatarUpload({
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.error || "Erreur lors de l'upload");
+        throw new Error(data.error);
       }
 
       if (!data.success) {
-        throw new Error(data.error || "Erreur lors de l'upload");
+        throw new Error(data.error);
       }
 
       if (data.avatar) {
@@ -118,7 +118,7 @@ export function AvatarUpload({
       );
 
       if (!data.success) {
-        throw new Error(data.error || "Erreur lors de la suppression");
+        throw new Error(data.error);
       }
 
       setPreview(null);

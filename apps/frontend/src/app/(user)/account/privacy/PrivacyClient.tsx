@@ -96,7 +96,7 @@ export function PrivacyClient() {
       const deleteData = await deleteResponse.json();
 
       if (!deleteResponse.ok || !deleteData.success) {
-        throw new Error(deleteData.error || "Erreur lors de la suppression");
+        throw new Error(deleteData.error);
       }
 
       await signOut({ redirect: true, callbackUrl: "/" });

@@ -20,6 +20,9 @@ interface AddToCartButtonProps {
   productPrice: number;
   variantId: string;
   availableForSale: boolean;
+  quantityAvailable?: number;
+  inventoryPolicy?: "DENY" | "CONTINUE";
+  sellingPlanId?: string;
 }
 
 export function AddToCartButton({
@@ -30,23 +33,25 @@ export function AddToCartButton({
   productPrice,
   variantId,
   availableForSale,
+  quantityAvailable,
+  inventoryPolicy,
+  sellingPlanId,
 }: AddToCartButtonProps) {
   const [isAdded, setIsAdded] = useState(false);
   const { addItem } = useCart();
 
+  const isPreOrder = quantityAvailable === 0 && inventoryPolicy === "CONTINUE" && !sellingPlanId;
+
   const handleAddToCart = () => {
-    addItem({
-      variantId,
-      productId,
-      title: productTitle,
-      handle: productHandle,
-      price: productPrice,
-      quantity: 1,
-      image: productImage,
-    });
+    // Check local cart quantity if needed, but for now rely on API response or simple check
+    addItem(variantId, 1, sellingPlanId);
 
     setIsAdded(true);
-    toast.success(`${productTitle} a été ajouté au panier`);
+    toast.success(
+      isPreOrder
+        ? `${productTitle} précommandé avec succès`
+        : `${productTitle} a été ajouté à vos trésors`
+    );
     setTimeout(() => setIsAdded(false), 2000);
   };
 
@@ -62,7 +67,7 @@ export function AddToCartButton({
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
-          variant="shine"
+          variant={isPreOrder ? "secondary" : "default"}
           size="lg"
           onClick={handleAddToCart}
           disabled={isAdded}
@@ -71,21 +76,21 @@ export function AddToCartButton({
           {isAdded ? (
             <>
               <Check className="mr-2 h-5 w-5" />
-              Ajouté au panier
+              {isPreOrder ? "Précommande enregistrée" : "C'est dans la boîte !"}
             </>
           ) : (
             <>
               <ShoppingBag className="mr-2 h-5 w-5" />
-              Ajouter au panier
+              {isPreOrder ? "PRÉCOMMANDER" : "AJOUTER À MES TRÉSORS"}
             </>
           )}
         </Button>
       </TooltipTrigger>
       <TooltipContent>
         <p>
-          {availableForSale
-            ? "Cliquez pour ajouter au panier"
-            : "Produit épuisé"}
+          {isPreOrder
+            ? "Expédition sous 2 semaines environ"
+            : "Cliquez pour ajouter ce trésor"}
         </p>
       </TooltipContent>
     </Tooltip>

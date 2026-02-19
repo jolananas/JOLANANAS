@@ -49,11 +49,11 @@ export function EmptyCart({ onBrowse, fullPage = false }: EmptyCartProps) {
         transition={{ delay: 0.2 }}
         className="space-y-3"
       >
-        <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          Votre panier est vide
+        <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-serif">
+          Votre écrin est vide... Pour l'instant.
         </h3>
         <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-[280px] mx-auto">
-          Votre panier attend sa première pièce de collection. Une touche de fantaisie ?
+          Votre écrin attend sa première merveille. Une touche de magie ?
         </p>
       </motion.div>
 
@@ -68,7 +68,7 @@ export function EmptyCart({ onBrowse, fullPage = false }: EmptyCartProps) {
           className="h-12 px-8 bg-jolananas-pink-medium hover:bg-jolananas-pink-deep text-white shadow-glow-pink transition-all duration-300 rounded-full font-semibold"
         >
           <Link href="/collections">
-            DÉCOUVRIR LES NOUVEAUTÉS
+            ALLER CHINER DES PÉPITES
           </Link>
         </Button>
       </motion.div>

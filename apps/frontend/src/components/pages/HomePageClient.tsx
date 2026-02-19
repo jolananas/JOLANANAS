@@ -13,12 +13,15 @@ import { useBanner } from "@/components/layout/BannerContext";
 import { cn } from "@/lib/utils";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { SocialProofSection } from "@/components/sections/SocialProofSection";
+import { LatestArticles } from "@/components/blog/LatestArticles";
+import { Article } from "@/lib/shopify/types";
 
 interface HomePageClientProps {
   products: any[];
+  articles?: Article[];
 }
 
-export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] }) => {
+export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], articles = [] }) => {
   const safeProducts = Array.isArray(products) ? products : [];
   const featuredProducts = safeProducts.slice(0, 4);
 
@@ -77,7 +80,6 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
             </div>
 
             {/* 2. COLONNE TEXTE (Éditorial) */}
-            {/* CORRECTION : flex-1 ici permet au texte de prendre tout l'espace restant */}
             <div className="flex-1 flex flex-col items-start text-left space-y-8 z-10 min-w-0">
               {/* Badge Premium */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-black/5 shadow-sm">
@@ -213,6 +215,9 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [] })
           )}
         </div>
       </section>
+
+      {/* BLOG / LATEST ARTICLES */}
+      <LatestArticles articles={articles} />
 
       {/* SOCIAL PROOF / TESTIMONIALS */}
       <SocialProofSection />

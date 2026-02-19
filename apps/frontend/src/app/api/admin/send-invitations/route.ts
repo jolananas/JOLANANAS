@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
             results.details.push({
               customerId,
               success: false,
-              error: inviteResult.errors[0]?.message || "Erreur inconnue",
+              error: inviteResult.errors[0]?.message,
             });
           } else {
             results.success++;
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       // Envoyer à tous les clients Shopify via Admin API
       // Note: Récupérer la liste des clients depuis Shopify Admin API
       try {
-        const customersResponse = await adminClient.getCustomers({ limit });
+        const customersResponse = await adminClient.getCustomers(limit);
 
         if (customersResponse.errors && customersResponse.errors.length > 0) {
           return NextResponse.json(
@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
                 customerId,
                 email: customer.email,
                 success: false,
-                error: inviteResult.errors[0]?.message || "Erreur inconnue",
+                error: inviteResult.errors[0]?.message,
               });
             } else {
               results.success++;
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
           } catch (error) {
             results.errors++;
             results.details.push({
-              customerId: customer.id?.toString() || "unknown",
+              customerId: customer.id?.toString(),
               email: customer.email,
               success: false,
               error: error instanceof Error ? error.message : "Erreur inconnue",

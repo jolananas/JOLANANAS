@@ -1,6 +1,8 @@
 import { getCollectionByHandle } from "@/lib/shopify";
 import { CollectionPageClient } from "@/components/pages/CollectionPageClient";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/SEO/JsonLd";
+import { baseUrl } from "@/app/shared-metadata";
 
 export async function generateMetadata({
   params,
@@ -22,6 +24,9 @@ export async function generateMetadata({
   return {
     title: collection.title,
     description: collection.description,
+    alternates: {
+      canonical: `${baseUrl}/collections/${handle}`,
+    },
   };
 }
 
@@ -45,5 +50,53 @@ export default async function CollectionPage({
     return notFound();
   }
 
-  return <CollectionPageClient collection={collection} />;
+  // --- JSON-LD ---
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: collection.title,
+    description: collection.description,
+    url: `${baseUrl}/collections/${handle}`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: collection.products?.map((product: any, index: number) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${baseUrl}/products/${product.handle}`,
+      })),
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Collections",
+        item: `${baseUrl}/collections`, // Assuming there is a collections list page
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: collection.title,
+        item: `${baseUrl}/collections/${handle}`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <JsonLd data={jsonLd} id="collection-schema" />
+      <JsonLd data={breadcrumbJsonLd} id="breadcrumb-schema" />
+      <CollectionPageClient collection={collection} />
+    </>
+  );
 }

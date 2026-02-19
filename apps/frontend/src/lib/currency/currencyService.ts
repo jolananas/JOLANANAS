@@ -56,48 +56,17 @@ let cache: CurrencyCache = {
 class CurrencyService {
   private config: Required<CurrencyServiceConfig>;
   private adminClient: ShopifyAdminClient | null = null;
-  private enableDebugLogging: boolean;
-
   constructor(config: CurrencyServiceConfig = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
-    this.enableDebugLogging = process.env.NODE_ENV === 'development';
     
     // Initialiser l'Admin Client si disponible
     try {
       this.adminClient = new ShopifyAdminClient();
     } catch (error) {
-      this.log('warn', 'Shopify Admin Client non disponible, certaines fonctionnalités seront limitées', { error });
     }
   }
 
-  /**
-   * Logging structuré pour le débogage
-   */
-  private log(level: 'info' | 'warn' | 'error', message: string, data?: any): void {
-    if (!this.enableDebugLogging && level !== 'error') {
-      return;
-    }
 
-    const logData = {
-      timestamp: new Date().toISOString(),
-      service: 'CurrencyService',
-      level,
-      message,
-      ...(data && { data }),
-    };
-
-    switch (level) {
-      case 'info':
-        console.log('ℹ️', JSON.stringify(logData, null, 2));
-        break;
-      case 'warn':
-        console.warn('⚠️', JSON.stringify(logData, null, 2));
-        break;
-      case 'error':
-        console.error('❌', JSON.stringify(logData, null, 2));
-        break;
-    }
-  }
 
   /**
    * Extrait le currencyCode depuis différents types de réponses Shopify
@@ -118,13 +87,11 @@ class CurrencyService {
       | undefined
   ): string | undefined {
     if (!data) {
-      this.log('info', 'Aucune donnée fournie pour extraction de currencyCode');
       return undefined;
     }
 
     // Cas 1: Objet avec currencyCode direct
     if (typeof data === 'object' && 'currencyCode' in data && typeof data.currencyCode === 'string') {
-      this.log('info', 'currencyCode extrait directement', { currencyCode: data.currencyCode });
       return data.currencyCode;
     }
 
@@ -133,7 +100,6 @@ class CurrencyService {
       const currencyCode = (data.priceRange as any).minVariantPrice?.currencyCode || 
                           (data.priceRange as any).maxVariantPrice?.currencyCode;
       if (currencyCode) {
-        this.log('info', 'currencyCode extrait depuis priceRange', { currencyCode });
         return currencyCode;
       }
     }
@@ -142,7 +108,6 @@ class CurrencyService {
     if ('price' in data && data.price && typeof data.price === 'object' && 'currencyCode' in data.price) {
       const currencyCode = (data.price as { currencyCode?: string }).currencyCode;
       if (currencyCode) {
-        this.log('info', 'currencyCode extrait depuis variant.price', { currencyCode });
         return currencyCode;
       }
     }
@@ -152,7 +117,6 @@ class CurrencyService {
       const cost = data.cost as { totalAmount?: { currencyCode?: string } };
       const currencyCode = cost.totalAmount?.currencyCode;
       if (currencyCode) {
-        this.log('info', 'currencyCode extrait depuis cart.cost', { currencyCode });
         return currencyCode;
       }
     }
@@ -161,12 +125,10 @@ class CurrencyService {
     if ('compareAtPrice' in data && data.compareAtPrice && typeof data.compareAtPrice === 'object' && 'currencyCode' in data.compareAtPrice) {
       const currencyCode = (data.compareAtPrice as { currencyCode?: string }).currencyCode;
       if (currencyCode) {
-        this.log('info', 'currencyCode extrait depuis compareAtPrice', { currencyCode });
         return currencyCode;
       }
     }
 
-    this.log('warn', 'Aucun currencyCode trouvé dans la réponse Shopify', { dataType: typeof data });
     return undefined;
   }
 
@@ -176,7 +138,6 @@ class CurrencyService {
    */
   async validateCurrency(currencyCode: string): Promise<boolean> {
     if (!currencyCode || typeof currencyCode !== 'string') {
-      this.log('warn', 'Validation échouée: currencyCode invalide', { currencyCode });
       return false;
     }
 
@@ -184,13 +145,11 @@ class CurrencyService {
     const normalized = currencyCode.toUpperCase().trim();
     
     if (normalized.length !== 3) {
-      this.log('warn', 'Validation échouée: currencyCode doit faire 3 caractères', { currencyCode: normalized });
       return false;
     }
 
     // Si multi-currency est désactivé, accepter toutes les devises valides
     if (!this.config.enableMultiCurrency) {
-      this.log('info', 'Multi-currency désactivé, devise acceptée', { currencyCode: normalized });
       return true;
     }
 
@@ -199,7 +158,6 @@ class CurrencyService {
     
     // Si aucune devise disponible (Admin API non accessible), accepter quand même
     if (availableCurrencies.length === 0) {
-      this.log('info', 'Aucune devise disponible via Admin API, devise acceptée par défaut', { currencyCode: normalized });
       return true;
     }
 
@@ -207,12 +165,9 @@ class CurrencyService {
     const isAvailable = availableCurrencies.some(c => c.code.toUpperCase() === normalized);
     
     if (isAvailable) {
-      this.log('info', 'Devise validée et disponible', { currencyCode: normalized });
+      // Devise validée et disponible
     } else {
-      this.log('warn', 'Devise non disponible dans la liste des devises activées', { 
-        currencyCode: normalized,
-        availableCurrencies: availableCurrencies.map(c => c.code)
-      });
+      // Devise non disponible
     }
 
     return isAvailable;
@@ -230,7 +185,6 @@ class CurrencyService {
       cache.shopCurrency &&
       now - cache.shopCurrencyTimestamp < this.config.cacheDuration
     ) {
-      this.log('info', 'Devise boutique récupérée depuis le cache', { currencyCode: cache.shopCurrency });
       return cache.shopCurrency;
     }
 
@@ -241,20 +195,16 @@ class CurrencyService {
       if (currencyCode) {
         cache.shopCurrency = currencyCode;
         cache.shopCurrencyTimestamp = now;
-        this.log('info', 'Devise boutique récupérée depuis Shopify', { currencyCode });
         return currencyCode;
       }
     } catch (error) {
-      this.log('error', 'Erreur lors de la récupération de la devise de la boutique', { error });
     }
 
     // Fallback vers le cache même expiré, ou devise par défaut
     if (cache.shopCurrency) {
-      this.log('info', 'Utilisation du cache expiré comme fallback', { currencyCode: cache.shopCurrency });
       return cache.shopCurrency;
     }
 
-    this.log('info', 'Utilisation de la devise par défaut', { currencyCode: this.config.defaultCurrency });
     return this.config.defaultCurrency;
   }
 
@@ -264,7 +214,6 @@ class CurrencyService {
    */
   async getAvailableCurrencies(): Promise<CurrencyInfo[]> {
     if (!this.config.enableMultiCurrency || !this.adminClient) {
-      this.log('info', 'Multi-currency désactivé ou Admin Client non disponible');
       return [];
     }
 
@@ -272,9 +221,6 @@ class CurrencyService {
     
     // Vérifier le cache (même si vide)
     if (now - cache.availableCurrenciesTimestamp < this.config.cacheDuration) {
-      this.log('info', 'Devises disponibles récupérées depuis le cache', { 
-        count: cache.availableCurrencies.length 
-      });
       return cache.availableCurrencies;
     }
 
@@ -290,14 +236,9 @@ class CurrencyService {
 
         cache.availableCurrencies = currencies;
         cache.availableCurrenciesTimestamp = now;
-        this.log('info', 'Devises disponibles récupérées depuis Admin API', { 
-          count: currencies.length,
-          currencies: currencies.map(c => c.code)
-        });
         return currencies;
       }
     } catch (error) {
-      this.log('warn', 'Impossible de récupérer les devises activées via Admin API', { error });
       
       // Mettre en cache le résultat vide pour éviter le spam d'API en cas d'erreur
       // Utiliser une durée de cache plus courte (ex: 5 minutes) si c'est une erreur ? 
@@ -337,7 +278,6 @@ class CurrencyService {
       const isValid = await this.validateCurrency(normalized);
 
       if (isValid) {
-        this.log('info', 'Devise détectée via réponse Shopify', { currency: normalized });
         return {
           currency: normalized,
           source: 'shopify-response',
@@ -355,7 +295,6 @@ class CurrencyService {
       const isValid = await this.validateCurrency(currency);
 
       if (isValid) {
-        this.log('info', 'Devise détectée via Country Code (Cloudflare)', { currency, countryCode });
         return {
           currency,
           source: 'geolocation',
@@ -377,7 +316,6 @@ class CurrencyService {
         const isValid = await this.validateCurrency(currency);
 
         if (isValid) {
-          this.log('info', 'Devise détectée via Accept-Language', { currency, lang: acceptLanguage });
           return {
             currency,
             source: 'browser',
@@ -393,7 +331,6 @@ class CurrencyService {
 
     // 4. Fallback : devise de la boutique
     const shopCurrency = await this.getShopCurrency();
-    this.log('info', 'Fallback vers la devise de la boutique', { currency: shopCurrency });
     return {
       currency: shopCurrency,
       source: 'shop-default',

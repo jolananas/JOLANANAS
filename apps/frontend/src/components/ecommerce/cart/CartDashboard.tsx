@@ -15,7 +15,6 @@ import { useCurrency } from "@/hooks/useCurrency";
 import { safeJsonParse } from "@/lib/api-client";
 import { EmptyCart } from "@/components/cart/EmptyCart";
 import { useShipping } from "./shared/useShipping";
-import { ShippingProgress } from "./shared/ShippingProgress";
 import { ReassuranceBlock } from "./shared/ReassuranceBlock";
 import { CartItem } from "./shared/CartItem";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -113,12 +112,7 @@ export function CartDashboard() {
                   <h2 className="text-xl font-bold text-gray-900">Résumé de la commande</h2>
                   
                   {/* Shipping Progress */}
-                  {shippingInfo && (
-                    <ShippingProgress 
-                      progressPercent={progressPercent} 
-                      freeShippingLeft={freeShippingLeft} 
-                    />
-                  )}
+
 
                   <div className="space-y-4 pt-4 border-t border-gray-100">
                     <div className="flex justify-between text-gray-600">

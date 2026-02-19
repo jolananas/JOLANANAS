@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
@@ -83,7 +85,7 @@ export function Footer() {
                 src="/assets/images/logo/logo-jolananas-argent.png"
                 alt="Logo – Jolananas"
                 width={200}
-                height={500}
+                height={50}
                 className="h-12 w-auto"
               />
             </Link>
@@ -123,24 +125,7 @@ export function Footer() {
               Recevez nos exclusivités et -10% sur votre première commande.
             </p>
 
-            <form
-              className="flex flex-col sm:flex-row gap-3"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <Input
-                type="email"
-                placeholder="votre@email.com"
-                className="bg-white/80 text-primary placeholder:text-primary border-transparent h-12 rounded-xl focus:ring-primary/20"
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="h-12 rounded-xl bg-primary text-white hover:bg-primary/80 px-8 transition-all duration-300 group"
-              >
-                S'inscrire{" "}
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-all duration-300" />
-              </Button>
-            </form>
+            <NewsletterForm />
             <p className="text-xs text-muted-foreground mt-4 opacity-70">
               En vous inscrivant, vous acceptez notre politique de
               confidentialité. Désinscription à tout moment.
@@ -306,15 +291,83 @@ export function Footer() {
       {/* --- FOOTER BOTTOM LOGO (Full Width) --- */}
       <div className="hidden md:block absolute mt-12 bottom-0 left-0 right-0 overflow-hidden z-10 pointer-events-none">
         <div className="relative w-full h-64 translate-y-1/2">
-          <Image
+            <Image
             src="/assets/images/logo/logo-jolananas-gradient.png"
             alt="JOLANANAS Logo"
             fill
             className="object-contain object-top"
+            sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />
         </div>
       </div>
+
     </footer>
   );
 }
+
+function NewsletterForm() {
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<string>("idle");
+  
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setStatus("loading");
+  
+      try {
+        const response = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+  
+        if (response.ok) {
+          setStatus("success");
+          setEmail("");
+        } else {
+          setStatus("error");
+        }
+      } catch (error) {
+        setStatus("error");
+      }
+    };
+  
+    if (status === "success") {
+      return (
+          <div className="bg-green-500/10 border border-green-500/20 p-4 rounded-xl text-green-700 animate-in fade-in zoom-in">
+              <p className="font-bold flex items-center gap-2">
+                  <span className="text-xl">✨</span> Bienvenue au club !
+              </p>
+              <p className="text-sm opacity-90">
+                  Surveillez votre boîte mail pour votre code promo.
+              </p>
+          </div>
+      );
+    }
+  
+    return (
+      <form
+        className="flex flex-col sm:flex-row gap-3 relative"
+        onSubmit={handleSubmit}
+      >
+        <Input
+          type="email"
+          placeholder="votre@email.com"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={status === "loading" || status === "success"}
+          className="bg-white/80 text-primary placeholder:text-primary/70 border-transparent h-12 rounded-xl focus:ring-primary/20 backdrop-blur-sm"
+        />
+        <Button
+          type="submit"
+          size="lg"
+          disabled={status === "loading" || status === "success"}
+          className="h-12 rounded-xl bg-primary text-white hover:bg-primary/80 px-8 transition-all duration-300 group shadow-lg shadow-primary/20"
+        >
+          {status === "loading" ? "..." : "S'inscrire"}
+          {status !== "loading" && <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-all duration-300" />}
+        </Button>
+      </form>
+    );
+  }

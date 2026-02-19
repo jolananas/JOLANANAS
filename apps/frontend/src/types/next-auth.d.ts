@@ -10,6 +10,7 @@ declare module 'next-auth' {
       avatar?: string | null;
       role: 'CUSTOMER' | 'ADMIN';
       image?: string | null;
+      phone?: string | null;
       emailVerified?: Date | null;
       shopifyCustomerId?: string;
       shopifyAccessToken?: string;
@@ -23,6 +24,7 @@ declare module 'next-auth' {
     avatar?: string | null;
     role: 'CUSTOMER' | 'ADMIN';
     password?: string | null;
+    phone?: string | null;
     emailVerified?: Date | null;
     shopifyCustomerId?: string;
     shopifyAccessToken?: string;
@@ -33,6 +35,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     role: 'CUSTOMER' | 'ADMIN';
     avatar?: string | null;
+    phone?: string | null;
     emailVerified?: Date | null;
     shopifyCustomerId?: string;
     shopifyAccessToken?: string;

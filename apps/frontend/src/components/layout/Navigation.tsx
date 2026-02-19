@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, LogIn, Sparkles, Crown, Palette } from "lucide-react";
+import { SearchDialog } from "@/components/layout/SearchDialog";
 import { CartSheet } from "@/components/cart/CartSheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ import { useNavbar } from "./NavbarContext";
 
 const navItems = [
   { name: "Accueil", href: "/" },
+  { name: "Créations", href: "/products" },
   { name: "Collections", href: "/collections" },
   { name: "Notre Histoire", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -140,14 +142,15 @@ export function Navigation() {
           <Image
             src="/assets/images/logo/logo-jolananas-gradient.png"
             alt="Logo – Jolananas"
-            width={20}
+            width={200}
             height={50}
             className="h-8 w-auto object-contain"
           />
         </Link>
 
-        {/* ACTIONS (CART) */}
-        <div className="flex items-center text-primary gap-2">
+        {/* ACTIONS (SEARCH + CART) */}
+        <div className="flex items-center text-primary gap-1">
+          <SearchDialog />
           <CartSheet />
         </div>
       </div>

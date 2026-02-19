@@ -93,7 +93,7 @@ export function AddressList() {
 
       if (!data.success) {
         throw new Error(
-          data.error || "Erreur lors de la récupération des adresses",
+          data.error,
         );
       }
 
@@ -147,7 +147,7 @@ export function AddressList() {
       );
 
       if (!data.success) {
-        throw new Error(data.error || "Erreur lors de la mise à jour");
+        throw new Error(data.error);
       }
 
       // Recharger la liste
@@ -172,7 +172,7 @@ export function AddressList() {
       });
 
       if (!data.success) {
-        throw new Error(data.error || "Erreur lors de la suppression");
+        throw new Error(data.error);
       }
 
       // Recharger la liste
@@ -293,7 +293,7 @@ export function AddressList() {
                     {!address.isDefault && (
                       <Button
                         variant="ghost"
-                        size="icon-sm"
+                        size="icon"
                         onClick={() => handleSetDefault(address.id)}
                         title="Définir comme adresse par défaut"
                       >
@@ -308,7 +308,7 @@ export function AddressList() {
                     )}
                     <Button
                       variant="ghost"
-                      size="icon-sm"
+                      size="icon"
                       onClick={() => handleEdit(address)}
                     >
                       <Edit className="h-4 w-4" />
@@ -317,7 +317,7 @@ export function AddressList() {
                       <AlertDialogTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="icon-sm"
+                          size="icon"
                           onClick={() => setDeletingId(address.id)}
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />

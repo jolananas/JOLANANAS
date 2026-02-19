@@ -131,7 +131,7 @@ export async function createCustomer(
       password: password,
       password_confirmation: password,
       send_email_welcome: false, // Ne pas envoyer l'email de bienvenue automatiquement
-    });
+    }) as any;
 
     if (!createResult.data?.customer) {
       return {

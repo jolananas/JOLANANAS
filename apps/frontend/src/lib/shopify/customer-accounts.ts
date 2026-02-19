@@ -69,6 +69,7 @@ export interface Customer {
   acceptsMarketing: boolean;
   createdAt: string;
   updatedAt: string;
+  tags?: string[];
 }
 
 export interface CustomerAddress {
@@ -195,7 +196,7 @@ export async function createCustomerAccessTokenFrontend(
         accessToken: null,
         errors: result.errors.map((err: any) => ({
           message: err.message,
-          code: err.extensions?.code || "GRAPHQL_ERROR",
+          code: err.extensions?.code,
         })),
       };
     }
@@ -208,7 +209,7 @@ export async function createCustomerAccessTokenFrontend(
         errors: customerAccessTokenCreate.customerUserErrors.map(
           (err: any) => ({
             message: err.message,
-            code: err.code || "CUSTOMER_ERROR",
+            code: err.code,
           }),
         ),
       };
@@ -297,6 +298,7 @@ export async function getCustomerFrontend(
           acceptsMarketing
           createdAt
           updatedAt
+          tags
         }
       }
     `;
@@ -336,7 +338,7 @@ export async function getCustomerFrontend(
         customer: null,
         errors: result.errors.map((err: any) => ({
           message: err.message,
-          code: err.extensions?.code || "GRAPHQL_ERROR",
+          code: err.extensions?.code,
         })),
       };
     }
@@ -360,6 +362,7 @@ export async function getCustomerFrontend(
         acceptsMarketing: customerData.acceptsMarketing || false,
         createdAt: customerData.createdAt || new Date().toISOString(),
         updatedAt: customerData.updatedAt || new Date().toISOString(),
+        tags: customerData.tags || [],
       },
       errors: [],
     };
@@ -471,7 +474,7 @@ export async function getCustomerFromToken(
 
     const customerId = match[1];
     const adminClient = getShopifyAdminClient();
-    const customerResponse = await adminClient.getCustomer(customerId);
+    const customerResponse = await adminClient.getCustomer(customerId) as any;
 
     if (!customerResponse.data?.customer) {
       return {
@@ -492,6 +495,7 @@ export async function getCustomerFromToken(
         acceptsMarketing: shopifyCustomer.accepts_marketing || false,
         createdAt: shopifyCustomer.created_at || new Date().toISOString(),
         updatedAt: shopifyCustomer.updated_at || new Date().toISOString(),
+        tags: shopifyCustomer.tags ? shopifyCustomer.tags.split(",").map((t: string) => t.trim()) : [],
       },
       errors: [],
     };
@@ -517,7 +521,7 @@ export async function getCustomerAddresses(
 ): Promise<{ addresses: CustomerAddress[]; errors: CustomerAccountError[] }> {
   try {
     const adminClient = getShopifyAdminClient();
-    const customerResponse = await adminClient.getCustomer(customerId);
+    const customerResponse = await adminClient.getCustomer(customerId) as any;
 
     if (!customerResponse.data?.customer) {
       return {
@@ -537,7 +541,7 @@ export async function getCustomerAddresses(
       address2: addr.address2 || undefined,
       city: addr.city,
       province: addr.province || undefined,
-      country: addr.country || "France",
+      country: addr.country,
       zip: addr.zip,
       phone: addr.phone || undefined,
       isDefault: addr.default || false,
@@ -572,7 +576,7 @@ export async function createCustomerAddress(
     const adminClient = getShopifyAdminClient();
 
     // Récupérer le client actuel pour obtenir ses adresses
-    const customerResponse = await adminClient.getCustomer(customerId);
+    const customerResponse = await adminClient.getCustomer(customerId) as any;
 
     if (!customerResponse.data?.customer) {
       return {
@@ -603,7 +607,7 @@ export async function createCustomerAddress(
     // Mettre à jour le client avec la nouvelle adresse
     const updateResult = await adminClient.updateCustomer(customerId, {
       addresses: newAddresses,
-    });
+    }) as any;
 
     if (!updateResult.data?.customer) {
       return {
@@ -628,7 +632,7 @@ export async function createCustomerAddress(
         address2: newAddress.address2 || undefined,
         city: newAddress.city,
         province: newAddress.province || undefined,
-        country: newAddress.country || "France",
+        country: newAddress.country,
         zip: newAddress.zip,
         phone: newAddress.phone || undefined,
         isDefault: newAddress.default || false,
@@ -664,7 +668,7 @@ export async function updateCustomerAddress(
     const adminClient = getShopifyAdminClient();
 
     // Récupérer le client actuel
-    const customerResponse = await adminClient.getCustomer(customerId);
+    const customerResponse = await adminClient.getCustomer(customerId) as any;
 
     if (!customerResponse.data?.customer) {
       return {
@@ -699,7 +703,7 @@ export async function updateCustomerAddress(
     // Mettre à jour le client
     const updateResult = await adminClient.updateCustomer(customerId, {
       addresses,
-    });
+    }) as any;
 
     if (!updateResult.data?.customer) {
       return {
@@ -737,7 +741,7 @@ export async function updateCustomerAddress(
         address2: updatedAddress.address2 || undefined,
         city: updatedAddress.city,
         province: updatedAddress.province || undefined,
-        country: updatedAddress.country || "France",
+        country: updatedAddress.country,
         zip: updatedAddress.zip,
         phone: updatedAddress.phone || undefined,
         isDefault: updatedAddress.default || false,
@@ -769,7 +773,7 @@ export async function deleteCustomerAddress(
     const adminClient = getShopifyAdminClient();
 
     // Récupérer le client actuel
-    const customerResponse = await adminClient.getCustomer(customerId);
+    const customerResponse = await adminClient.getCustomer(customerId) as any;
 
     if (!customerResponse.data?.customer) {
       return {
@@ -786,7 +790,7 @@ export async function deleteCustomerAddress(
     // Mettre à jour le client sans l'adresse supprimée
     const updateResult = await adminClient.updateCustomer(customerId, {
       addresses,
-    });
+    }) as any;
 
     if (!updateResult.data?.customer) {
       return {
@@ -858,7 +862,7 @@ export async function updateCustomer(
     if (data.acceptsMarketing !== undefined)
       updateData.accepts_marketing = data.acceptsMarketing;
 
-    const response = await adminClient.updateCustomer(customerId, updateData);
+    const response = await adminClient.updateCustomer(customerId, updateData) as any;
 
     if (!response.data?.customer) {
       return {
