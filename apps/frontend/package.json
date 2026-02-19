@@ -31,13 +31,12 @@
     "test:webhooks": "tsx scripts/test-webhooks.ts",
     "test:all-flows": "tsx scripts/test-all-flows.ts",
     "test:vercel": "tsx scripts/test-all-flows.ts --base-url=https://jolananas.vercel.app",
-    "test:auth": "tsx scripts/test-authenticated-flows.ts",
     "test:auth": "tsx scripts/test-authenticated-flows.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@prisma/client": "^5.22.0",
     "@next/bundle-analyzer": "^14.2.35",
+    "@prisma/client": "^5.22.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.8",
@@ -91,6 +90,7 @@
     "normalize-path": "^3.0.0",
     "rate-limiter-flexible": "^5.0.5",
     "react": "19.2.4",
+    "react-country-flag": "^3.1.0",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.71.1",
     "react-hot-toast": "^2.6.0",

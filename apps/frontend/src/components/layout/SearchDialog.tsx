@@ -278,29 +278,74 @@ export function SearchDialog() {
                   </div>
                 )}
 
-                {/* Suggestions rapides */}
-                {!loading && !query && (
+                {/* Tendances — top tags du catalogue, automatiques */}
+                {!loading && !query && topTags.length > 0 && (
                   <CommandGroup
                     heading={
                       <span className="flex items-center gap-1.5 text-primary/50 font-medium">
                         <TrendingUp className="h-3.5 w-3.5" />
-                        Suggestions
+                        Tendances
                       </span>
                     }
                   >
-                    {SUGGESTIONS.map((s) => (
+                    <div className="flex flex-wrap gap-2 px-2 pb-2 pt-1">
+                      {topTags.map((tag) => (
+                        <button
+                          key={tag.query}
+                          onClick={() => handleSuggestion(tag.query)}
+                          className="text-xs px-3 py-1.5 rounded-full bg-primary/5 text-primary/70 hover:bg-jolananas-pink-light hover:text-jolananas-pink-dark transition-colors cursor-pointer font-medium"
+                        >
+                          {tag.label}
+                        </button>
+                      ))}
+                    </div>
+                  </CommandGroup>
+                )}
+
+                {/* Consultés récemment */}
+                {!loading && !query && recentlyViewed.length > 0 && (
+                  <CommandGroup
+                    heading={
+                      <span className="flex items-center gap-1.5 text-primary/50 font-medium">
+                        <Clock className="h-3.5 w-3.5" />
+                        Consultés récemment
+                      </span>
+                    }
+                  >
+                    {recentlyViewed.map((product) => (
                       <CommandItem
-                        key={s.query}
-                        value={s.query}
-                        onSelect={() => handleSuggestion(s.query)}
-                        className="cursor-pointer rounded-lg text-primary/80 hover:bg-primary/5 data-[selected=true]:bg-primary/5 data-[selected=true]:text-primary"
+                        key={product.id}
+                        value={`recent-${product.handle}`}
+                        onSelect={() => handleSelect(product.handle)}
+                        className={cn(
+                          "flex items-center gap-3 py-2 px-2 cursor-pointer rounded-xl",
+                          "text-primary hover:bg-primary/5",
+                          "data-[selected=true]:bg-primary/5 data-[selected=true]:text-primary"
+                        )}
                       >
-                        <Search className="h-4 w-4 text-primary/40 mr-2 flex-shrink-0" />
-                        {s.label}
+                        <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-primary/5 flex-shrink-0">
+                          <Image
+                            src={product.featuredImage || product.images?.[0]?.url || "/assets/images/collections/placeholder.svg"}
+                            alt={product.title}
+                            fill
+                            className="object-cover"
+                            sizes="40px"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-primary leading-tight line-clamp-1">{product.title}</p>
+                          <p className="text-xs text-jolananas-pink-medium font-semibold mt-0.5">{formatPrice(product.price)}</p>
+                        </div>
+                        {product.availableForSale ? (
+                          <span className="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Dispo</span>
+                        ) : (
+                          <span className="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary/50">Épuisé</span>
+                        )}
                       </CommandItem>
                     ))}
                   </CommandGroup>
                 )}
+
 
                 {/* Résultats de recherche */}
                 {!loading && debouncedQuery && results.length > 0 && (

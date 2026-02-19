@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Infinity } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 
 export const metadata: Metadata = {
   title: "Espace Presse | JOLANANAS",
@@ -42,14 +44,27 @@ export default function PressePage() {
           <h3 className="font-semibold text-lg">Chiffres clés</h3>
           <div className="grid grid-cols-2 gap-6">
             {[
-              { value: "100%", label: "Fait main" },
-              { value: "🇫🇷", label: "Créé en France" },
-              { value: "0", label: "Déchet de production" },
-              { value: "♾️", label: "Pièces personnalisables" },
+              { value: <span className="text-2xl font-bold text-primary">100%</span>, label: "Fait main" },
+              {
+                value: (
+                  <ReactCountryFlag
+                    countryCode="FR"
+                    svg
+                    style={{ width: "2rem", height: "2rem" }}
+                    title="France"
+                  />
+                ),
+                label: "Créé en France",
+              },
+              { value: <span className="text-2xl font-bold text-primary">0</span>, label: "Déchet de production" },
+              {
+                value: <Infinity className="w-8 h-8 text-primary" strokeWidth={2} />,
+                label: "Pièces personnalisables",
+              },
             ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-2xl font-bold text-primary">{stat.value}</p>
-                <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+              <div key={stat.label} className="text-center flex flex-col items-center gap-1">
+                <div className="flex items-center justify-center h-10">{stat.value}</div>
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
