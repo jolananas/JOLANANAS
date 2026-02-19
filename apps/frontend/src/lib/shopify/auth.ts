@@ -7,7 +7,7 @@ import {
   type CustomerAccessToken 
 } from './customer-accounts';
 import { getShopifyAdminClient } from '../ShopifyAdminClient';
-import { ENV } from '../env';
+import { ENV } from "@/lib/env";
 
 export interface AuthResult {
   success: boolean;

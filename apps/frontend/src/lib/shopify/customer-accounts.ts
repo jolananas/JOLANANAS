@@ -1,4 +1,4 @@
-import { ENV } from "../env";
+import { ENV } from "@/lib/env";
 import { getShopifyAdminClient } from "../ShopifyAdminClient";
 
 /**

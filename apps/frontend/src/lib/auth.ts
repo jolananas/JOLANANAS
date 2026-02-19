@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import type { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { ENV } from './env';
+import { ENV } from "@/lib/env";
 import { checkRateLimit, resetRateLimit } from './rate-limit';
 import { authenticateCustomer } from './shopify/auth';
 import { getCustomerFrontend } from './shopify/customer-accounts';

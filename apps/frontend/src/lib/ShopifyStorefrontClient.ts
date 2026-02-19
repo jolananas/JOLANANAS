@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
-import { ENV } from './env';
+import { ENV } from "@/lib/env";
 import { normalizeHeaderValue } from './utils/formatters';
 
 // Configuration Storefront API (publique)

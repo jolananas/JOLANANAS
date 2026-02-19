@@ -1,6 +1,6 @@
 import "server-only";
 
-import { ENV } from "./env";
+import { ENV } from "@/lib/env";
 import {
   normalizeDataForAPI,
   sanitizeStringForByteString,
