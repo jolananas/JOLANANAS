@@ -51,13 +51,17 @@ export function Footer() {
     <footer
       id="footer"
       className="relative pt-20 pb-10 overflow-hidden"
-      style={{
-        backgroundImage: "url(/assets/images/background/bg-jolananas-fast.gif)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
     >
+      {/* 0. ARRIÈRE-PLAN VIDÉO OPTIMISÉ (Rempalce the huge GIF) */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/assets/images/background/bg-jolananas-fast.mp4" type="video/mp4" />
+      </video>
       {/* 1. OVERLAY (Flou + Couleur Marque) */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -252,7 +256,7 @@ export function Footer() {
         {/* --- FOOTER BOTTOM --- */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
-          <p className="text-xs text-center md:text-left font-medium text-black uppercase tracking-wider opacity-40">
+          <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-black uppercase tracking-wider opacity-40">
             © {currentYear} SARL JOLANANAS. Fait avec 🩷 en 🇫🇷
             <br />
             <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA</span>
@@ -362,7 +366,7 @@ function NewsletterForm() {
           className="h-12 rounded-xl bg-primary text-white hover:bg-primary/80 px-8 transition-all duration-300 group shadow-lg shadow-primary/20"
         >
           {status === "loading" ? "..." : "S'inscrire"}
-          {status !== "loading" && <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-all duration-300" />}
+          {status && <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-all duration-300" />}
         </Button>
       </form>
     );

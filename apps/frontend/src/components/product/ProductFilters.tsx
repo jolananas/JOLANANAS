@@ -39,7 +39,7 @@ export function ProductFilters({
     }
   }
 
-  const hasActiveFilters = selectedTags.length > 0 || sortBy !== "featured"
+  const hasActiveFilters = selectedTags.length > 0 || sortBy
 
   return (
     <div className="flex items-center gap-4">

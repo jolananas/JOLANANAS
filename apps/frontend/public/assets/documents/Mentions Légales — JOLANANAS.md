@@ -74,12 +74,29 @@ Pour plus d'informations sur la façon dont nous faisons usage des cookies, lise
 
 Tout litige en relation avec l'utilisation du site https://jolananas.com est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents du ressort du siège social de JOLANANAS (Tarn, France).
 
+## 7. Publications officielles (BODACC)
+
+### Annonce n° 6078 — Dépôt des comptes des sociétés
+
+**Référence de publication** : BODACC C n° 20250118 du 22/06/2025, annonce n° 6078  
+**Type d'annonce** : Dépôt des comptes des sociétés — Avis initial  
+**Greffe** : Tribunal de Commerce d'Albi  
+**N° RCS** : 987 688 355 RCS Albi  
+**Dénomination** : JOLANANAS  
+**Forme juridique** : Société à responsabilité limitée  
+**Adresse du siège social** : 9 Impasse Puech Bertrand 81130 Cagnac-les-Mines  
+**Comptes annuels de l'exercice clos le** : 31/12/2024  
+**Confidentialité** : Les comptes annuels sont accompagnés d'une déclaration de confidentialité en application du premier ou deuxième alinéa de l'article L. 232-25.
+
+🔗 [Consulter l'annonce sur le BODACC](https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:C202501186078)
+
 ---
 
-*Dernière mise à jour : Janvier 2025*
+_Dernière mise à jour : Juin 2025_
 
 **Sources officielles :**
 
 - [Annuaire des Entreprises - JOLANANAS](https://annuaire-entreprises.data.gouv.fr/entreprise/jolananas-987688355)
 - [INSEE - Sirene](https://www.insee.fr)
 - [INPI - RNE](https://www.inpi.fr)
+- [BODACC - Annonce n° 6078](https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:C202501186078)

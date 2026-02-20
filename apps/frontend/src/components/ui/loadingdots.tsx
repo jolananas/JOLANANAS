@@ -21,7 +21,7 @@ export function LoadingDots({ size = "md", className }: LoadingDotsProps) {
   useEffect(() => {
     setMounted(true);
     // Vérifier la préférence de l'utilisateur pour les animations réduites
-    if (typeof window !== "undefined") {
+    if (typeof window) {
       const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
       setPrefersReducedMotion(mediaQuery.matches);
 

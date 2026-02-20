@@ -20,7 +20,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-import { defaultMetadata, organizationSchema, websiteSchema } from "./shared-metadata";
+import { defaultMetadata, organizationSchema, websiteSchema, joannaPersonSchema } from "./shared-metadata";
 import { JsonLd } from "@/components/SEO/JsonLd";
 
 export const metadata: Metadata = defaultMetadata;
@@ -40,8 +40,12 @@ export default function RootLayout({
       className={`${inter.variable} ${poppins.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
+      </head>
       <body className="antialiased min-h-screen flex flex-col bg-background text-primary selection:bg-primary/20">
         <JsonLd data={organizationSchema} id="org-schema" />
+        <JsonLd data={joannaPersonSchema} id="person-schema" />
         <JsonLd data={websiteSchema} id="website-schema" />
         <Suspense fallback={null}>
           <SiteGatekeeper />

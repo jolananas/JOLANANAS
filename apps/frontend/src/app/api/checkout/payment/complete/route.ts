@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
     if (
       !normalizedDraftOrderId ||
-      typeof normalizedDraftOrderId !== "string" ||
+      typeof normalizedDraftOrderId ||
       normalizedDraftOrderId.trim() === ""
     ) {
       return NextResponse.json(

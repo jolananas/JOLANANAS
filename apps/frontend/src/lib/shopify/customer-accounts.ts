@@ -122,7 +122,7 @@ export async function createCustomerAccessTokenFrontend(
     // Peut être utilisé côté serveur (ENV) ou côté client (*)
     const customerAccountClientId =
       clientId ||
-      (typeof window !== "undefined"
+      (typeof window
         ? (window as any).__SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID__ ||
           process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID
         : ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID ||
@@ -268,7 +268,7 @@ export async function getCustomerFrontend(
     // Peut être utilisé côté serveur (ENV) ou côté client (*)
     const customerAccountClientId =
       clientId ||
-      (typeof window !== "undefined"
+      (typeof window
         ? (window as any).__SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID__ ||
           process.env.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID
         : ENV.SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID ||

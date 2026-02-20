@@ -13,9 +13,7 @@ export function Preloader() {
   if (!show) return null;
 
   const commonStyle = {
-    backgroundImage: "url(/assets/images/background/bg-jolananas-fast.gif)",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "200% 100%", // 200% car chaque panneau fait 50% de l'écran
+    // We removed the backgroundImage, now using an absolutely positioned video tag inside.
   };
 
   const overlayStyle = {
@@ -52,28 +50,46 @@ export function Preloader() {
         </div>
       </div>
 
-      {/* --- RIDEAU GAUCHE --- */}
       <div
         className={cn(
           // On ajoute un délai (delay-100) pour que le rideau parte juste APRES le début du zoom du logo
-          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain",
+          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain overflow-hidden",
           !isLoading && "-translate-x-full",
         )}
-        style={{ ...commonStyle, backgroundPosition: "0% center" }}
       >
-        <div className="absolute inset-0" style={overlayStyle} />
+        {/* Vidéo de fond positionnée pour correspondre à 0% center avec backgroundSize: 200% */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 max-w-none h-full z-0"
+          style={{ width: "200%", objectFit: "cover", objectPosition: "left center" }}
+        >
+          <source src="/assets/images/background/bg-jolananas-fast.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 z-10" style={overlayStyle} />
       </div>
 
-      {/* --- RIDEAU DROIT --- */}
       <div
         className={cn(
           // Même délai pour la synchro
-          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain",
+          "relative h-full w-1/2 transition-transform duration-1000 delay-100 ease-curtain overflow-hidden",
           !isLoading && "translate-x-full",
         )}
-        style={{ ...commonStyle, backgroundPosition: "100% center" }}
       >
-        <div className="absolute inset-0" style={overlayStyle} />
+        {/* Vidéo de fond positionnée pour correspondre à 100% center avec backgroundSize: 200% */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 max-w-none h-full z-0"
+          style={{ width: "200%", objectFit: "cover", objectPosition: "right center", left: "-100%" }}
+        >
+          <source src="/assets/images/background/bg-jolananas-fast.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 z-10" style={overlayStyle} />
       </div>
     </div>
   );

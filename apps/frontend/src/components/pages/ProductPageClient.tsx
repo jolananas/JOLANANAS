@@ -458,7 +458,7 @@ export function ProductPageClient({
   const totalImages = product?.images?.length || 1;
   const variantLabel = selectedVariant?.selectedOptions
     ?.map((opt) => opt.value)
-    .filter((v) => v !== "Default Title")
+    .filter((v) => v)
     .join(" · ");
 
   // 3. HANDLERS
@@ -490,7 +490,7 @@ export function ProductPageClient({
       <PageContainer className="bg-[#FEF7F0] min-h-screen pt-12 pb-24">
         <PageContainer className="container mx-auto px-4 md:px-8">
           {/* LAYOUT GRID : 2 COLONNES */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          <article className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* COLONNE GAUCHE : GALERIE (Sticky) */}
             <div className="lg:col-span-7 space-y-6">
               <div className="sticky top-24 space-y-4">
@@ -851,7 +851,7 @@ export function ProductPageClient({
                 </AccordionItem>
               </Accordion>
             </div>
-          </div>
+          </article>
         </PageContainer>
 
         {/* STICKY MOBILE BAR */}

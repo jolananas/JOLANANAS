@@ -7,8 +7,8 @@ export const baseUrl = process.env.DOMAIN_URL
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "JOLANANAS - L'Artisanat au Cœur | Faits Main & Pièces Uniques",
     template: "%s | JOLANANAS",
+    default: "JOLANANAS — L'Artisanat au Cœur",
   },
   description:
     "Des créations artisanales uniques, faites main avec passion, pour apporter une touche personnelle et originale à votre style.",
@@ -31,14 +31,22 @@ export const defaultMetadata: Metadata = {
     locale: "fr_FR",
     siteName: "JOLANANAS",
     url: baseUrl,
+    title: "JOLANANAS — L'Artisanat au Cœur",
+    description: "Des créations artisanales uniques, faites main avec passion.",
     images: [
       {
         url: "/assets/images/preview/Jolananas_preview.png",
         width: 1200,
         height: 630,
-        alt: "JOLANANAS - L'Artisanat au Cœur | Faits Main & Pièces Uniques",
+        alt: "JOLANANAS — L'Artisanat au Cœur",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JOLANANAS — L'Artisanat au Cœur",
+    description: "Des créations artisanales uniques, faites main avec passion.",
+    images: ["/assets/images/preview/Jolananas_preview.png"],
   },
   alternates: {
     canonical: baseUrl,
@@ -63,20 +71,42 @@ export const defaultMetadata: Metadata = {
   category: "Artisanat",
 };
 
+export const joannaPersonSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${baseUrl}/#artisan`,
+  name: "Joanna",
+  jobTitle: "Artisan Créatrice",
+  description: "Créatrice passionnée derrière JOLANANAS, spécialisée dans la création d'accessoires faits main.",
+  knowsAbout: ["Couture", "Artisanat", "Accessoires faits main", "Création textile"],
+  url: `${baseUrl}/a-propos`,
+  worksFor: {
+    "@id": `${baseUrl}/#organization`
+  }
+};
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${baseUrl}/#organization`,
   name: "JOLANANAS",
   url: baseUrl,
   logo: `${baseUrl}/assets/images/logo/logo-square.png`,
   description: "L'Artisanat au Cœur | Faits Main & Pièces Uniques",
+  founder: {
+    "@id": `${baseUrl}/#artisan`
+  },
   address: {
     "@type": "PostalAddress",
+    streetAddress: "9 Impasse Puech Bertrand",
+    addressLocality: "Cagnac-les-Mines",
+    postalCode: "81130",
     addressCountry: "FR",
   },
   sameAs: [
-    "https://www.instagram.com/jolananas",
-    "https://www.facebook.com/jolananas",
+    "https://www.instagram.com/jolananas.officiel",
+    "https://www.facebook.com/jolananas.officiel",
+    "https://www.snapchat.com/add/jolananas.off",
   ],
 };
 

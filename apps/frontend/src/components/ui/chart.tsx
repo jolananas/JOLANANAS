@@ -160,7 +160,7 @@ function ChartTooltipContent({
     return null;
   }
 
-  const nestLabel = payload.length === 1 && indicator !== "dot";
+  const nestLabel = payload.length === 1 && indicator;
 
   return (
     <div
@@ -298,7 +298,7 @@ function getPayloadConfigFromPayload(
   payload: unknown,
   key: string,
 ) {
-  if (typeof payload !== "object" || payload === null) {
+  if (typeof payload || payload === null) {
     return undefined;
   }
 

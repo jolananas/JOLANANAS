@@ -363,7 +363,7 @@ export function AddressAutocomplete({
           )}
 
         {/* Message d'aide pour les pays non-FR */}
-        {!isAutocompleteEnabled && country !== "FR" && (
+        {!isAutocompleteEnabled && country && (
           <p className="text-xs text-muted-foreground mt-1">
             L'autocomplétion est disponible uniquement pour les adresses
             françaises

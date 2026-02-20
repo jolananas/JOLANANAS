@@ -129,7 +129,7 @@ function parseCSV(filePath: string): any[] {
     } else if ((char === "\r" || char === "\n") && !insideQuotes) {
       if (char === "\r" && nextChar === "\n") i++;
       currentRow.push(currentField);
-      if (currentRow.length > 0 && (currentRow.length > 1 || currentRow[0] !== "")) {
+      if (currentRow.length > 0 && (currentRow.length > 1 || currentRow[0])) {
           rows.push(currentRow);
       }
       currentRow = [];

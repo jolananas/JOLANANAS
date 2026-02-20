@@ -47,14 +47,14 @@ const BANNER_STYLES = {
   warning: {
     bg: "bg-amber-50/75 backdrop-blur-3xl dark:bg-amber-950/50",
     // border: "border-amber-200 dark:border-amber-800",
-    text: "text-black dark:text-white",
-    description: "text-black/80 dark:text-white/80",
+    text: "text-amber-900 dark:text-amber-50",
+    description: "text-amber-900/90 dark:text-amber-50/90",
   },
   success: {
     bg: "bg-emerald-50/75 backdrop-blur-3xl dark:bg-emerald-950/50",
     // border: "border-emerald-200 dark:border-emerald-800",
-    text: "text-black dark:text-white",
-    description: "text-black/80 dark:text-white/80",
+    text: "text-emerald-900 dark:text-emerald-50",
+    description: "text-emerald-900/90 dark:text-emerald-50/90",
   },
   default: {
     bg: "bg-muted/75 backdrop-blur-3xl dark:bg-muted/10",
@@ -89,12 +89,12 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
     // Déterminer le message à afficher selon le contexte
     const context = {
       isFirstVisit:
-        typeof window !== "undefined" &&
+        typeof window &&
         !localStorage.getItem("jolananas-has-visited"),
       cartTotal: totalPrice,
       hasAbandonedCart:
         totalItems > 0 &&
-        typeof window !== "undefined" &&
+        typeof window &&
         !localStorage.getItem("jolananas-cart-checked-out"),
       isMaintenanceMode: false, // TODO: Récupérer depuis une variable d'environnement ou API
     };
@@ -107,7 +107,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
       setIsBannerVisible(true);
 
       // Marquer la première visite
-      if (context.isFirstVisit && typeof window !== "undefined") {
+      if (context.isFirstVisit && typeof window) {
         localStorage.setItem("jolananas-has-visited", "true");
       }
     } else {
@@ -121,7 +121,7 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
     if (!bannerRef.current || !containerRef.current) return;
 
     const prefersReducedMotion =
-      typeof window !== "undefined"
+      typeof window
         ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
         : false;
 
@@ -233,16 +233,19 @@ export function InfoBanner({ className, forceBanner }: InfoBannerProps) {
     <div
       ref={bannerRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-[101] w-full overflow-hidden",
+        "fixed top-0 left-0 right-0 z-[101] w-full",
         "shadow-sm dark:shadow-none",
         "transition-all duration-700 ease-swiss",
-        isVisible && banner ? "max-h-20" : "max-h-0",
+        isVisible && banner ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none",
         className,
       )}
       role={banner?.type === "warning" ? "alert" : "banner"}
       aria-live={banner?.type === "warning" ? "assertive" : "polite"}
       aria-atomic="true"
       aria-hidden={!isVisible || !banner}
+      style={{
+        willChange: "transform, opacity",
+      }}
     >
       <div
         ref={containerRef}

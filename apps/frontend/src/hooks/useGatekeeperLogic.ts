@@ -10,7 +10,7 @@ export function useGatekeeperLogic() {
   // Utilisation de NEXT_PUBLIC_ pour l'accès client
   const [shouldBlock, setShouldBlock] = useState(() => {
     const mode = process.env.NEXT_PUBLIC_SITE_MODE;
-    return mode !== "live";
+    return mode;
   });
 
   const searchParams = useSearchParams();

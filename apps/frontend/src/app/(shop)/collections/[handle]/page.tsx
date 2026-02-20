@@ -50,20 +50,59 @@ export default async function CollectionPage({
     return notFound();
   }
 
-  // --- JSON-LD ---
-  const jsonLd = {
+  // --- JSON-LD (Enriched for Google Rich Results + GEO) ---
+  const collectionImage = collection.image?.url || null;
+
+  const jsonLd: any = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": `${baseUrl}/collections/${handle}#collection`,
     name: collection.title,
     description: collection.description,
     url: `${baseUrl}/collections/${handle}`,
+    ...(collectionImage && { image: collectionImage }),
+    isPartOf: {
+      "@id": `${baseUrl}/#website`,
+    },
+    publisher: {
+      "@id": `${baseUrl}/#organization`,
+    },
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: collection.products?.map((product: any, index: number) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        url: `${baseUrl}/products/${product.handle}`,
-      })),
+      numberOfItems: collection.products?.length || 0,
+      itemListElement: collection.products?.map((product: any, index: number) => {
+        const productPrice = product.price || product.priceRange?.minVariantPrice?.amount;
+        const productCurrency = product.currency || product.priceRange?.minVariantPrice?.currencyCode || "EUR";
+        const productImage = product.featuredImage || product.images?.[0]?.url || product.images?.edges?.[0]?.node?.url;
+
+        return {
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Product",
+            name: product.title,
+            url: `${baseUrl}/products/${product.handle}`,
+            ...(productImage && { image: productImage }),
+            ...(product.description && { description: product.description.substring(0, 200) }),
+            brand: {
+              "@id": `${baseUrl}/#organization`,
+            },
+            offers: {
+              "@type": "Offer",
+              url: `${baseUrl}/products/${product.handle}`,
+              priceCurrency: productCurrency,
+              price: productPrice,
+              availability: product.availableForSale
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
+              itemCondition: "https://schema.org/NewCondition",
+              seller: {
+                "@id": `${baseUrl}/#organization`,
+              },
+            },
+          },
+        };
+      }) || [],
     },
   };
 
@@ -81,7 +120,7 @@ export default async function CollectionPage({
         "@type": "ListItem",
         position: 2,
         name: "Collections",
-        item: `${baseUrl}/collections`, // Assuming there is a collections list page
+        item: `${baseUrl}/collections`,
       },
       {
         "@type": "ListItem",

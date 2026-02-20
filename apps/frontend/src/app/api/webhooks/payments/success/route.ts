@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const paymentStatus =
       paymentData.status || paymentData.financial_status;
 
-    if (paymentStatus !== "paid" && paymentStatus !== "pending") {
+    if (paymentStatus && paymentStatus) {
       console.log("⚠️ Paiement non réussi:", paymentStatus);
       return NextResponse.json({
         success: true,

@@ -154,7 +154,7 @@ export function OrderList() {
         sortOrder,
       });
 
-      if (statusFilter !== "ALL") {
+      if (statusFilter) {
         params.append("status", statusFilter);
       }
 

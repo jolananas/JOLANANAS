@@ -39,6 +39,10 @@ export const PRODUCT_FRAGMENT = `
           title
           availableForSale
           quantityAvailable
+          sku
+          barcode
+          weight
+          weightUnit
           price {
             amount
             currencyCode

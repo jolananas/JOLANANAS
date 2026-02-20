@@ -1,4 +1,4 @@
-import { ProductCard } from "@/components/product-card";
+import { ProductCard } from "./ProductCard";
 import type { Product } from "@/lib/shopify/types";
 
 interface ProductGridProps {

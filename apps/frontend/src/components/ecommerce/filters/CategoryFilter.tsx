@@ -92,7 +92,7 @@ export function CategoryFilter({
   const activeFiltersCount = [
     filters.collections?.length || 0,
     filters.tags?.length || 0,
-    filters.availability !== "all" ? 1 : 0,
+    filters.availability ? 1 : 0,
     filters.priceRange &&
     (filters.priceRange.min !== priceRange?.min ||
       filters.priceRange.max !== priceRange?.max)

@@ -13,7 +13,6 @@ export default function AboutPage() {
   return (
     <div className="bg-[#FEF7F0] min-h-screen selection:bg-primary/20">
       <PageContainer>
-        {/* En-tête accrocheur (Microcopy focus) */}
         <section className="container mx-auto px-4 pt-32 pb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 ring-1 ring-primary/20">
             <Sparkles className="w-4 h-4" />
@@ -28,15 +27,12 @@ export default function AboutPage() {
           </p>
         </section>
 
-        {/* Section Histoire & Valeurs */}
         <section className="container mx-auto px-4 pb-24">
           <div className="bg-white p-8 md:p-12 lg:p-16 rounded-[2.5rem] shadow-sm border border-border/50 relative overflow-hidden">
-            {/* Décoration de fond subtile */}
             <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-64 h-64 bg-[#FCD5CE]/20 rounded-full blur-3xl opacity-60" />
             
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
               
-              {/* Colonne Image */}
               <div className="relative aspect-[4/5] rounded-3xl overflow-hidden group shadow-md ring-1 ring-border/50">
                 <div className="absolute inset-0 bg-secondary/5 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
                 <Image
@@ -46,15 +42,13 @@ export default function AboutPage() {
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                {/* Fallback si l'image n'existe pas encore */}
                 <div className="absolute inset-0 bg-[#FEF7F0] flex flex-col items-center justify-center text-secondary/50 -z-10">
                   <Scissors className="w-12 h-12 mb-4 opacity-50" />
                   <span className="font-serif italic text-lg px-4 text-center">En direct de l'atelier<br/>(Ça coud dur ! 🪡)</span>
                 </div>
               </div>
 
-              {/* Colonne Texte (Microcopy) */}
-              <div className="space-y-8">
+              <article className="space-y-8">
                 <div>
                   <h2 className="text-3xl md:text-4xl font-serif font-bold text-secondary mb-6">
                     La petite histoire...
@@ -98,7 +92,7 @@ export default function AboutPage() {
                     Risque d'addiction élevé aux jolis motifs. Vous êtes prévenu(e).
                   </p>
                 </div>
-              </div>
+              </article>
 
             </div>
           </div>

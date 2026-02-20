@@ -42,9 +42,9 @@ const envSchema = z.object({
   // DATABASE_URL supprimé - Plus de base de données locale
   // L'application utilise uniquement Shopify APIs et Next.js ISR
 
-  NEXTAUTH_SECRET: z
+  AUTH_SECRET: z
     .string()
-    .min(1, "NEXTAUTH_SECRET est requis")
+    .min(1, "AUTH_SECRET est requis")
     .default("temporary-secret-for-development-only"),
 
   NEXTAUTH_URL: z
@@ -147,7 +147,7 @@ function validateEnv(): EnvironmentConfig {
       SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
       SHOPIFY_STOREFRONT_ACCESS_TOKEN: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
       NODE_ENV: process.env.NODE_ENV,
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+      AUTH_SECRET: process.env.AUTH_SECRET,
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
       SHOPIFY_WEBHOOK_SECRET: process.env.SHOPIFY_WEBHOOK_SECRET,
       SHOPIFY_REVALIDATION_SECRET: process.env.SHOPIFY_REVALIDATION_SECRET,
@@ -188,7 +188,7 @@ function validateEnv(): EnvironmentConfig {
         SHOPIFY_API_VERSION: process.env.SHOPIFY_API_VERSION,
         NODE_ENV: (process.env.NODE_ENV as any),
         // DATABASE_URL supprimé - Plus de base de données locale
-        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+        AUTH_SECRET: process.env.AUTH_SECRET,
         NEXTAUTH_URL: process.env.NEXTAUTH_URL,
         SHOPIFY_WEBHOOK_SECRET: process.env.SHOPIFY_WEBHOOK_SECRET,
         DOMAIN_URL: process.env.DOMAIN_URL,

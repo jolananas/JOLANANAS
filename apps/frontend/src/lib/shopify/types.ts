@@ -66,6 +66,10 @@ export interface Variant {
   quantityAvailable?: number;
   inventoryPolicy?: "DENY" | "CONTINUE";
   image?: Image;
+  sku?: string;
+  barcode?: string;
+  weight?: number;
+  weightUnit?: string;
 }
 
 export interface VariantEdge {

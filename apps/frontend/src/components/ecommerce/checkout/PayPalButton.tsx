@@ -43,7 +43,7 @@ export function PayPalButton({
   // Validation des props
   const isValid =
     checkoutId &&
-    checkoutId.trim() !== "" &&
+    checkoutId.trim() &&
     amount > 0 &&
     currency &&
     currency.length === 3;

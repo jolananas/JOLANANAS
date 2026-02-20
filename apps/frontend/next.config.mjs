@@ -7,10 +7,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Ignore ESLint errors during build
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // Configuration des images
   images: {
     formats: ["image/avif", "image/webp"],
@@ -64,9 +60,35 @@ const nextConfig = {
     ];
   },
 
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          }
+        ],
+      },
+    ];
+  },
+
   // Configuration environnement
   env: {
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
+    AUTH_SECRET: process.env.AUTH_SECRET,
   },
 
   poweredByHeader: false,

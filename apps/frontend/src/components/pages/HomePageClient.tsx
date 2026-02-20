@@ -75,7 +75,9 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
                 width={350}
                 height={350}
                 className="object-contain w-[125px] sm:w-[175px] md:w-[225px] lg:w-[275px] xl:w-[325px] 2xl:w-[375px] h-auto"
-                priority
+                priority={true}
+                fetchPriority="high"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 
@@ -97,12 +99,14 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
                         width={350}
                         height={350}
                         className="object-contain w-[125px] sm:w-[175px] md:w-[225px] lg:w-[275px] xl:w-[325px] 2xl:w-[375px] h-auto"
-                        priority
+                        priority={true}
+                        fetchPriority="high"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     </div>
                   ))}
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground pl-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#595959] pl-1">
                   Bienvenue à nos nouveaux clients
                 </span>
               </div>
@@ -115,7 +119,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
                     au cœur.
                   </span>
                 </h1>
-                <div className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed space-y-4 font-medium italic">
+                <div className="text-lg md:text-xl text-[#595959] max-w-xl leading-relaxed space-y-4 font-medium italic">
                   <motion.p
                     variants={containerVariants}
                     initial="hidden"
@@ -208,7 +212,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
             ))
           ) : (
             <div className="col-span-4 text-center py-20 border-2 border-dashed border-black/10 rounded-xl">
-              <p className="text-muted-foreground font-medium">
+              <p className="text-[#595959] font-medium">
                 Chargement des produits...
               </p>
             </div>

@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (status !== "COMPLETED") {
+    if (status) {
       return NextResponse.json({
         success: false,
         status,

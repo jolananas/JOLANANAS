@@ -6,11 +6,27 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.DOMAIN_URL;
 
-  // 1. Pages statiques (URLs canoniques françaises)
-  const routes = [
-    "",
+  // Accueil (1.0)
+  const homeRoute = {
+    url: `${baseUrl}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: "weekly" as const,
+    priority: 1.0,
+  };
+
+  // Pages statiques (0.8)
+  const staticRoutes = [
     "/a-propos",
     "/contact",
+  ].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // Mentions légales (0.3)
+  const legalRoutes = [
     "/mentions-legales",
     "/mentions-legales/CGV",
     "/mentions-legales/confidentialite",
@@ -20,32 +36,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString(),
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
+    changeFrequency: "yearly" as const,
+    priority: 0.3,
   }));
 
   try {
-    // 2. Produits
+    // 2. Produits (0.8)
     const products = await getAllProducts();
     const productRoutes = products.map((product: any) => ({
       url: `${baseUrl}/products/${product.handle}`,
       lastModified: new Date().toISOString(),
       changeFrequency: "weekly" as const,
-      priority: 1.0,
+      priority: 0.8,
     }));
 
-    // 3. Collections
+    // 3. Collections (0.8)
     const collections = await getAllCollections();
     const collectionRoutes = collections.map((collection: any) => ({
       url: `${baseUrl}/collections/${collection.handle}`,
       lastModified: new Date().toISOString(),
       changeFrequency: "weekly" as const,
-      priority: 0.9,
+      priority: 0.8,
     }));
 
-    return [...routes, ...productRoutes, ...collectionRoutes];
+    return [homeRoute, ...staticRoutes, ...legalRoutes, ...productRoutes, ...collectionRoutes];
   } catch (error) {
     console.error("Sitemap: Failed to fetch Shopify data, returning static routes only:", error);
-    return routes;
+    return [homeRoute, ...staticRoutes, ...legalRoutes];
   }
 }
