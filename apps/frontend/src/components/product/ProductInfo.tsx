@@ -42,7 +42,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const variantId = product.firstVariantId;
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="">
       <PageContainer className="space-y-6">
         {/* Title and Price */}
         <div className="space-y-2">

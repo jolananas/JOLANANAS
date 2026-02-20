@@ -50,7 +50,7 @@ export default function FavoritesPage() {
 
   if (isLoading) {
     return (
-      <PageContainer className="container py-32 md:py-48">
+      <PageContainer>
         <Card className="border-0 shadow-none bg-transparent">
           <CardContent className="flex flex-col items-center justify-center py-60">
             <Skeleton className="h-12 w-12 rounded-full mb-4" />
@@ -64,7 +64,7 @@ export default function FavoritesPage() {
 
   if (error) {
     return (
-      <PageContainer className="container py-32 md:py-48">
+      <PageContainer>
         <Card className="border-0 shadow-none bg-transparent">
           <CardContent className="flex flex-col items-center justify-center py-60 text-center">
             <Alert variant="destructive" className="mb-4">
@@ -78,7 +78,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <PageContainer className="container py-32 md:py-48">
+    <PageContainer>
       <div className="max-w-7xl mx-auto space-y-8">
         {/* En-tête avec Card */}
         <Card className="border-0 shadow-none bg-transparent">

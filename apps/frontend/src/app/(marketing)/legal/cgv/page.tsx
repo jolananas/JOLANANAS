@@ -53,8 +53,8 @@ export default async function CGVPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
-      <PageContainer className="container py-32 md:py-48">
+    <div className="mx-auto py-32">
+      <PageContainer>
         <div className="max-w-4xl mx-auto space-y-8">
           <Breadcrumb>
             <BreadcrumbList>

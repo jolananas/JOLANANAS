@@ -10,7 +10,7 @@ export function CollectionPageClient({ collection }: { collection: any }) {
   const products = collection.products || [];
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="mx-auto py-32">
       <PageContainer>
         {/* Header Collection */}
         <div className="flex flex-col items-center text-center space-y-4 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">

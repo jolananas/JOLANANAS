@@ -15,7 +15,7 @@ export default function CheckoutPage() {
   }, [cart]);
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="mx-auto py-32">
       <PageContainer className="container py-32 flex flex-col items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />

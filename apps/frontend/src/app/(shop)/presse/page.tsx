@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function PressePage() {
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="mx-auto py-32">
       <PageContainer>
         {/* Hero */}
         <div className="text-center mb-20">

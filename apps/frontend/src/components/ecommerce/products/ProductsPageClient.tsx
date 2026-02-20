@@ -42,7 +42,7 @@ export function ProductsPageClient() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="mx-auto py-32">
       <PageContainer className="min-h-screen bg-jolananas-white-soft">
         {/* Dynamic Header with Gradient Overlay */}
         <section className="relative py-20 px-4 overflow-hidden">

@@ -37,7 +37,7 @@ export function CartDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
+    <div className="mx-auto py-32">
       <PageContainer className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col space-y-8">

@@ -53,7 +53,7 @@ export default async function CookiesPage() {
   }
 
   return (
-    <PageContainer className="container py-32 md:py-48">
+    <PageContainer>
       <div className="max-w-4xl mx-auto space-y-8">
         <Breadcrumb>
             <BreadcrumbList>

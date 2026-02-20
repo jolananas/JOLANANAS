@@ -250,7 +250,7 @@ export function SearchDialog() {
               "data-[state=open]:animate-in data-[state=closed]:animate-out",
               "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
               "data-[state=open]:zoom-in-0 data-[state=closed]:zoom-out-0",
-              "duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+              "duration-300 ease-&lsqb;cubic-bezier(0.34,1.56,0.64,1)&rsqb;"
             )}
           >
             {/* Titre SR-only pour accessibilité */}

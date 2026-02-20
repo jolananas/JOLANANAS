@@ -10,8 +10,8 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="container mx-auto px-4 py-32 max-w-4xl">
-      <PageContainer className="container mx-auto px-4 py-32 max-w-5xl">
+    <div className="mx-auto py-32">
+      <PageContainer className="mx-auto py-32 max-w-5xl">
         <h1 className="text-4xl font-serif font-bold text-center mb-12">
           Contactez-nous
         </h1>
