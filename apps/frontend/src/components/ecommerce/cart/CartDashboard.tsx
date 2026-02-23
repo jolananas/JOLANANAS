@@ -33,7 +33,14 @@ export function CartDashboard() {
   };
 
   if (items.length === 0) {
-    return <EmptyCart fullPage={true} />;
+    return (
+      <>
+        <PageContainer className="py-12">
+          <EmptyCart fullPage={true} />
+        </PageContainer>
+        <ReassuranceBlock />
+      </>
+    );
   }
 
   return (

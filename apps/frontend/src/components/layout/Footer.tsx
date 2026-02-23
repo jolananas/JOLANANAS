@@ -256,10 +256,10 @@ export function Footer() {
         {/* --- FOOTER BOTTOM --- */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
-          <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-black uppercase tracking-wider opacity-40">
-            © {currentYear} SARL JOLANANAS. Fait avec 🩷 en 🇫🇷
+          <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-white uppercase tracking-wider">
+            © {currentYear} SARL JOLANANAS. Tous droits réservés.
             <br />
-            <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA</span>
+            <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA avec 🩷 en 🇫🇷</span>
           </p>
 
           {/* LOGOS PAIEMENT (Simple Icons) */}
@@ -274,13 +274,13 @@ export function Footer() {
               ].map((icon) => (
                 <div
                   key={icon.slug}
-                  className="group relative flex items-center justify-center opacity-40"
+                  className="group relative flex items-center justify-center"
                   title={`Paiement sécurisé via ${icon.title}`}
                 >
                   {/* Icône en mode "CurrentColor" pour le gris, mais on applique la vraie couleur hex au survol via style */}
                   <BrandIcon
                     icon={icon}
-                    className="h-6 w-auto transition-colors duration-300 text-black"
+                    className="h-6 w-auto transition-colors duration-300 text-white"
                   />
                 </div>
               ))}
