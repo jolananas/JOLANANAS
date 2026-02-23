@@ -19,9 +19,8 @@ export default async function CollectionsIndexPage() {
   // const filteredCollections = collections.filter(c => c.handle !== 'frontpage')
 
   return (
-    <div className="pt-64 py-32">
-      <PageContainer className="bg-[#FEF7F0] min-h-screen rounded-xl md:rounded-2xl lg:rounded-3xl pt-12 pb-24">
-        <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
+    <PageContainer className="min-h-screen bg-[#FEF7F0]">
+      <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#4A3C31] mb-6">
             Nos <span className="italic">Collections</span>
           </h1>
@@ -74,7 +73,6 @@ export default async function CollectionsIndexPage() {
             "Chaque perle, chaque fil, chaque détail est choisi avec soin pour sublimer votre quotidien."
           </p>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

@@ -6,6 +6,7 @@ import { CheckCircle2, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCart } from "@/components/providers/CartProvider";
+import { PageContainer } from "@/components/layout/PageContainer";
 
 export function CheckoutSuccessClient() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export function CheckoutSuccessClient() {
   }, [clearCart]);
 
   return (
-    <div className="container py-12 md:py-16">
+    <PageContainer className="py-12 md:py-16">
       <Card className="max-w-2xl mx-auto">
         <CardContent className="p-8 md:p-12 text-center">
           <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
@@ -44,6 +45,6 @@ export function CheckoutSuccessClient() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageContainer>
   );
 }

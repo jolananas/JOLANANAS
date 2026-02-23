@@ -15,8 +15,7 @@ export default function CheckoutPage() {
   }, [cart]);
 
   return (
-    <div className="mx-auto py-32">
-      <PageContainer className="container py-32 flex flex-col items-center justify-center min-h-[60vh]">
+    <PageContainer className="container flex flex-col items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <h1 className="text-xl font-medium">Redirection vers le paiement...</h1>
@@ -24,7 +23,6 @@ export default function CheckoutPage() {
             Nous vous transférons vers notre partenaire de paiement sécurisé Shopify.
           </p>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

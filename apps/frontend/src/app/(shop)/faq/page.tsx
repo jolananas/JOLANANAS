@@ -46,8 +46,7 @@ const faqs = [
 
 export default function FaqPage() {
   return (
-    <div className="mx-auto py-32">
-      <PageContainer className="mx-auto py-32 max-w-3xl">
+    <PageContainer className="max-w-3xl">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
             Questions fréquentes
@@ -71,7 +70,6 @@ export default function FaqPage() {
             </div>
           ))}
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

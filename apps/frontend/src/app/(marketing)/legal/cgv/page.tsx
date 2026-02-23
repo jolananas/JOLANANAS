@@ -53,8 +53,7 @@ export default async function CGVPage() {
   }
 
   return (
-    <div className="mx-auto py-32">
-      <PageContainer>
+    <PageContainer>
         <div className="max-w-4xl mx-auto space-y-8">
           <Breadcrumb>
             <BreadcrumbList>
@@ -89,7 +88,6 @@ export default async function CGVPage() {
             </CardContent>
           </Card>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

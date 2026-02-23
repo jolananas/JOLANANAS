@@ -42,11 +42,9 @@ export function ProductsPageClient() {
   }
 
   return (
-    <div className="mx-auto py-32">
-      <PageContainer className="min-h-screen bg-jolananas-white-soft">
+    <PageContainer className="min-h-screen bg-jolananas-white-soft">
         {/* Dynamic Header with Gradient Overlay */}
         <section className="relative py-20 px-4 overflow-hidden">
-          <div className="absolute inset-0 bg-jolananas-gradient opacity-5 skew-y-3 -translate-y-24" />
           <div className="container relative z-10 max-w-4xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-7xl font-sans font-bold tracking-tight text-primary">
               Toutes nos <span className="text-gradient">créations</span>
@@ -90,7 +88,6 @@ export function ProductsPageClient() {
             </main>
           </div>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

@@ -11,9 +11,9 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-[#FEF7F0] container mx-auto mt-64 my-32 min-h-screen selection:bg-primary/20  rounded-xl md:rounded-2xl">
+    <div className="bg-[#FEF7F0] min-h-screen">
       <PageContainer>
-        <section className="container mx-auto px-4 pt-32 pb-20 text-center">
+        <section className="container mx-auto px-4 pb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 ring-1 ring-primary/20">
             <Sparkles className="w-4 h-4" />
             <span>Fait avec amour (et beaucoup de café ☕)</span>

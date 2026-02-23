@@ -100,17 +100,17 @@ export async function POST(req: NextRequest) {
       case "products/delete":
         revalidateTag(TAGS.products);
         revalidatedTag = TAGS.products;
-        console.log(`✅ Tag "${TAGS.products}" revalidé pour ${topic}`);
+        console.log(`✅ [CACHE] Tag "${TAGS.products}" revalidé suite à "${topic}" sur Shopify ID ${shopifyId}`);
         break;
       case "collections/create":
       case "collections/update":
       case "collections/delete":
         revalidateTag(TAGS.collections);
         revalidatedTag = TAGS.collections;
-        console.log(`✅ Tag "${TAGS.collections}" revalidé pour ${topic}`);
+        console.log(`✅ [CACHE] Tag "${TAGS.collections}" revalidé suite à "${topic}" sur Shopify ID ${shopifyId}`);
         break;
       default:
-        console.log(`⚠️ Topic non géré: ${topic}`);
+        console.log(`⚠️ Topic non géré ou ignoré: ${topic}`);
         break;
     }
 

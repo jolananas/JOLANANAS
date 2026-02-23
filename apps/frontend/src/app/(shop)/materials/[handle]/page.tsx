@@ -4,6 +4,7 @@ import { getMetaobjectByHandle, Metaobject } from "@/lib/shopify/metaobjects";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/layout/PageContainer";
 import { JsonLd } from "@/components/SEO/JsonLd";
 import { baseUrl } from "@/app/shared-metadata";
 
@@ -105,7 +106,7 @@ export default async function MaterialPage({ params }: MaterialPageProps) {
       <>
         <JsonLd data={jsonLd} id="material-schema" />
         <JsonLd data={breadcrumbJsonLd} id="breadcrumb-schema" />
-        <div className="container py-32 md:py-48">
+        <PageContainer>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
@@ -155,7 +156,7 @@ export default async function MaterialPage({ params }: MaterialPageProps) {
               </div>
             </div>
           </div>
-        </div>
+        </PageContainer>
       </>
     );
   } catch (error) {
@@ -164,12 +165,12 @@ export default async function MaterialPage({ params }: MaterialPageProps) {
     }
     console.error("Error rendering material page:", error);
     return (
-      <div className="container py-32">
-        <div className="text-center">
+      <PageContainer>
+        <div className="text-center py-20">
            <h1 className="text-2xl font-bold">Une erreur est survenue</h1>
            <p className="text-muted-foreground">Impossible de charger ce matériau.</p>
         </div>
-      </div>
+      </PageContainer>
     );
   }
 }

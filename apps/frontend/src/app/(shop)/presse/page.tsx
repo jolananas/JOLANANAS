@@ -12,8 +12,7 @@ export const metadata: Metadata = {
 
 export default function PressePage() {
   return (
-    <div className="mx-auto py-32">
-      <PageContainer>
+    <PageContainer>
         {/* Hero */}
         <div className="text-center mb-20">
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
@@ -86,7 +85,6 @@ export default function PressePage() {
             Nous répondons sous 48h ouvrées.
           </p>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }

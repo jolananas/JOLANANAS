@@ -50,7 +50,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
   const text = "\"Chaque pièce est une histoire, façonnée à la main avec passion. J'allie l'artisanat traditionnel à une vision moderne pour créer des bijoux uniques, en séries très limitées.\"";
 
   return (
-    <div className="flex flex-col min-h-screen h-full bg-[#FEF7F0] overflow-x-hidden">
+    <div className="flex flex-col bg-[#FEF7F0] overflow-x-hidden">
       {/* --- HERO SECTION PRO --- */}
       <PageContainer
         className="relative w-full min-h-[calc(100vh-var(--header-offset,84px))] flex flex-col justify-center overflow-hidden"

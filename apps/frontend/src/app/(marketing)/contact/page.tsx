@@ -10,8 +10,7 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="mx-auto py-32">
-      <PageContainer className="mx-auto py-32 max-w-5xl">
+    <PageContainer className="max-w-5xl">
         <h1 className="text-4xl font-serif font-bold text-center mb-12">
           Contactez-nous
         </h1>
@@ -76,8 +75,7 @@ export default function ContactPage() {
             <ContactForm />
           </div>
         </div>
-      </PageContainer>
-    </div>
+    </PageContainer>
   );
 }
 

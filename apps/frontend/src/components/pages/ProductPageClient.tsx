@@ -486,9 +486,8 @@ export function ProductPageClient({
   const isPreOrder = selectedVariant?.quantityAvailable === 0 && selectedVariant?.inventoryPolicy === "CONTINUE" && !selectedSellingPlanId;
 
   return (
-    <div className="mx-auto p-32 pt-64">
-      <div className="bg-[#FEF7F0] min-h-screen rounded-xl md:rounded-2xl lg:rounded-3xl pt-12 pb-24">
-        <PageContainer>
+    <div className="bg-[#FEF7F0] min-h-screen">
+      <PageContainer>
           {/* LAYOUT GRID : 2 COLONNES */}
           <article className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* COLONNE GAUCHE : GALERIE (Sticky) */}
@@ -974,7 +973,6 @@ export function ProductPageClient({
           groups={photoGroups}
           productTitle={product.title}
         />
-      </div>
     </div>
   );
 }
