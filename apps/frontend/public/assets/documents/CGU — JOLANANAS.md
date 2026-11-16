@@ -2,7 +2,7 @@
 
 ## 1. Objet et champ d'application
 
-Les présentes Conditions Générales d'Utilisation (ci-après "CGU") régissent l'utilisation du site web https://jolananas.com (ci-après "le Site") édité par JOLANANAS, Société à responsabilité limitée (ci-après "JOLANANAS", "nous", "notre", "nos").
+Les présentes Conditions Générales d'Utilisation (ci-après "CGU") régissent l'utilisation du site web https://jolananas.com (ci-après "le Site") édité par Joanna MOLY, entrepreneur individuel (EI) exerçant sous le nom commercial JOLANANAS (ci-après "JOLANANAS", "nous", "notre", "nos").
 
 L'utilisation du Site implique l'acceptation pleine et entière des présentes CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le Site.
 
@@ -21,11 +21,9 @@ Les deux documents sont complémentaires et s'appliquent selon le contexte de vo
 ## 2. Mentions légales
 
 **Éditeur du Site** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée (sans autre indication)  
-**SIREN** : 987 688 355  
-**SIRET** : 987 688 355 00013  
-**Capital social** : 100,00 € (fixe)  
-**Date de création** : 18 mars 2024  
+**Forme juridique** : Entrepreneur individuel (EI)  
+**SIREN** : 131 887 226  
+**SIRET** : 131 887 226 00010  
 **Email** : contact@jolananas.com  
 **Adresse du siège social** : 9 IMP PUECH BERTRAND 81130 CAGNAC-LES-MINES
 

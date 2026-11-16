@@ -4,7 +4,7 @@
 
 ## Préambule
 
-Les présentes Conditions de Licence Utilisateur Final (ci-après "CLUF" ou "EULA" pour End-User License Agreement) constituent un contrat légal entre vous (ci-après "le Licencié", "vous", "votre") et JOLANANAS, Société à responsabilité limitée (ci-après "JOLANANAS", "nous", "notre", "nos", "l'Éditeur").
+Les présentes Conditions de Licence Utilisateur Final (ci-après "CLUF" ou "EULA" pour End-User License Agreement) constituent un contrat légal entre vous (ci-après "le Licencié", "vous", "votre") et Joanna MOLY, entrepreneur individuel (EI) exerçant sous le nom commercial JOLANANAS (ci-après "JOLANANAS", "nous", "notre", "nos", "l'Éditeur").
 
 **IMPORTANT :** Veuillez lire attentivement les présentes conditions avant d'utiliser le Logiciel. En utilisant le Logiciel, vous acceptez d'être lié par les termes de ce contrat. Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser le Logiciel.
 
@@ -32,7 +32,7 @@ Le présent CLUF régit l'utilisation de l'application web, de la Progressive We
 
 **"Licencié"** désigne toute personne physique ou morale qui accède, utilise ou interagit avec le Logiciel, que ce soit en tant qu'utilisateur final, développeur tiers, ou intégrateur.
 
-**"Éditeur"** désigne JOLANANAS, Société à responsabilité limitée, titulaire des droits de propriété intellectuelle sur le Logiciel.
+**"Éditeur"** désigne Joanna MOLY, entrepreneur individuel (EI) exerçant sous le nom commercial JOLANANAS, titulaire des droits de propriété intellectuelle sur le Logiciel.
 
 **"Données"** désigne toutes les informations, contenus, fichiers, images, textes, et autres éléments accessibles ou générés via le Logiciel.
 
@@ -45,11 +45,9 @@ Le présent CLUF s'applique à l'utilisation du Logiciel dans tous les pays où 
 ## 2. Mentions Légales de l'Éditeur
 
 **Éditeur du Logiciel** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée (sans autre indication)  
-**SIREN** : 987 688 355  
-**SIRET** : 987 688 355 00013  
-**Capital social** : 100,00 € (fixe)  
-**Date de création** : 18 mars 2024  
+**Forme juridique** : Entrepreneur individuel (EI)  
+**SIREN** : 131 887 226  
+**SIRET** : 131 887 226 00010  
 **Email** : contact@jolananas.com  
 **Adresse du siège social** : 9 IMP PUECH BERTRAND 81130 CAGNAC-LES-MINES
 

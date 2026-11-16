@@ -4,28 +4,25 @@
 
 En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site internet https://jolananas.com l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi :
 
-**Propriétaire du site** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée (sans autre indication)  
+**Propriétaire du site** : Joanna MOLY, entrepreneur individuel (EI), nom commercial JOLANANAS  
+**Forme juridique** : Entrepreneur individuel (EI)  
 **Contact** : contact@jolananas.com  
 **Adresse du siège social** : 9 IMP PUECH BERTRAND 81130 CAGNAC-LES-MINES
 
-**Identification de l'entreprise** : JOLANANAS  
-**SIREN** : 987 688 355  
-**SIRET du siège social** : 987 688 355 00013  
-**Capital social** : 100,00 € (fixe)  
-**Date de création** : 18 mars 2024  
-**Activité principale (NAF/APE)** : Services administratifs combinés de bureau (82.11Z)  
-**Nature de l'entreprise** : Artisanale non réglementée  
-**Clôture de l'exercice comptable** : 31 décembre  
-**Durée de la personne morale** : 99 ans
+**Identification de l'entreprise** : Joanna MOLY EI (JOLANANAS)  
+**Immatriculation** : RCS Albi 131 887 226 et Registre national des entreprises  
+**TVA** : non applicable, art. 293 B du CGI    
+**SIREN** : 131 887 226  
+**SIRET du siège social** : 131 887 226 00010  
+**Code APE** : 32.99Z  
 
-**Directeur de la publication** : JOLANANAS  
+**Directrice de la publication** : Joanna MOLY  
 **Contact** : contact@jolananas.com
 
 **Hébergeur** : Vercel Inc.  
 **Adresse** : San Francisco, California, U.S.
 
-**Délégué à la protection des données** : JOLANANAS  
+**Responsable du traitement des données** : Joanna MOLY  
 **Contact** : contact@jolananas.com
 
 **Autres contributeurs** : Non applicable (N/A)
@@ -74,29 +71,13 @@ Pour plus d'informations sur la façon dont nous faisons usage des cookies, lise
 
 Tout litige en relation avec l'utilisation du site https://jolananas.com est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents du ressort du siège social de JOLANANAS (Tarn, France).
 
-## 7. Publications officielles (BODACC)
-
-### Annonce n° 6078 — Dépôt des comptes des sociétés
-
-**Référence de publication** : BODACC C n° 20250118 du 22/06/2025, annonce n° 6078  
-**Type d'annonce** : Dépôt des comptes des sociétés — Avis initial  
-**Greffe** : Tribunal de Commerce d'Albi  
-**N° RCS** : 987 688 355 RCS Albi  
-**Dénomination** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée  
-**Adresse du siège social** : 9 Impasse Puech Bertrand 81130 Cagnac-les-Mines  
-**Comptes annuels de l'exercice clos le** : 31/12/2024  
-**Confidentialité** : Les comptes annuels sont accompagnés d'une déclaration de confidentialité en application du premier ou deuxième alinéa de l'article L. 232-25.
-
-🔗 [Consulter l'annonce sur le BODACC](https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:C202501186078)
 
 ---
 
-_Dernière mise à jour : Juin 2025_
+_Dernière mise à jour : 16 novembre 2026_
 
 **Sources officielles :**
 
-- [Annuaire des Entreprises - JOLANANAS](https://annuaire-entreprises.data.gouv.fr/entreprise/jolananas-987688355)
+- [Annuaire des Entreprises](https://annuaire-entreprises.data.gouv.fr/entreprise/131887226)
 - [INSEE - Sirene](https://www.insee.fr)
 - [INPI - RNE](https://www.inpi.fr)
-- [BODACC - Annonce n° 6078](https://www.bodacc.fr/pages/annonces-commerciales-detail/?q.id=id:C202501186078)

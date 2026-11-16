@@ -9,9 +9,9 @@ En utilisant notre Site, vous acceptez les pratiques décrites dans cette politi
 ## 2. Responsable du traitement
 
 **Responsable du traitement des données** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée (SARL)  
-**SIREN** : 987 688 355  
-**SIRET** : 987 688 355 00013  
+**Forme juridique** : Entrepreneur individuel (EI)  
+**SIREN** : 131 887 226  
+**SIRET** : 131 887 226 00010  
 **Email** : contact@jolananas.com  
 **Adresse du siège social** : 9 IMP PUECH BERTRAND 81130 CAGNAC-LES-MINES
 

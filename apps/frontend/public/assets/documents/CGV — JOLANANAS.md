@@ -2,18 +2,16 @@
 
 ## 1. Objet et champ d'application
 
-Les présentes Conditions Générales de Vente (ci-après "CGV") régissent les relations contractuelles entre JOLANANAS, Société à responsabilité limitée (ci-après "JOLANANAS", "nous", "notre", "nos") et toute personne physique ou morale (ci-après "le Client", "vous", "votre") effectuant un achat sur le site https://jolananas.com (ci-après "le Site").
+Les présentes Conditions Générales de Vente (ci-après "CGV") régissent les relations contractuelles entre Joanna MOLY, entrepreneur individuel (EI) exerçant sous le nom commercial JOLANANAS (ci-après "JOLANANAS", "nous", "notre", "nos") et toute personne physique ou morale (ci-après "le Client", "vous", "votre") effectuant un achat sur le site https://jolananas.com (ci-après "le Site").
 
 Toute commande passée sur le Site implique l'acceptation sans réserve des présentes CGV. Ces conditions prévalent sur tout autre document, sauf accord écrit contraire.
 
 ## 2. Informations légales
 
-**Vendeur** : JOLANANAS  
-**Forme juridique** : Société à responsabilité limitée (sans autre indication)  
-**SIREN** : 987 688 355  
-**SIRET** : 987 688 355 00013  
-**Capital social** : 100,00 € (fixe)  
-**Date de création** : 18 mars 2024  
+**Vendeur** : Joanna MOLY, entrepreneur individuel (EI), nom commercial JOLANANAS  
+**Forme juridique** : Entrepreneur individuel (EI)  
+**SIREN** : 131 887 226  
+**SIRET** : 131 887 226 00010  
 **Email** : contact@jolananas.com  
 **Adresse du siège social** : 9 IMP PUECH BERTRAND 81130 CAGNAC-LES-MINES
 
