@@ -257,7 +257,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
           <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-white uppercase tracking-wider">
-            © {currentYear} SARL JOLANANAS. Tous droits réservés.
+            © {currentYear} JOLANANAS — Joanna MOLY EI. Tous droits réservés.
             <br />
             <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA avec 🩷 en 🇫🇷</span>
           </p>
