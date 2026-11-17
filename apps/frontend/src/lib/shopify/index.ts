@@ -365,6 +365,9 @@ export async function getCart(cartId: string) {
                 ... on ProductVariant {
                   id
                   title
+                  image {
+                    url(transform: {preferredContentType: WEBP})
+                  }
                   price {
                     amount
                     currencyCode
@@ -428,6 +431,9 @@ export async function addToCart(
                   ... on ProductVariant {
                     id
                     title
+                    image {
+                      url(transform: {preferredContentType: WEBP})
+                    }
                     price {
                       amount
                       currencyCode
@@ -489,6 +495,9 @@ export async function updateCartLine(
                   ... on ProductVariant {
                     id
                     title
+                    image {
+                      url(transform: {preferredContentType: WEBP})
+                    }
                     price {
                       amount
                       currencyCode
@@ -546,6 +555,9 @@ export async function removeFromCart(cartId: string, lineIds: string[]) {
                   ... on ProductVariant {
                     id
                     title
+                    image {
+                      url(transform: {preferredContentType: WEBP})
+                    }
                     price {
                       amount
                       currencyCode

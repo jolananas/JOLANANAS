@@ -107,10 +107,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       variantId: edge.node.merchandise.id,
       quantity: edge.node.quantity,
       title: edge.node.merchandise.product.title,
-      price: edge.node.cost?.totalAmount?.amount 
+      price: edge.node.quantity > 0 && edge.node.cost?.totalAmount?.amount
         ? parseFloat(edge.node.cost.totalAmount.amount) / edge.node.quantity
-        : parseFloat(edge.node.merchandise.price?.amount || "0"), // Accurate unit price with fallback
-      image: edge.node.merchandise.product.featuredImage?.url,
+        : parseFloat(edge.node.merchandise.price?.amount || "0"),
+      image:
+        edge.node.merchandise.image?.url ||
+        edge.node.merchandise.product.featuredImage?.url,
       handle: edge.node.merchandise.product.handle,
       productTitle: edge.node.merchandise.product.title,
       sellingPlan: edge.node.sellingPlanAllocation?.sellingPlan,
