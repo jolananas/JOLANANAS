@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PageContainer } from "@/components/layout/PageContainer";
-import { ArrowRight, Heart, Scissors, Sparkles } from "lucide-react";
+import { ArrowRight, Heart, Sparkles } from "lucide-react";
 
 export const metadata = {
   title: "Notre Histoire | JOLANANAS",
@@ -36,16 +36,12 @@ export default function AboutPage() {
               <div className="relative aspect-[4/5] rounded-3xl overflow-hidden group shadow-md ring-1 ring-border/50">
                 <div className="absolute inset-0 bg-secondary/5 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
                 <Image
-                  src="/images/about-atelier.jpg"
-                  alt="L'atelier Jolananas"
+                  src="https://cdn.shopify.com/s/files/1/0908/5508/0263/files/3DCF409E-0199-4F92-89BE-3B9FCA5DEB8C.jpg?v=1762797355"
+                  alt="Boucles d'oreilles de la collection Feuillage, faites main par Joanna"
                   fill
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-[#FEF7F0] flex flex-col items-center justify-center text-secondary/50 -z-10">
-                  <Scissors className="w-12 h-12 mb-4 opacity-50" />
-                  <span className="font-serif italic text-lg px-4 text-center">En direct de l'atelier<br/>(Ça coud dur ! 🪡)</span>
-                </div>
               </div>
 
               <article className="space-y-8">
@@ -55,10 +51,10 @@ export default function AboutPage() {
                   </h2>
                   <div className="prose prose-lg text-muted-foreground space-y-4">
                     <p>
-                      <strong className="text-primary">Jolananas</strong>, c'est l'histoire d'une machine à coudre, de (vraiment) beaucoup de tissus colorés, et d'une envie folle : vous proposer des accessoires qui donnent le smile. ✨
+                      <strong className="text-primary">Jolananas</strong>, c'est l'histoire de Joanna, de beaucoup de pâte polymère et d'une envie folle : vous proposer des bijoux qui donnent le smile. ✨
                     </p>
                     <p>
-                      Oubliez la fast-fashion. Chaque création qui sort de notre atelier a été imaginée, coupée et bichonnée avec une attention maniaque aux détails. 
+                      Oubliez la fast-fashion. Chaque bijou qui sort de l'atelier est imaginé, façonné à la main et bichonné avec une attention maniaque aux détails.
                     </p>
                   </div>
                 </div>
@@ -73,10 +69,10 @@ export default function AboutPage() {
                    </div>
                    <div className="space-y-3">
                      <div className="w-12 h-12 flex items-center justify-center text-secondary">
-                       <Scissors className="w-12 h-12" />
+                       <Sparkles className="w-12 h-12" />
                      </div>
                      <h3 className="font-bold text-secondary text-lg">Petites séries</h3>
-                     <p className="text-sm text-muted-foreground leading-relaxed">Des éditions limitées, parce que vous êtes unique (et nos tissus aussi).</p>
+                     <p className="text-sm text-muted-foreground leading-relaxed">Des éditions limitées, parce que vous êtes unique (et chaque bijou aussi).</p>
                    </div>
                 </div>
 

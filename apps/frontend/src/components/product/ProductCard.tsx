@@ -38,6 +38,10 @@ export function ProductCard({ product }: ProductCardProps) {
     : null;
 
   // Obtenir l'image principale ou un placeholder
+  const modeles = (product as any).options?.reduce(
+    (total: number, option: { values?: string[] }) => total * (option.values?.length || 1),
+    1,
+  ) ?? 1;
   const mainImage = product.featuredImage || (product.images && product.images.length > 0 ? product.images[0].url : null);
 
   return (
@@ -86,6 +90,11 @@ export function ProductCard({ product }: ProductCardProps) {
               <h3 className="font-sans font-semibold text-xs uppercase tracking-[0.15em] text-primary/80 transition-colors group-hover:text-primary line-clamp-1">
                 {product.title}
               </h3>
+              {modeles > 1 && (
+                <p className="text-[11px] font-medium text-primary">
+                  {modeles} modèles au choix
+                </p>
+              )}
 
               <div className="flex items-center justify-center gap-3">
                 <span className="font-bold text-sm tracking-tight text-primary">

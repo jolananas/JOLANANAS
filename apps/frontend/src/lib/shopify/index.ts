@@ -101,6 +101,10 @@ export async function getAllProducts() {
                 currencyCode
               }
             }
+            options {
+              name
+              values
+            }
             variants(first: 1) {
               edges {
                 node {
@@ -264,6 +268,10 @@ export async function getCollectionByHandle(handle: string) {
                   amount
                   currencyCode
                 }
+              }
+              options {
+                name
+                values
               }
               variants(first: 1) {
                 edges {
