@@ -51,10 +51,10 @@ export default function AboutPage() {
                   </h2>
                   <div className="prose prose-lg text-muted-foreground space-y-4">
                     <p>
-                      <strong className="text-primary">Jolananas</strong>, c'est l'histoire de Joanna, de beaucoup de pâte polymère et d'une envie folle : vous proposer des bijoux qui donnent le smile. ✨
+                      <strong className="text-primary">Jolananas</strong>, c'est l'histoire de Joanna, de beaucoup de pâte polymère et d'une envie folle : vous proposer des bijoux et des accessoires qui donnent le smile. ✨
                     </p>
                     <p>
-                      Oubliez la fast-fashion. Chaque bijou qui sort de l'atelier est imaginé, façonné à la main et bichonné avec une attention maniaque aux détails.
+                      D'un côté, les créations faites main, imaginées et façonnées à l'atelier avec une attention maniaque aux détails. De l'autre, une sélection de bijoux et d'accessoires (sacs, écharpes…) choisis avec soin par Joanna.
                     </p>
                   </div>
                 </div>

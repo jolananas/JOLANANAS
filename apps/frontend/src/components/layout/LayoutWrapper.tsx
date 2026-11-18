@@ -9,7 +9,6 @@ import { InfoBanner } from "@/components/layout/InfoBanner";
 import { Navigation } from "@/components/layout/Navigation";
 import { Preloader } from "@/components/preloader/Preloader";
 import { Toaster } from "@/components/ui/sonner";
-import { BetaVersionPopup } from "./BetaVersionPopup";
 
 const Footer = dynamic(() =>
   import("@/components/layout/Footer").then((mod) => mod.Footer),
@@ -57,9 +56,6 @@ function LayoutContent({ children }: LayoutWrapperProps) {
 
       {/* Toast Notifications */}
       <Toaster position="top-center" richColors />
-
-      {/* Beta Version Notification */}
-      <BetaVersionPopup />
     </div>
   );
 }
