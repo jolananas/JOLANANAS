@@ -93,7 +93,7 @@ export function Footer() {
                 className="h-12 w-auto"
               />
             </Link>
-            <p className="text-lg text-white leading-relaxed max-w-md font-medium mx-auto lg:mx-0">
+            <p className="text-lg text-[#5C1F33] leading-relaxed max-w-md font-medium mx-auto lg:mx-0">
               L'art de la fantaisie. <br />
               Des bijoux artisanaux uniques, conçus pour révéler votre singularité avec audace et élégance.
             </p>
@@ -142,7 +142,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-20 text-center md:text-left">
           {/* Groupe 1 */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white indent-2 mix-blend-difference">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#5C1F33]/80 indent-2">
               Collections
             </h4>
             <ul className="space-y-4">
@@ -152,7 +152,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href="/collections"
-                    className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                    className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                   >
                     {item}
                   </Link>
@@ -163,14 +163,14 @@ export function Footer() {
 
           {/* Groupe 2 */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white indent-2 mix-blend-difference">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#5C1F33]/80 indent-2">
               La Maison
             </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/a-propos"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Notre Histoire
                 </Link>
@@ -178,7 +178,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/presse"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Presse
                 </Link>
@@ -188,14 +188,14 @@ export function Footer() {
 
           {/* Groupe 3 */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white indent-2 mix-blend-difference">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#5C1F33]/80 indent-2">
               Support
             </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/contact"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Service Client
                 </Link>
@@ -203,7 +203,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/livraison"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Livraison & Retours
                 </Link>
@@ -211,7 +211,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   FAQ
                 </Link>
@@ -221,14 +221,14 @@ export function Footer() {
 
           {/* Groupe 4 */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white indent-2 mix-blend-difference">
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#5C1F33]/80 indent-2">
               Légal
             </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/mentions-legales/CGV"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   CGV
                 </Link>
@@ -236,7 +236,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/mentions-legales/confidentialite"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Confidentialité
                 </Link>
@@ -244,7 +244,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/mentions-legales"
-                  className="text-white hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-block duration-200 mix-blend-difference"
+                  className="text-[#5C1F33] hover:text-primary transition-colors text-sm font-medium hover:translate-x-1 inline-flex items-center min-h-[44px] duration-200"
                 >
                   Mentions Légales
                 </Link>
@@ -256,7 +256,7 @@ export function Footer() {
         {/* --- FOOTER BOTTOM --- */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
           {/* COPYRIGHT */}
-          <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-white uppercase tracking-wider">
+          <p suppressHydrationWarning className="text-xs text-center md:text-left font-medium text-[#5C1F33] uppercase tracking-wider">
             © {currentYear} JOLANANAS — Joanna MOLY EI. Tous droits réservés.
             <br />
             <span className="text-[10px]">Réalisation : Aïssa BELKOUSSA avec 🩷 en 🇫🇷</span>

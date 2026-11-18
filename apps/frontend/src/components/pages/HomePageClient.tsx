@@ -66,7 +66,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
         />
 
         <div className="container flex items-center justify-center px-4 md:px-6 py-12 lg:py-24">
-          <div className="flex flex-row items-center justify-start gap-6 lg:gap-12">
+          <div className="flex w-full min-w-0 flex-row items-center justify-start gap-6 lg:gap-12">
             {/* 1. COLONNE VISUELLE */}
             <div className="hidden md:flex flex-none relative shrink-0">
               <Image
@@ -113,7 +113,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
 
               {/* Titre Principal */}
               <div className="space-y-2 w-full">
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-secondary uppercase">
+                <h1 className="text-[clamp(2.25rem,11.5vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-secondary uppercase">
                   L'ARTISANAT <br />
                   <span className="text-primary italic font-serif pr-2">
                     au cœur.
