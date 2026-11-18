@@ -9,6 +9,8 @@ const nextConfig = {
   },
   // Configuration des images
   images: {
+    loader: "custom",
+    loaderFile: "./src/lib/image-loader.ts",
     formats: ["image/avif", "image/webp"],
     // Laisse le temps à Shopify CDN de convertir les gros fichiers HEIC
     minimumCacheTTL: 60,
