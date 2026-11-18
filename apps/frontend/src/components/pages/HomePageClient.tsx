@@ -161,7 +161,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
                   <Button
                     size="lg"
                     variant="cta"
-                    className="group w-full sm:w-auto rounded-full h-14 px-8 text-base font-bold uppercase tracking-widest transition-all shadow-xl hover:scale-105 border-2 border-transparent relative overflow-hidden"
+                    className="group w-full sm:w-auto rounded-full h-14 px-6 sm:px-8 text-sm sm:text-base font-bold uppercase tracking-wider sm:tracking-widest transition-all shadow-xl hover:scale-105 border-2 border-transparent relative overflow-hidden"
                     style={{
                       backgroundImage:
                         "linear-gradient(#000, #000), linear-gradient(90deg, #EC7B9C, #F4C0AC, #ffffff, #EC7B9C)",

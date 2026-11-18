@@ -73,10 +73,10 @@ export function Footer() {
       />
 
       {/* 2. ÉLÉMENT DÉCORATIF "BIG TYPO" (Arrière-plan) */}
-      <div className="absolute bottom-[-5%] left-0 w-full overflow-hidden pointer-events-none select-none opacity-[0.03]">
-        <h1 className="text-[15vw] font-black leading-none text-black tracking-tighter text-center whitespace-nowrap">
+      <div aria-hidden="true" className="absolute bottom-[-5%] left-0 w-full overflow-hidden pointer-events-none select-none opacity-[0.03]">
+        <p className="text-[15vw] font-black leading-none text-black tracking-tighter text-center whitespace-nowrap">
           JOLANANAS
-        </h1>
+        </p>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">

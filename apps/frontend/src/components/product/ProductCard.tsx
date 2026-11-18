@@ -87,7 +87,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
             {/* 2. Contenu Texte : Raffiné */}
             <div className="w-full space-y-3 px-4 pb-6">
-              <h3 className="font-sans font-semibold text-xs uppercase tracking-[0.15em] text-primary/80 transition-colors group-hover:text-primary line-clamp-1">
+              <h3 className="font-sans font-semibold text-xs uppercase tracking-[0.15em] text-primary/80 transition-colors group-hover:text-primary line-clamp-2 text-balance">
                 {product.title}
               </h3>
               {modeles > 1 && (
