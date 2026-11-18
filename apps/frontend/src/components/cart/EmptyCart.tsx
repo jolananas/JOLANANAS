@@ -49,9 +49,14 @@ export function EmptyCart({ onBrowse, fullPage = false }: EmptyCartProps) {
         transition={{ delay: 0.2 }}
         className="space-y-3"
       >
-        <h3 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-serif">
-          Votre écrin est vide... Pour l'instant.
-        </h3>
+        {(() => {
+          const Titre = fullPage ? "h1" : "h3";
+          return (
+            <Titre className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-serif">
+              Votre écrin est vide… Pour l'instant.
+            </Titre>
+          );
+        })()}
         <p className="text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-[280px] mx-auto">
           Votre écrin attend sa première merveille. Une touche de magie ?
         </p>
