@@ -36,8 +36,8 @@ export default function AboutPage() {
               <div className="relative aspect-[4/5] rounded-3xl overflow-hidden group shadow-md ring-1 ring-border/50">
                 <div className="absolute inset-0 bg-secondary/5 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
                 <Image
-                  src="https://cdn.shopify.com/s/files/1/0908/5508/0263/files/3DCF409E-0199-4F92-89BE-3B9FCA5DEB8C.jpg?v=1762797355"
-                  alt="Boucles d'oreilles de la collection Feuillage, faites main par Joanna"
+                  src="/assets/images/about/joanna.jpg"
+                  alt="Joanna, créatrice de Jolananas, portant ses créoles"
                   fill
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 50vw"
