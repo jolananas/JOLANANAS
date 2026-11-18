@@ -113,7 +113,7 @@ export const HomePageClient: React.FC<HomePageClientProps> = ({ products = [], a
 
               {/* Titre Principal */}
               <div className="space-y-2 w-full">
-                <h1 className="text-[clamp(2.25rem,11.5vw,3rem)] sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.95] text-secondary uppercase">
+                <h1 className="text-[clamp(2.25rem,11.5vw,3rem)] sm:text-6xl md:text-5xl lg:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.95] text-secondary uppercase">
                   L'ARTISANAT <br />
                   <span className="text-primary italic font-serif pr-2">
                     au cœur.
