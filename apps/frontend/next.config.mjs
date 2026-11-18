@@ -39,6 +39,7 @@ const nextConfig = {
     return [
       // Ancienne page d'accueil
       { source: "/home", destination: "/", permanent: true },
+      { source: "/aissabelkoussa", destination: "https://aissabelkoussa.fr", permanent: false },
 
       // Compte client → Shopify Customer Accounts
       { source: "/account",          destination: "https://accounts.jolananas.com", permanent: false },
